@@ -5,8 +5,11 @@
 
 # Appearance
 appearance:
-  mode: system
-  color: indigo
+  # mode: system
+  # color: indigo
+  theme_day: minimal
+  theme_night: minimal
+  font: classic
 
 # SEO
 marketing:
@@ -35,7 +38,10 @@ header:
     show_search: true
     show_theme_chooser: true
     logo:
-      text: 'Your Name'
+      text: 'Yongseok Jo'
+
+custom_css: 
+  - "css/custom.css"
 
 # Site footer
 footer:

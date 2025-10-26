@@ -1,0 +1,20 @@
+<!-- DEBUG: local head.html is active -->
+<meta name="x-head" content="LOCAL-HEAD-OK">
+<style>
+  /* Inline debug to prove head is rendered */
+  html { outline: 5px solid magenta !important; }
+</style>
+
+
+{{- /* Use the theme's default head if present */ -}}
+{{- partial "wowchemy/head" . | safeHTML }}
+
+{{- /* Always inject our custom CSS */ -}}
+<link rel="stylesheet" href="{{ "css/custom.css" | relURL }}">
+
+{{ $style := resources.Get "css/custom.css" | minify | fingerprint }}
+<link rel="stylesheet" href="{{ $style.Permalink }}">
+
+{{- /* Keep any hook you might also be using */ -}}
+{{- partial "hooks/head-end" . | safeHTML }}
+
