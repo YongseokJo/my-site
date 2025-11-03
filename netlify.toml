@@ -1,5 +1,5 @@
 [build]
-  command = "python3 scripts/bib_to_yaml.py && hugo"
+  command = "hugo"
   publish = "public"
 
 [build.environment]
