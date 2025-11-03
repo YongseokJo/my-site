@@ -1,0 +1,27 @@
+baseURL: "https://yongseokjo.com/"
+languageCode: "en-us"
+title: "Yongseok Jo"
+
+pagination:
+  pagerSize: 10
+
+params:
+  tagline: "Astrophysicist • ML • HPC"
+  email: "me@yongseokjo.com"
+  links:
+    github: "https://github.com/YongseokJo"
+    scholar: "https://scholar.google.com/citations?user=MNScKpQAAAAJ&hl=en"
+    orcid: "https://orcid.org/0000-0003-3977-1761"
+
+menu:
+  main:
+    - name: About
+      url: /
+      weight: 10
+    - name: Projects
+      url: /projects/
+      weight: 20
+    - name: Publications
+      url: /publications/
+      weight: 30
+

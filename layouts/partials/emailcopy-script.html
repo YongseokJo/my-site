@@ -1,0 +1,26 @@
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-copy-email]").forEach(el => {
+    el.addEventListener("click", e => {
+      e.preventDefault();
+      const email = el.getAttribute("data-copy-email");
+      navigator.clipboard.writeText(email).then(() => {
+        const note = document.createElement("div");
+        note.textContent = "📋 Email Address Copied!";
+        note.style.position = "fixed";
+        note.style.bottom = "5rem";
+        note.style.left = "50%";
+        note.style.transform = "translateX(-50%)";
+        note.style.background = "#333";
+        note.style.color = "#fff";
+        note.style.padding = "0.5rem 1rem";
+        note.style.borderRadius = "0.5rem";
+        note.style.fontSize = "0.9rem";
+        note.style.opacity = "0.9";
+        document.body.appendChild(note);
+        setTimeout(() => note.remove(), 1500);
+      });
+    });
+  });
+});
+</script>

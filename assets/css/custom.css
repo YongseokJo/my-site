@@ -1,0 +1,7 @@
+body {
+  background-image: url("/images/bg.jpg");  /* or /media/bg.png etc. */
+  background-size: cover;       /* Fill the entire window */
+  background-position: center;  /* Center it */
+  background-repeat: no-repeat; /* Don’t tile */
+  background-attachment: fixed; /* Optional: make it parallax-style */
+}

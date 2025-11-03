@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Categories</title>
+  
+  <link rel="stylesheet" href="/css/main.min.8b489e0373c7831545cfe8cb93e84d5f0a8c629e37e2fd4d68aeb4ec21d3ca2e.css" integrity="sha256-i0ieA3PHgxVFz&#43;jLk&#43;hNXwqMYp434v1NaK607CHTyi4=">
+  <link rel="icon" href="/icons/icon.png">
+</head>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  document.querySelectorAll("[data-copy-email]").forEach(el => {
+    el.addEventListener("click", e => {
+      e.preventDefault();
+      const email = el.getAttribute("data-copy-email");
+      navigator.clipboard.writeText(email).then(() => {
+        const note = document.createElement("div");
+        note.textContent = "📋 Email Address Copied!";
+        note.style.position = "fixed";
+        note.style.bottom = "5rem";
+        note.style.left = "50%";
+        note.style.transform = "translateX(-50%)";
+        note.style.background = "#333";
+        note.style.color = "#fff";
+        note.style.padding = "0.5rem 1rem";
+        note.style.borderRadius = "0.5rem";
+        note.style.fontSize = "0.9rem";
+        note.style.opacity = "0.9";
+        document.body.appendChild(note);
+        setTimeout(() => note.remove(), 1500);
+      });
+    });
+  });
+});
+</script>
+
+<body>
+  <header class="site-header">
+  <nav class="nav">
+    <a class="brand" href="/">Yongseok Jo</a>
+    <ul>
+      
+        <li><a href="/">About</a></li>
+      
+        <li><a href="/projects/">Projects</a></li>
+      
+        <li><a href="/publications/">Publications</a></li>
+      
+    </ul>
+  </nav>
+</header>
+
+  <main class="container">
+    
+  <h1>Categories</h1>
+  <div class="prose">
+    
+  </div>
+  
+  <ul class="list">
+    
+  </ul>
+  
+
+  </main>
+  <footer class="site-footer">
+  <p>© 2025 Yongseok Jo · <a href="mailto:me@yongseokjo.com" data-copy-email="me@yongseokjo.com">Email</a></p>
+  <p>
+    <a href="https://github.com/YongseokJo" target="_blank">GitHub</a> ·
+    <a href="https://scholar.google.com/citations?user=MNScKpQAAAAJ&amp;hl=en" target="_blank">Google Scholar</a> ·
+    <a href="https://orcid.org/0000-0003-3977-1761" target="_blank">ORCID</a>
+  </p>
+</footer>
+
+</body>
+</html>

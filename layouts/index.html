@@ -1,0 +1,91 @@
+{{ define "title" }}{{ .Site.Title }}{{ end }}
+
+{{ define "main" }}
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- LEFT: avatar + name + socials -->
+    <div class="hero-left">
+      <div class="avatar-wrapper">
+        <img
+          class="avatar"
+          src="/images/me.JPG"
+          alt="Yongseok Jo"
+        >
+        <span class="avatar-emoji">🚀</span>
+      </div>
+
+      <div class="hero-name-block">
+        <h1 class="hero-name">Yongseok Jo</h1>
+        <p class="hero-pronouns">(he/him)</p>
+        <p class="hero-title">Astrophysicist</p>
+        <p class="hero-affiliation">
+          <a href="https://skai-institute.org" target="_blank" rel="noopener">
+            SkAI Institute
+          </a>
+        </p>
+      </div>
+
+      <div class="hero-socials">
+        <!---a href="mailto:my@yongseokjo.com" aria-label="Email" class="social-circle">@</a--->
+        <!---a href="https://github.com/YongseokJo" target="_blank" rel="noopener" aria-label="GitHub" class="social-circle">GH</a--->
+        <!---a href="https://scholar.google.com/citations?user=MNScKpQAAAAJ&hl=en" target="_blank" rel="noopener" aria-label="Google Scholar" class="social-circle">GS</a--->
+        <!---a href="https://orcid.org/0000-0003-3977-1761" target="_blank" rel="noopener" aria-label="ORCID" class="social-circle">iD</a--->
+
+        <a href="mailto:{{ .Site.Params.email }}" data-copy-email="{{ .Site.Params.email }}" aria-label="Email"  aria-label="Copy Email" class="social-circle">
+          <img src="/icons/gmail.svg" alt="GitHub" width="20" height="20">
+        </a>
+        <a href="https://github.com/YongseokJo" target="_blank" aria-label="GitHub" class="social-circle">
+          <img src="/icons/github.svg" alt="GitHub" width="20" height="20">
+        </a>
+        <a href="https://scholar.google.com/citations?user=MNScKpQAAAAJ&hl=en" target="_blank" rel="noopener" aria-label="Google Scholar" class="social-circle">
+          <img src="/icons/googlescholar.svg" alt="GitHub" width="20" height="20">
+        </a>
+        <a href="https://orcid.org/0000-0003-3977-1761" target="_blank" rel="noopener" aria-label="ORCID" class="social-circle">
+          <img src="/icons/orcid.svg" alt="GitHub" width="20" height="20">
+        </a>
+      </div>
+    </div>
+
+    <!-- RIGHT: About + Interests -->
+    <div class="hero-right">
+
+      <section class="card">
+        <div class="card-header">
+          <div class="card-icon">📄</div>
+          <h2 class="card-title">About Me</h2>
+        </div>
+        <div class="card-body">
+          <p>
+            I am a computational astrophysicist and machine learning enthusiast with a Ph.D. from Seoul
+            National University. I have conducted postdoctoral research at the Flatiron Institute and
+            Columbia University in New York. Currently, I am a SkAI fellow at the SkAI Institute in Chicago.
+            My scientific interests span galaxy formation, star clusters and black holes, machine learning,
+            and computational astrophysics. I apply machine learning to cosmological simulations, leveraging the CAMELS suite to improve
+            and calibrate galaxy formation models, and develop a hybrid hydrodynamic/direct N-body code
+            (e.g., Enzo-Abyss) to study the evolution of star clusters within galaxies or a cosmological
+            context. In addition to academic work, I am also exploring the development of small language models.
+          </p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-header">
+          <div class="card-icon">⭐</div>
+          <h3 class="card-title">Interests</h3>
+        </div>
+        <div class="card-body">
+          <div class="chip-row">
+            <span class="chip">Cosmological Simulation</span>
+            <span class="chip">Machine Learning</span>
+            <span class="chip">Robustness of Simulation</span>
+            <span class="chip">Hydro / Direct N-body</span>
+            <span class="chip">Star Clusters / Black Holes</span>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+</section>
+{{ end }}

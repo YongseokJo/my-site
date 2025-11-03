@@ -1,0 +1,22 @@
+{{ define "title" }}{{ .Title }}{{ end }}
+
+{{ define "main" }}
+
+  <h1>{{ .Title }}</h1>
+
+  <div class="prose">
+    {{ .Content }}  {{/* this is the Markdown from _index.md */}}
+  </div>
+
+  {{ $first := site.Data.first_pub }}
+  {{ if $first }}
+    <h2>First-author Publications</h2>
+    {{ partial "publications.html" (dict "pubs" $first "page" .) }}  {{/* this is your YAML-driven list */}}
+  {{ end }}
+
+  {{ $co := site.Data.co_pub }}
+  {{ if $co}}
+    <h2>Co-author Publications</h2>
+    {{ partial "publications.html" (dict "pubs" $co "page" .) }}  {{/* this is your YAML-driven list */}}
+  {{ end }}
+{{ end }}

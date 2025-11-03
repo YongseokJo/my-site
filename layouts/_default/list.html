@@ -1,0 +1,14 @@
+{{ define "title" }}{{ .Title }}{{ end }}
+{{ define "main" }}
+  <h1>{{ .Title }}</h1>
+  <div class="prose">
+    {{ .Content }}
+  </div>
+  {{ $p := .Paginate .Pages }}
+  <ul class="list">
+    {{ range $p.Pages }}
+      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+    {{ end }}
+  </ul>
+  {{ template "_internal/pagination.html" . }}
+{{ end }}

@@ -1,0 +1,7 @@
+[build]
+  command = "python3 scripts/bib_to_yaml.py && hugo"
+  publish = "public"
+
+[build.environment]
+  HUGO_VERSION = "0.152.2"
+  HUGO_ENV = "production"

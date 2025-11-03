@@ -1,0 +1,29 @@
+{{ $pubs := .pubs }}
+{{ if $pubs }}
+  <ol class="pubs">
+    {{ range sort $pubs "date" "desc" }}
+      <li class="pub">
+        <span class="pub-title">{{ .title }}</span><br>
+
+        {{/* --- Highlight your name in author list --- */}}
+        {{ $authors := .authors }}
+        {{ range (slice "Jo, Yongseok" "Yongseok Jo" "Jo, Y.") }}
+          {{ $authors = replace $authors . "<i>Jo, Yongseok</i>" }}
+        {{ end }}
+        <span class="pub-authors">{{ $authors | safeHTML }}</span><br>
+        <span class="pub-venue">{{ .venue }}</span>
+        <span class="pub-year">({{ time .date | time.Format "2006" }})</span>
+        {{ with .links }}
+          <span class="pub-links">
+            {{ with .pdf }} · <a href="{{ . }}" target="_blank">PDF</a>{{ end }}
+            {{ with .arxiv }} · <a href="{{ . }}" target="_blank">arXiv</a>{{ end }}
+            {{ with .doi }} · <a href="{{ . }}" target="_blank">DOI</a>{{ end }}
+            {{ with .ads }} · <a href="{{ . }}" target="_blank">ADS</a>{{ end }}
+          </span>
+        {{ end }}
+      </li>
+    {{ end }}
+  </ol>
+{{ else }}
+  <p>No publications found.</p>
+{{ end }}
