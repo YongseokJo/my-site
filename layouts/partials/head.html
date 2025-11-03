@@ -1,4 +1,15 @@
 {{ if .IsHome }}
+<title>{{ if .IsHome }}Yongseok Jo – Computational Astrophysicist | Galaxy Formation & Machine Learning{{ else }}{{ .Title }} | Yongseok Jo{{ end }}</title>
+
+<meta name="description" content="{{ with .Params.description }}{{ . }}{{ else }}Yongseok Jo is a computational astrophysicist researching nuclear star clusters, galaxy formation, and machine learning models for cosmological simulations.{{ end }}">
+<meta name="keywords" content="computational astrophysicist, nuclear star cluster simulations, machine learning cosmology, galaxy formation, astrophysics research">
+<meta property="og:title" content="{{ .Title }} | Yongseok Jo">
+<meta property="og:description" content="{{ with .Params.description }}{{ . }}{{ else }}Computational astrophysicist researching nuclear star clusters and galaxy formation.{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:type" content="website">
+<!---meta property="og:image" content="https://yongseokjo.com/images/preview.jpg"--->
+
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
