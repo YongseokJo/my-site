@@ -1,0 +1,37 @@
+{{ if .IsHome }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Yongseok Jo",
+  "url": "https://yongseokjo.com",
+  "image": "https://yongseokjo.com/images/me.JPG",
+  "affiliation": {
+    "@type": "Organization",
+    "name": "SkAI institute",
+  },
+  "jobTitle": "Computational Astrophysicist",
+  "sameAs": [
+    "{{ .Site.Params.links.scholar }}"",
+    "{{ .Site.Params.links.github }}",
+    "{{ .Site.Params.links.orcid }}",
+    "{{ .Site.Params.links.linkedin }}"
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Yongseok Jo",
+  "url": "https://yongseokjo.com",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "https://yongseokjo.com/?s={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{{ end }}
