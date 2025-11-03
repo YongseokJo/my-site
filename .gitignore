@@ -1,0 +1,49 @@
+# Hugo build output
+/public/
+/resources/_gen/
+/hugo_stats.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Node (if you use Tailwind/PostCSS or npm tooling)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Build caches
+*.log
+.cache/
+tmp/
+dist/
+
+# Local Hugo server cache
+hugo_cache/
+
+# VS Code, JetBrains, etc.
+.vscode/
+.idea/
+
+# macOS metadata
+._*
+.Spotlight-V100
+.Trashes
+
+# Backup / temp files
+*.bak
+*.swp
+*~
+*.tmp
+
+# Netlify build output (optional, if you use it)
+.netlify/
+
+# If you ever use Git LFS for images
+*.zip
+*.tar.gz
+*.tgz
+
+# Environment files (keep local secrets out of repo)
+.env
+.env.local
