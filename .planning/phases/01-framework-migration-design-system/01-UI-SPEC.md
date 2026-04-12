@@ -38,10 +38,10 @@ Declared values (must be multiples of 4):
 | md | 16px | Default element spacing, component padding |
 | lg | 24px | Card padding, section inner padding |
 | xl | 32px | Layout gaps between components |
-| 2xl | 48px | Major section breaks |
+| 2xl | 48px | Major section breaks, minimum touch target size |
 | 3xl | 64px | Page-level vertical spacing (above/below hero, between page sections) |
 
-Exceptions: Navigation link touch targets use 44px minimum height for accessibility (48px on mobile).
+Exceptions: Navigation link touch targets use 48px minimum height for accessibility on all viewports.
 
 ---
 
@@ -50,9 +50,9 @@ Exceptions: Navigation link touch targets use 44px minimum height for accessibil
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 16px | 400 (regular) | 1.6 |
-| Label | 14px | 500 (medium) | 1.4 |
+| Label | 14px | 400 (regular) | 1.4 |
 | Heading | 24px | 700 (bold) | 1.25 |
-| Display | 36px | 800 (extrabold) | 1.15 |
+| Display | 36px | 700 (bold) | 1.15 |
 
 Font family: `"Inter Variable", "Inter", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`
 
@@ -103,6 +103,12 @@ Accent is NOT applied to: body text, card backgrounds, borders, or navigation te
 
 ---
 
+## Visual Hierarchy and Focal Point
+
+**Primary visual anchor:** The Navigation brand text "Yongseok Jo" serves as the page-level focal point. It must be rendered at Heading weight (700 bold) and be the first element a user's eye lands on when scanning the top of any page.
+
+---
+
 ## Copywriting Contract
 
 | Element | Copy |
@@ -145,12 +151,14 @@ These are the components needed for the base layout shell that Phase 1 delivers:
 2. Mobile (< 768px): Brand left, hamburger icon right. Tapping hamburger opens a full-width dropdown below the nav bar with vertical link list. Dark mode toggle appears within the mobile menu.
 3. Active page: Current page nav link receives accent-colored bottom border (2px).
 4. Hover: Nav links show muted surface background on hover with 150ms transition.
+5. All interactive nav elements (links, hamburger, toggle) must meet the 48px minimum touch target height.
 
 ### Footer Interaction Contract
 
 1. Social icons: Google Scholar, ORCID, GitHub, LinkedIn. Each is a 24x24 SVG icon.
-2. Icon hover: opacity transition from 0.6 to 1.0, 150ms ease.
-3. Links open in new tab with `rel="noopener noreferrer"`.
+2. Each footer social icon must include an `aria-label` matching the service name (e.g., `aria-label="Google Scholar"`, `aria-label="ORCID"`, `aria-label="GitHub"`, `aria-label="LinkedIn"`).
+3. Icon hover: opacity transition from 0.6 to 1.0, 150ms ease.
+4. Links open in new tab with `rel="noopener noreferrer"`.
 
 ---
 
