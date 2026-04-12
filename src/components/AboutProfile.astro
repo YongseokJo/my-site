@@ -1,0 +1,19 @@
+---
+---
+
+<div class="text-center">
+  <div class="bg-muted rounded-full w-[120px] h-[120px] flex items-center justify-center mx-auto">
+    <img
+      src="/images/me.JPG"
+      alt="Yongseok Jo"
+      class="w-[120px] h-[120px] rounded-full border-2 border-primary object-cover"
+      loading="lazy"
+      onerror="this.style.display='none'; this.parentElement.innerHTML='<span class=&quot;text-2xl font-bold text-foreground&quot;>YJ</span>'"
+    />
+  </div>
+  <h1 class="text-2xl font-bold mt-4">Yongseok Jo</h1>
+  <p class="text-base text-muted-foreground">Computational Astrophysicist & ML Researcher</p>
+  <div class="mt-6 text-foreground text-left max-w-[700px] mx-auto">
+    <slot />
+  </div>
+</div>
