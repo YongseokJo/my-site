@@ -1,11 +1,11 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
+import CosmicHero from "../components/CosmicHero.astro";
+import CTACardPair from "../components/CTACardPair.astro";
+import BioSummary from "../components/BioSummary.astro";
 ---
-<BaseLayout title="Home" description="Yongseok Jo - Computational Astrophysicist researching first star clusters and black holes in the early universe">
-  <section class="py-12 text-center">
-    <h1 class="text-4xl font-bold text-primary mb-4">Yongseok Jo</h1>
-    <p class="text-lg text-muted-foreground mb-8">Computational Astrophysicist &amp; ML Researcher</p>
-    <p class="text-muted-foreground">Site Under Construction</p>
-    <p class="text-sm text-muted-foreground mt-2">This site is being rebuilt with a new design. Check back soon.</p>
-  </section>
-</BaseLayout>
+<HomeLayout title="Yongseok Jo" description="Computational Astrophysicist researching first star clusters and black holes in the early universe">
+  <CosmicHero slot="hero" />
+  <CTACardPair />
+  <BioSummary />
+</HomeLayout>
