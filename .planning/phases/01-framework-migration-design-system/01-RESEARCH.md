@@ -535,19 +535,19 @@ The script is ~165 lines of Python handling: LaTeX accent normalization, journal
 | A3 | Node.js BibTeX parsing with @retorquere/bibtex-parser is straightforward | Code Examples | Medium -- if the parser handles LaTeX accents differently than Python bibtexparser, output may differ |
 | A4 | `npm create astro@latest . -- --template minimal` works in existing repo directory | Installation | Medium -- may need to use a temp directory and copy files if in-place creation conflicts with existing files |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **In-place Astro project creation in existing Hugo repo**
+1. **In-place Astro project creation in existing Hugo repo** -- RESOLVED: Plan 01-01 Task 1 creates in /tmp and copies files.
    - What we know: The repo has Hugo files (layouts/, content/, config.yaml, etc.) that must be kept (D-17)
    - What's unclear: Whether `npm create astro@latest .` will conflict with existing files
    - Recommendation: Create Astro project in a temp directory, then copy `src/`, `astro.config.mjs`, `package.json`, `tsconfig.json` into the repo root. This avoids any conflicts with existing Hugo files.
 
-2. **BibTeX-to-YAML Node.js library choice**
+2. **BibTeX-to-YAML Node.js library choice** -- RESOLVED: Plan 01-03 Task 2 uses @retorquere/bibtex-parser with fallback to Python script.
    - What we know: Python script uses bibtexparser with LaTeX accent handling
    - What's unclear: Whether @retorquere/bibtex-parser handles the same LaTeX edge cases
    - Recommendation: Test with the actual .bib files in `bib/` directory before committing to a library. Fall back to keeping the Python script if Node.js parsers don't handle accented author names correctly.
 
-3. **shadcn/ui initialization with Tailwind v4 @theme (not @theme inline)**
+3. **shadcn/ui initialization with Tailwind v4 @theme (not @theme inline)** -- RESOLVED: Plan 01-01 Task 1 runs shadcn init after React + Tailwind + tsconfig path aliases.
    - What we know: shadcn/ui v4 supports Tailwind v4 with `@theme` directive
    - What's unclear: Whether `npx shadcn@latest init` will auto-detect the Astro + Tailwind v4 setup or require manual configuration
    - Recommendation: Follow the manual setup path from shadcn docs if auto-detection fails. The key is having tsconfig path aliases (`@/*` -> `./src/*`) configured before init.

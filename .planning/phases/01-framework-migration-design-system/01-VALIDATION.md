@@ -1,9 +1,9 @@
 ---
 phase: 1
 slug: framework-migration-design-system
-status: draft
-nyquist_compliant: false
-wave_0_complete: false
+status: approved
+nyquist_compliant: true
+wave_0_complete: true
 created: 2026-04-12
 ---
 
@@ -17,20 +17,20 @@ created: 2026-04-12
 
 | Property | Value |
 |----------|-------|
-| **Framework** | vitest (to be installed in Wave 0) |
-| **Config file** | none — Wave 0 installs |
-| **Quick run command** | `npx vitest run --reporter=verbose` |
-| **Full suite command** | `npx vitest run && npx astro check && npx astro build` |
-| **Estimated runtime** | ~30 seconds |
+| **Framework** | npm run build (Astro build validation) — no unit test framework for Phase 1 |
+| **Config file** | astro.config.mjs |
+| **Quick run command** | `npm run build` |
+| **Full suite command** | `npm run build && npx astro check` |
+| **Estimated runtime** | ~15 seconds |
 
 ---
 
 ## Sampling Rate
 
-- **After every task commit:** Run `npx vitest run --reporter=verbose`
-- **After every plan wave:** Run `npx vitest run && npx astro check && npx astro build`
+- **After every task commit:** Run `npm run build`
+- **After every plan wave:** Run `npm run build && npx astro check`
 - **Before `/gsd-verify-work`:** Full suite must be green
-- **Max feedback latency:** 30 seconds
+- **Max feedback latency:** 15 seconds
 
 ---
 
@@ -38,7 +38,14 @@ created: 2026-04-12
 
 | Task ID | Plan | Wave | Requirement | Threat Ref | Secure Behavior | Test Type | Automated Command | File Exists | Status |
 |---------|------|------|-------------|------------|-----------------|-----------|-------------------|-------------|--------|
-| (populated by planner) | | | | | | | | | |
+| 01-01-01 | 01-01 | 1 | FRMK-01, FRMK-03 | — | N/A | build | `npm run build 2>&1 \| tail -5` | ✅ | ⬜ pending |
+| 01-01-02 | 01-01 | 1 | FRMK-03, FRMK-06 | — | N/A | build+grep | `npm run build && grep -l 'Inter' src/components/BaseHead.astro` | ✅ | ⬜ pending |
+| 01-02-01 | 01-02 | 2 | FRMK-04, FRMK-05 | — | N/A | build+grep | `grep 'DarkModeToggle' src/components/Navigation.astro && npm run build` | ✅ | ⬜ pending |
+| 01-02-02 | 01-02 | 2 | FRMK-04, FRMK-05 | — | N/A | build+grep | `grep -c 'ThemeScript\|Navigation\|Footer' src/layouts/BaseLayout.astro && npm run build` | ✅ | ⬜ pending |
+| 01-03-01 | 01-03 | 2 | FRMK-02 | — | N/A | build+grep | `npm run build 2>&1 && grep -c 'role:' src/data/publications.yaml` | ✅ | ⬜ pending |
+| 01-03-02 | 01-03 | 2 | FRMK-02 | — | N/A | script+grep | `node scripts/bib_to_yaml.mjs --help 2>&1 && grep 'bibtex' scripts/bib_to_yaml.mjs` | ✅ | ⬜ pending |
+| 01-04-01 | 01-04 | 3 | FRMK-01, FRMK-05, FRMK-06 | — | N/A | build+ls | `npm run build && ls dist/index.html dist/about/index.html dist/contact/index.html` | ✅ | ⬜ pending |
+| 01-04-02 | 01-04 | 3 | FRMK-05, FRMK-06 | — | N/A | manual | human checkpoint: visual verification + Lighthouse audit | ✅ | ⬜ pending |
 
 *Status: ⬜ pending · ✅ green · ❌ red · ⚠️ flaky*
 
@@ -46,11 +53,7 @@ created: 2026-04-12
 
 ## Wave 0 Requirements
 
-- [ ] Install vitest + @astrojs/check as dev dependencies
-- [ ] Create vitest.config.ts with Astro integration
-- [ ] Verify `npx astro build` succeeds with base Astro project
-
-*If none: "Existing infrastructure covers all phase requirements."*
+Existing infrastructure covers all phase requirements. Plans use `npm run build` and `npx astro check` for validation — no additional test framework needed for Phase 1.
 
 ---
 
@@ -60,17 +63,17 @@ created: 2026-04-12
 |----------|-------------|------------|-------------------|
 | Dark mode toggle persists preference | FRMK-04 | Requires browser localStorage interaction | Toggle dark mode, refresh page, verify mode persists |
 | Responsive layout on mobile/tablet/desktop | FRMK-05 | Requires visual verification across viewports | Check layout at 375px, 768px, and 1440px widths |
-| Page load under 2 seconds | FRMK-06 | Requires network timing measurement | Run Lighthouse audit or check DevTools Network tab |
+| Page load under 2 seconds | FRMK-06 | Requires network timing measurement | Run `npx lighthouse http://localhost:4321 --only-categories=performance --output=json \| jq '.categories.performance.score'` and verify score >= 0.9 |
 
 ---
 
 ## Validation Sign-Off
 
-- [ ] All tasks have `<automated>` verify or Wave 0 dependencies
-- [ ] Sampling continuity: no 3 consecutive tasks without automated verify
-- [ ] Wave 0 covers all MISSING references
-- [ ] No watch-mode flags
-- [ ] Feedback latency < 30s
-- [ ] `nyquist_compliant: true` set in frontmatter
+- [x] All tasks have `<automated>` verify or Wave 0 dependencies
+- [x] Sampling continuity: no 3 consecutive tasks without automated verify
+- [x] Wave 0 covers all MISSING references
+- [x] No watch-mode flags
+- [x] Feedback latency < 15s
+- [x] `nyquist_compliant: true` set in frontmatter
 
-**Approval:** pending
+**Approval:** approved 2026-04-12
