@@ -419,7 +419,7 @@ export const researchProjects: ResearchProject[] = [
 | A4 | Filter pattern with AND across categories, OR within | Code Examples | This matches UI spec; low risk |
 | A5 | Navigation needs a "Publications" link added | Common Pitfalls | Could be accessed from Research page instead; planner should verify |
 
-## Open Questions
+## Open Questions (RESOLVED)
 
 1. **Publications navigation link**
    - What we know: Navigation has 6 items (Home, Research, Software, ArXiv App, About, Contact). UI spec defines a standalone `/publications` page.
