@@ -66,7 +66,13 @@ Plans:
   3. ArXiv app tutorials section provides screenshot-based how-to guides
   4. Simulation package page shows overview, features, quick-start guide, installation docs, and contributor list with roles
   5. All pages have meta tags and OpenGraph data; publications have schema.org structured data; Pagefind search works across all content
-**Plans**: TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 03-01-PLAN.md -- Install dependencies, create shared components (SEOHead, Breadcrumb, CodeBlock, FeatureCard, etc.), update layouts with SEOHead
+- [ ] 03-02-PLAN.md -- Enzo-Abyss landing page with features and quick-start, plus documentation sub-pages
+- [ ] 03-03-PLAN.md -- Readea landing page with hero and features, tutorials content collection and page template
+- [ ] 03-04-PLAN.md -- Readea beta signup and feedback forms using Formspree
+- [ ] 03-05-PLAN.md -- Schema.org structured data for publications and Pagefind site-wide search
 **UI hint**: yes
 
 ### Phase 4: Backend Infrastructure & Auth
@@ -99,6 +105,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 |-------|----------------|--------|-----------|
 | 1. Framework Migration & Design System | 4/4 | Complete | - |
 | 2. Academic Content | 0/4 | Planning complete | - |
-| 3. Product Pages & SEO | 0/TBD | Not started | - |
+| 3. Product Pages & SEO | 0/5 | Planning complete | - |
 | 4. Backend Infrastructure & Auth | 0/TBD | Not started | - |
 | 5. Dynamic Collaboration Features | 0/TBD | Not started | - |
