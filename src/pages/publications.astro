@@ -1,0 +1,15 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection } from "astro:content";
+import PublicationList from "../islands/PublicationList.tsx";
+
+const publications = await getCollection("publications");
+const pubData = publications
+  .map((p) => p.data)
+  .sort((a, b) => b.year - a.year);
+---
+
+<BaseLayout title="Publications" description="Research publications by Yongseok Jo in computational astrophysics and machine learning">
+  <h1 class="text-2xl font-bold mb-8">Publications</h1>
+  <PublicationList client:load publications={pubData} />
+</BaseLayout>
