@@ -100,13 +100,48 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmapper) | | |
+| FRMK-01 | Phase 1 | Pending |
+| FRMK-02 | Phase 1 | Pending |
+| FRMK-03 | Phase 1 | Pending |
+| FRMK-04 | Phase 1 | Pending |
+| FRMK-05 | Phase 1 | Pending |
+| FRMK-06 | Phase 1 | Pending |
+| PROF-01 | Phase 2 | Pending |
+| PROF-02 | Phase 2 | Pending |
+| PROF-03 | Phase 2 | Pending |
+| PROF-04 | Phase 2 | Pending |
+| PROF-05 | Phase 2 | Pending |
+| PUBL-01 | Phase 2 | Pending |
+| PUBL-02 | Phase 2 | Pending |
+| PUBL-03 | Phase 2 | Pending |
+| PUBL-04 | Phase 2 | Pending |
+| RSRCH-01 | Phase 2 | Pending |
+| RSRCH-02 | Phase 2 | Pending |
+| RSRCH-03 | Phase 2 | Pending |
+| ARXV-01 | Phase 3 | Pending |
+| ARXV-02 | Phase 3 | Pending |
+| ARXV-03 | Phase 3 | Pending |
+| ARXV-04 | Phase 3 | Pending |
+| SIM-01 | Phase 3 | Pending |
+| SIM-02 | Phase 3 | Pending |
+| SIM-03 | Phase 3 | Pending |
+| SEO-01 | Phase 3 | Pending |
+| SEO-02 | Phase 3 | Pending |
+| SEO-03 | Phase 3 | Pending |
+| INFRA-01 | Phase 4 | Pending |
+| INFRA-02 | Phase 4 | Pending |
+| INFRA-03 | Phase 4 | Pending |
+| INFRA-04 | Phase 4 | Pending |
+| SIM-04 | Phase 5 | Pending |
+| SIM-05 | Phase 5 | Pending |
+| SIM-06 | Phase 5 | Pending |
+| SIM-07 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 30 total
-- Mapped to phases: 0
-- Unmapped: 30
+- v1 requirements: 36 total
+- Mapped to phases: 36
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-12*
-*Last updated: 2026-04-12 after initial definition*
+*Last updated: 2026-04-12 after roadmap creation*
