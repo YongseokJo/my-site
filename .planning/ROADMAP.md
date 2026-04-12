@@ -48,7 +48,12 @@ Plans:
   3. Research projects section shows overview cards linking to detail pages with descriptions, related publications, and status -- covering both scientific and ML work
   4. About page displays full bio, avatar, academic background, CV download (PDF), and social/academic profile links
   5. Contact form submits successfully and navigation reaches all main sections from any page
-**Plans**: TBD
+**Plans:** 4 plans
+Plans:
+- [ ] 02-01-PLAN.md -- Install shadcn components, create HomeLayout, and build cosmic homepage
+- [ ] 02-02-PLAN.md -- Publications page with filtering, author highlighting, and navigation update
+- [ ] 02-03-PLAN.md -- Research projects page with expand-in-place cards
+- [ ] 02-04-PLAN.md -- About page with CV/academic links and contact form with Netlify Forms
 **UI hint**: yes
 
 ### Phase 3: Product Pages & SEO
@@ -92,8 +97,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Framework Migration & Design System | 0/4 | Planning complete | - |
-| 2. Academic Content | 0/TBD | Not started | - |
+| 1. Framework Migration & Design System | 4/4 | Complete | - |
+| 2. Academic Content | 0/4 | Planning complete | - |
 | 3. Product Pages & SEO | 0/TBD | Not started | - |
 | 4. Backend Infrastructure & Auth | 0/TBD | Not started | - |
 | 5. Dynamic Collaboration Features | 0/TBD | Not started | - |
