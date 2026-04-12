@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { getCollection, render } from "astro:content";
+
+const allPages = await getCollection("pages");
+const aboutPage = allPages.find(p => p.id === "about" || p.id === "about.md");
+let Content: any = null;
+if (aboutPage) {
+  const rendered = await render(aboutPage);
+  Content = rendered.Content;
+}
+---
+<BaseLayout title="About" description="About Yongseok Jo - Computational Astrophysicist">
+  <h1 class="text-3xl font-bold mb-8">About</h1>
+  {Content ? (
+    <div class="prose prose-invert max-w-none"><Content /></div>
+  ) : (
+    <p class="text-muted-foreground">Content coming soon.</p>
+  )}
+</BaseLayout>
