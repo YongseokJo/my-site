@@ -30,7 +30,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Dark mode toggle works and preference persists across browser sessions
   4. Site renders correctly on mobile, tablet, and desktop viewports
   5. Any page loads in under 2 seconds on first visit
-**Plans**: TBD
+**Plans:** 4 plans
+Plans:
+- [ ] 01-01-PLAN.md -- Scaffold Astro project with Tailwind v4 design system and base layout
+- [ ] 01-02-PLAN.md -- Build Navigation, Footer, and dark mode toggle components
+- [ ] 01-03-PLAN.md -- Migrate content collections and rewrite BibTeX pipeline to Node.js
+- [ ] 01-04-PLAN.md -- Create page routes, update Netlify config, visual verification
 **UI hint**: yes
 
 ### Phase 2: Academic Content
@@ -87,7 +92,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Framework Migration & Design System | 0/TBD | Not started | - |
+| 1. Framework Migration & Design System | 0/4 | Planning complete | - |
 | 2. Academic Content | 0/TBD | Not started | - |
 | 3. Product Pages & SEO | 0/TBD | Not started | - |
 | 4. Backend Infrastructure & Auth | 0/TBD | Not started | - |
