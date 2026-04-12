@@ -1,0 +1,18 @@
+---
+import { educationEntries } from "../data/education";
+---
+
+<section class="mt-12">
+  <h2 class="text-xl font-bold mb-6">Background</h2>
+  <div class="space-y-4">
+    {educationEntries.map((entry) => (
+      <div class="flex flex-col sm:flex-row sm:gap-4">
+        <span class="text-sm text-muted-foreground sm:w-[140px] sm:flex-shrink-0">{entry.period}</span>
+        <div>
+          <p class="text-base font-medium text-foreground">{entry.title}</p>
+          <p class="text-sm text-muted-foreground">{entry.institution}</p>
+        </div>
+      </div>
+    ))}
+  </div>
+</section>

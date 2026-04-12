@@ -1,20 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import AboutProfile from "../components/AboutProfile.astro";
+import AcademicLinks from "../components/AcademicLinks.astro";
+import CVDownload from "../components/CVDownload.astro";
+import EducationTimeline from "../components/EducationTimeline.astro";
 import { getCollection, render } from "astro:content";
 
-const allPages = await getCollection("pages");
-const aboutPage = allPages.find(p => p.id === "about" || p.id === "about.md");
+const pages = await getCollection("pages");
+const aboutPage = pages.find((p) => p.id === "about" || p.id === "about.md");
 let Content: any = null;
 if (aboutPage) {
   const rendered = await render(aboutPage);
   Content = rendered.Content;
 }
 ---
-<BaseLayout title="About" description="About Yongseok Jo - Computational Astrophysicist">
-  <h1 class="text-3xl font-bold mb-8">About</h1>
-  {Content ? (
-    <div class="prose prose-invert max-w-none"><Content /></div>
-  ) : (
-    <p class="text-muted-foreground">Content coming soon.</p>
-  )}
+
+<BaseLayout title="About" description="About Yongseok Jo — computational astrophysicist and ML researcher at the SkAI Institute">
+  <AboutProfile>
+    {Content ? <Content /> : <p class="text-muted-foreground">Bio coming soon.</p>}
+  </AboutProfile>
+  <AcademicLinks />
+  <CVDownload />
+  <EducationTimeline />
 </BaseLayout>
