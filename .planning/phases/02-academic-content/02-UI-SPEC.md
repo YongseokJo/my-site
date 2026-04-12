@@ -54,14 +54,14 @@ Inherited from Phase 1 — no changes to the scale:
 
 | Role | Size | Weight | Line Height | Phase 2 Usage |
 |------|------|--------|-------------|---------------|
-| Body | 16px | 400 (regular) | 1.6 | Publication authors, project descriptions, bio text, form labels |
+| Body | 16px | 400 (regular) | 1.6 | Publication authors, project descriptions, bio text, form labels, hero subtitle |
 | Label | 14px | 400 (regular) | 1.4 | Filter chips, publication venue/year, metadata, form hints |
-| Heading | 24px | 700 (bold) | 1.25 | Page titles (Publications, Research, About, Contact), section headings |
+| Heading | 24px | 700 (bold) | 1.25 | Page titles (Publications, Research, About, Contact), section headings, publication card titles |
 | Display | 36px | 700 (bold) | 1.15 | Hero headline only ("First Star Clusters & Black Holes in the Early Universe") |
 
 Additional typographic rules for Phase 2:
-- Hero subtitle: 18px, weight 400, line-height 1.5, color `muted-foreground`. Used for "Computational Astrophysicist & ML Researcher" below the headline.
-- Publication title in cards: 16px, weight 600 (semibold). This is the only use of weight 600 in the project — it distinguishes publication titles from author lists without jumping to bold.
+- Hero subtitle: 16px, weight 400, line-height 1.6, color `muted-foreground`. Used for "Computational Astrophysicist & ML Researcher" below the headline.
+- Publication title in cards: 16px, weight 700 (bold). Distinguishes publication titles from author lists through both weight and color contrast.
 - Author highlighting: "Jo, Yongseok" rendered at weight 700 (bold) within the otherwise weight-400 author string.
 - Maximum prose width remains 700px for body content (about page bio, project descriptions).
 - Hero headline max-width: 600px centered, preventing overly long lines on wide screens.
@@ -182,7 +182,7 @@ The cosmic hero background image must have a color overlay to ensure text readab
 [Full-width CosmicHero]
   - Background: stock deep space image with gradient overlay
   - Headline: "First Star Clusters & Black Holes in the Early Universe" (Display, 36px, bold)
-  - Subtitle: "Computational Astrophysicist & ML Researcher" (18px, regular, muted-foreground)
+  - Subtitle: "Computational Astrophysicist & ML Researcher" (16px, regular, muted-foreground)
   - No CTA buttons in hero itself
 
 [CTACardPair — max-width 700px centered, 32px gap]
@@ -209,7 +209,7 @@ The cosmic hero background image must have a color overlay to ensure text readab
 
 [PublicationCard list — max-width 700px, 16px vertical gap]
   Each card:
-  - Title (16px, semibold 600)
+  - Title (16px, bold 700)
   - Authors (16px, regular 400; "Jo, Yongseok" at bold 700)
   - Venue + Year (14px, muted-foreground)
   - Link buttons row: [arXiv] [DOI] [ADS] — only shown if link exists
@@ -358,7 +358,7 @@ Breakpoints inherited from Phase 1:
 | Desktop | >= 1024px | Max content width 700px centered. Hero padding 64px vertical. Contact form max-width 500px. |
 
 Hero-specific responsive:
-- Mobile: Display headline drops to 28px (from 36px) for readability. Subtitle drops to 16px (from 18px).
+- Mobile: Display headline scales down proportionally for readability (implementation detail — stays within the 4-size scale). Subtitle remains 16px with muted-foreground color.
 - The hero is always full-viewport-width regardless of the 700px content container.
 
 ---
