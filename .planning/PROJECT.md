@@ -22,7 +22,8 @@ One authoritative place where anyone can find Yongseok Jo's research, software, 
 
 ### Active
 
-- [ ] Complete visual redesign (professional, clean, creative, academic aesthetic)
+- [x] Complete visual redesign (professional, clean, creative, academic aesthetic) — Phase 1
+- [x] Modern framework (Astro 5.x replacing Hugo) — Phase 1
 - [ ] Research projects section (overview + papers per project)
 - [ ] Simulation package showcase page
 - [ ] Simulation project management (proposals, issue tracking, developer management)
@@ -32,7 +33,6 @@ One authoritative place where anyone can find Yongseok Jo's research, software, 
 - [ ] ArXiv app beta signup form
 - [ ] ArXiv app error report / feature request submission
 - [ ] Contact and professional networking (CV/resume, social links)
-- [ ] Modern framework (open to switching from Hugo for better dynamic support)
 
 ### Out of Scope
 
@@ -44,7 +44,7 @@ One authoritative place where anyone can find Yongseok Jo's research, software, 
 
 ## Context
 
-- **Current state:** Hugo static site on Netlify with publications, about page, and basic homepage. No dynamic features, no backend.
+- **Current state:** Astro 5.x site on Netlify with Tailwind CSS v4 design system (deep space theme + gold accents), dark mode toggle, responsive layout. Content migrated from Hugo. Phase 1 complete.
 - **Brownfield:** Existing codebase mapped in `.planning/codebase/`. Custom Hugo templates (no theme dependency), CSS with variables, BibTeX conversion pipeline.
 - **Simulation package:** Developed by Yongseok; other students and researchers use this code. Need project proposal submission, issue reporting, and developer/project management.
 - **ArXiv app:** macOS/iOS app currently in closed beta. Site needs landing page, tutorials, beta signup, and feedback collection.
