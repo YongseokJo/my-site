@@ -7,20 +7,26 @@ export interface EducationEntry {
 
 export const educationEntries: EducationEntry[] = [
   {
-    period: "2023 - Present",
+    period: "2025 - Present",
     title: "Postdoctoral Fellow",
-    institution: "SkAI Institute, University of Chicago",
+    institution: "SkAI Institute/CIERA",
     type: "position",
   },
   {
-    period: "2018 - 2023",
-    title: "Ph.D. in Astronomy",
-    institution: "Columbia University",
+    period: "2022 - 2025",
+    title: "Postdoctoral Fellow",
+    institution: "Flatiron Institute/Columbia University",
+    type: "position",
+  },
+  {
+    period: "2018 - 2022",
+    title: "Ph.D. candidate in Astrophysics",
+    institution: "Seoul National University",
     type: "education",
   },
   {
     period: "2014 - 2018",
-    title: "B.S. in Physics & Astronomy",
+    title: "Ph.D. candidate in Condensed Matter Physics",
     institution: "Seoul National University",
     type: "education",
   },

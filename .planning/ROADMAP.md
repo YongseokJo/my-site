@@ -50,10 +50,10 @@ Plans:
   5. Contact form submits successfully and navigation reaches all main sections from any page
 **Plans:** 4 plans
 Plans:
-- [ ] 02-01-PLAN.md -- Install shadcn components, create HomeLayout, and build cosmic homepage
-- [ ] 02-02-PLAN.md -- Publications page with filtering, author highlighting, and navigation update
-- [ ] 02-03-PLAN.md -- Research projects page with expand-in-place cards
-- [ ] 02-04-PLAN.md -- About page with CV/academic links and contact form with Netlify Forms
+- [x] 02-01-PLAN.md -- Install shadcn components, create HomeLayout, and build cosmic homepage
+- [x] 02-02-PLAN.md -- Publications page with filtering, author highlighting, and navigation update
+- [x] 02-03-PLAN.md -- Research projects page with expand-in-place cards
+- [x] 02-04-PLAN.md -- About page with CV/academic links and contact form with Netlify Forms
 **UI hint**: yes
 
 ### Phase 3: Product Pages & SEO
