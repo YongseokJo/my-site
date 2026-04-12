@@ -32,10 +32,10 @@ Decimal phases appear between their surrounding integers in numeric order.
   5. Any page loads in under 2 seconds on first visit
 **Plans:** 4 plans
 Plans:
-- [ ] 01-01-PLAN.md -- Scaffold Astro project with Tailwind v4 design system and base layout
-- [ ] 01-02-PLAN.md -- Build Navigation, Footer, and dark mode toggle components
-- [ ] 01-03-PLAN.md -- Migrate content collections and rewrite BibTeX pipeline to Node.js
-- [ ] 01-04-PLAN.md -- Create page routes, update Netlify config, visual verification
+- [x] 01-01-PLAN.md -- Scaffold Astro project with Tailwind v4 design system and base layout
+- [x] 01-02-PLAN.md -- Build Navigation, Footer, and dark mode toggle components
+- [x] 01-03-PLAN.md -- Migrate content collections and rewrite BibTeX pipeline to Node.js
+- [x] 01-04-PLAN.md -- Create page routes, update Netlify config, visual verification
 **UI hint**: yes
 
 ### Phase 2: Academic Content
