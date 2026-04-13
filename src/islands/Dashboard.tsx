@@ -549,24 +549,24 @@ function ProposalReviewPanel({
       </CardContent>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Review Proposal</DialogTitle>
+            <DialogTitle className="break-words">Review Proposal</DialogTitle>
             {currentProposal && (
-              <DialogDescription>
+              <DialogDescription className="break-words">
                 {currentProposal.title}
               </DialogDescription>
             )}
           </DialogHeader>
           {currentProposal && (
-            <div className="space-y-3">
+            <div className="space-y-3 overflow-hidden">
               {currentProposal.description && (
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground break-words">
                   {currentProposal.description}
                 </p>
               )}
               {currentProposal.rationale && (
-                <p className="text-sm">
+                <p className="text-sm break-words">
                   <span className="font-medium">Rationale:</span>{" "}
                   {currentProposal.rationale}
                 </p>
