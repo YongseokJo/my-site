@@ -1,5 +1,5 @@
-# Hugo build output
-/public/
+# Build output (Astro uses dist/, not public/)
+# /public/ is now Astro's static assets directory
 /resources/_gen/
 /hugo_stats.json
 
