@@ -1092,10 +1092,12 @@ export default function Dashboard({
 
   async function handleDeleteIssue(issueId: string) {
     await supabase.from("issues").delete().eq("id", issueId);
+    fetchData();
   }
 
   async function handleDeleteProposal(proposalId: string) {
     await supabase.from("proposals").delete().eq("id", proposalId);
+    fetchData();
   }
 
   async function handleEditIssue(issueId: string, updates: { title: string; description: string | null }) {
