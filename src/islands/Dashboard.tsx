@@ -114,6 +114,7 @@ function roleBadgeVariant(role: UserRole) {
     case "developer":
       return "secondary" as const;
     case "viewer":
+    case "researcher":
       return "outline" as const;
   }
 }
@@ -129,7 +130,9 @@ function roleLabel(role: UserRole): string {
     case "developer":
       return "Developer";
     case "viewer":
-      return "Viewer";
+      return "Researcher";
+    case "researcher":
+      return "Researcher";
   }
 }
 
@@ -252,7 +255,7 @@ function UserApprovalPanel({
                       <SelectItem value="co_admin">Co-Admin</SelectItem>
                       <SelectItem value="pi_mentor">PI / Mentor</SelectItem>
                       <SelectItem value="developer">Developer</SelectItem>
-                      <SelectItem value="viewer">Viewer</SelectItem>
+                      <SelectItem value="researcher">Researcher</SelectItem>
                     </SelectContent>
                   </Select>
                   <Button
@@ -335,7 +338,7 @@ function UserListPanel({
                       <SelectItem value="co_admin">Co-Admin</SelectItem>
                       <SelectItem value="pi_mentor">PI / Mentor</SelectItem>
                       <SelectItem value="developer">Developer</SelectItem>
-                      <SelectItem value="viewer">Viewer</SelectItem>
+                      <SelectItem value="researcher">Researcher</SelectItem>
                     </SelectContent>
                   </Select>
                   {actionLoading === u.id && <span className="text-xs text-muted-foreground">Saving...</span>}
@@ -1048,7 +1051,7 @@ export default function Dashboard({
           .eq("submitter", userId)
           .order("created_at", { ascending: false });
         setMyProposals(mProposals || []);
-      } else if (role === "viewer") {
+      } else if (role === "viewer" || role === "researcher") {
         // Viewers can only see approved proposals (RLS enforced)
         const { data: proposals } = await supabase
           .from("proposals")
@@ -1153,11 +1156,6 @@ export default function Dashboard({
             onApprove={handleApproveUser}
             onRefresh={fetchData}
           />
-          <UserListPanel
-            users={approvedProfiles}
-            onChangeRole={handleChangeRole}
-            onRefresh={fetchData}
-          />
           <AdminIssuesPanel
             issues={allIssues}
             approvedProfiles={approvedProfiles}
@@ -1170,6 +1168,11 @@ export default function Dashboard({
             userId={userId}
             onReview={handleReviewProposal}
             onDeleteProposal={handleDeleteProposal}
+            onRefresh={fetchData}
+          />
+          <UserListPanel
+            users={approvedProfiles}
+            onChangeRole={handleChangeRole}
             onRefresh={fetchData}
           />
         </>
@@ -1198,8 +1201,8 @@ export default function Dashboard({
         </>
       )}
 
-      {/* Viewer panels */}
-      {role === "viewer" && (
+      {/* Researcher panels */}
+      {(role === "viewer" || role === "researcher") && (
         <>
           <ViewerProposalsPanel proposals={viewerProposals} />
           <Card>
