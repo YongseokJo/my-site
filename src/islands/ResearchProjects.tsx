@@ -5,6 +5,7 @@ import {
   Sparkles,
   Brain,
   BarChart3,
+  Atom,
   ChevronDown,
   ChevronUp,
   ExternalLink,
@@ -18,6 +19,7 @@ const iconMap: Record<string, React.ComponentType<{ size?: number; className?: s
   Sparkles,
   Brain,
   BarChart3,
+  Atom,
 };
 
 function ProjectCard({
