@@ -193,7 +193,7 @@ export default function ProposalForm() {
           Project Details
         </h4>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-title">Title</Label>
           <Input
             id="proposal-title"
@@ -214,7 +214,7 @@ export default function ProposalForm() {
           )}
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-description">Description</Label>
           <Textarea
             id="proposal-description"
@@ -237,7 +237,7 @@ export default function ProposalForm() {
           )}
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-rationale">Rationale</Label>
           <Textarea
             id="proposal-rationale"
@@ -270,7 +270,7 @@ export default function ProposalForm() {
           Academic Context
         </h4>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-pi">Principal Investigator</Label>
           <Input
             id="proposal-pi"
@@ -291,7 +291,7 @@ export default function ProposalForm() {
           )}
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-mentor">Scientific Mentor</Label>
           <Input
             id="proposal-mentor"
@@ -317,7 +317,7 @@ export default function ProposalForm() {
           )}
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-position">Position</Label>
           <Input
             id="proposal-position"
@@ -343,7 +343,7 @@ export default function ProposalForm() {
           )}
         </div>
 
-        <div>
+        <div className="space-y-2">
           <Label htmlFor="proposal-profile">Basic Profile</Label>
           <Textarea
             id="proposal-profile"

@@ -102,7 +102,7 @@ export default function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[400px] mx-auto space-y-4"
+      className="max-w-[400px] mx-auto space-y-6"
       noValidate
     >
       {pendingMessage && (
@@ -111,7 +111,7 @@ export default function LoginForm() {
         </div>
       )}
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="login-email">Email</Label>
         <Input
           id="login-email"
@@ -131,7 +131,7 @@ export default function LoginForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="login-password">Password</Label>
         <Input
           id="login-password"

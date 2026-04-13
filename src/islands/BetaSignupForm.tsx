@@ -82,10 +82,10 @@ export default function BetaSignupForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[500px] mx-auto space-y-4"
+      className="max-w-[500px] mx-auto space-y-6"
       noValidate
     >
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="beta-name">Name</Label>
         <Input
           id="beta-name"
@@ -105,7 +105,7 @@ export default function BetaSignupForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="beta-email">Email</Label>
         <Input
           id="beta-email"
@@ -125,7 +125,7 @@ export default function BetaSignupForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Button
           type="submit"
           className="w-full sm:w-auto bg-primary text-primary-foreground"

@@ -116,7 +116,7 @@ export default function IssueForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[500px] space-y-4"
+      className="max-w-[500px] space-y-6"
       noValidate
     >
       <h3 className="text-lg font-semibold">Report an Issue</h3>
@@ -127,7 +127,7 @@ export default function IssueForm() {
         </div>
       )}
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="issue-title">Title</Label>
         <Input
           id="issue-title"
@@ -148,7 +148,7 @@ export default function IssueForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="issue-description">Description</Label>
         <Textarea
           id="issue-description"
@@ -171,7 +171,7 @@ export default function IssueForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label>Priority</Label>
         <Select value={priority} onValueChange={(val) => setPriority(val as IssuePriority)}>
           <SelectTrigger className="w-full">

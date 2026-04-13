@@ -110,10 +110,10 @@ export default function FeedbackForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[500px] mx-auto space-y-4"
+      className="max-w-[500px] mx-auto space-y-6"
       noValidate
     >
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="feedback-category">Category</Label>
         <Select
           value={formData.category || undefined}
@@ -148,7 +148,7 @@ export default function FeedbackForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="feedback-name">Name</Label>
         <Input
           id="feedback-name"
@@ -168,7 +168,7 @@ export default function FeedbackForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="feedback-email">Email</Label>
         <Input
           id="feedback-email"
@@ -191,7 +191,7 @@ export default function FeedbackForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="feedback-message">Message</Label>
         <Textarea
           id="feedback-message"
@@ -216,7 +216,7 @@ export default function FeedbackForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Button
           type="submit"
           className="w-full sm:w-auto bg-primary text-primary-foreground"

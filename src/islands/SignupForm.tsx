@@ -113,10 +113,10 @@ export default function SignupForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[400px] mx-auto space-y-4"
+      className="max-w-[400px] mx-auto space-y-6"
       noValidate
     >
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="signup-name">Display Name</Label>
         <Input
           id="signup-name"
@@ -136,7 +136,7 @@ export default function SignupForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="signup-email">Email</Label>
         <Input
           id="signup-email"
@@ -156,7 +156,7 @@ export default function SignupForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="signup-password">Password</Label>
         <Input
           id="signup-password"
