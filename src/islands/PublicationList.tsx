@@ -157,13 +157,13 @@ export default function PublicationList({ publications }: PublicationListProps) 
                 <h3 className="text-base font-bold text-foreground mb-1">
                   {pub.title}
                 </h3>
-                <p className="text-base text-foreground/80">
+                <p className="text-xs text-foreground/70 leading-tight">
                   {highlightAuthor(pub.authors)}
                 </p>
-                <p className="text-sm text-muted-foreground mt-1">
+                <p className="text-xs text-muted-foreground mt-0.5">
                   {pub.venue}, {pub.year}
                 </p>
-                <div className="flex gap-2 mt-3 flex-wrap">
+                <div className="flex gap-2 mt-2 flex-wrap">
                   {pub.links.arxiv && (
                     <a
                       href={pub.links.arxiv}
