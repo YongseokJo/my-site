@@ -1,13 +1,35 @@
 ---
+export const prerender = false;
+
 import BaseLayout from "../layouts/BaseLayout.astro";
 import ProductHeader from "../components/ProductHeader.astro";
 import FeatureGrid from "../components/FeatureGrid.astro";
 import FeatureCard from "../components/FeatureCard.astro";
 import CodeBlock from "../components/CodeBlock.astro";
+import UserMenu from "../islands/UserMenu.tsx";
+
+let initialUser: { email: string; displayName: string } | null = null;
+const user = Astro.locals.user;
+if (user) {
+  const supabase = Astro.locals.supabase;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("display_name")
+    .eq("id", user.id)
+    .single();
+  initialUser = {
+    email: user.email ?? "",
+    displayName: profile?.display_name ?? "",
+  };
+}
 ---
 <BaseLayout title="Enzo-Abyss" description="Enzo-Abyss: a cosmological simulation framework for studying the formation of first star clusters and black holes in the early universe.">
 
   <ProductHeader name="Enzo-Abyss" tagline="Cosmological simulation framework for studying first star clusters and black holes" />
+
+  <div class="flex justify-end mb-6">
+    <UserMenu client:load initialUser={initialUser} />
+  </div>
 
   <FeatureGrid sectionTitle="Features">
     <FeatureCard title="Adaptive Mesh Refinement" description="Multi-level grid refinement for resolving small-scale structure within large cosmological volumes.">
