@@ -65,6 +65,7 @@ export default function ProposalList({ userId }: ProposalListProps) {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   async function fetchProposals() {
     try {
@@ -109,6 +110,24 @@ export default function ProposalList({ userId }: ProposalListProps) {
     return <p className="text-sm text-destructive">{error}</p>;
   }
 
+  async function deleteProposal(id: string) {
+    if (!confirm("Delete this proposal?")) return;
+    setDeleting(id);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { error: delError } = await supabase.from("proposals").delete().eq("id", id);
+      if (delError) {
+        setError(delError.message);
+      } else {
+        setProposals((prev) => prev.filter((p) => p.id !== id));
+      }
+    } catch {
+      setError("Failed to delete proposal.");
+    } finally {
+      setDeleting(null);
+    }
+  }
+
   if (proposals.length === 0) {
     return <p className="text-muted-foreground">No proposals submitted yet.</p>;
   }
@@ -134,6 +153,15 @@ export default function ProposalList({ userId }: ProposalListProps) {
                 <span className="text-xs text-muted-foreground">
                   {formatDate(proposal.created_at)}
                 </span>
+                {proposal.submitter === userId && (
+                  <button
+                    onClick={() => deleteProposal(proposal.id)}
+                    disabled={deleting === proposal.id}
+                    className="text-xs text-destructive hover:underline disabled:opacity-50"
+                  >
+                    {deleting === proposal.id ? "Deleting..." : "Delete"}
+                  </button>
+                )}
               </div>
             </CardDescription>
           </CardHeader>

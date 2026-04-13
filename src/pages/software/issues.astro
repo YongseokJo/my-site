@@ -46,7 +46,7 @@ const canSubmit = ["admin", "pi_mentor", "developer"].includes(profile.role);
 
     <section>
       <h2 class="text-lg font-semibold mb-4">All Issues</h2>
-      <IssueList client:load />
+      <IssueList client:load userId={user.id} />
     </section>
   </div>
 </BaseLayout>

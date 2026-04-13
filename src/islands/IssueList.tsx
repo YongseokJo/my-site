@@ -72,10 +72,15 @@ function formatDate(dateStr: string): string {
   });
 }
 
-export default function IssueList() {
+interface IssueListProps {
+  userId?: string;
+}
+
+export default function IssueList({ userId }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [deleting, setDeleting] = useState<string | null>(null);
 
   async function fetchIssues() {
     try {
@@ -120,6 +125,24 @@ export default function IssueList() {
     return <p className="text-sm text-destructive">{error}</p>;
   }
 
+  async function deleteIssue(id: string) {
+    if (!confirm("Delete this issue?")) return;
+    setDeleting(id);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { error: delError } = await supabase.from("issues").delete().eq("id", id);
+      if (delError) {
+        setError(delError.message);
+      } else {
+        setIssues((prev) => prev.filter((i) => i.id !== id));
+      }
+    } catch {
+      setError("Failed to delete issue.");
+    } finally {
+      setDeleting(null);
+    }
+  }
+
   if (issues.length === 0) {
     return <p className="text-muted-foreground">No issues reported yet.</p>;
   }
@@ -149,9 +172,20 @@ export default function IssueList() {
             </CardContent>
           )}
           <CardContent>
-            <div className="flex justify-between text-xs text-muted-foreground">
+            <div className="flex justify-between items-center text-xs text-muted-foreground">
               <span>{formatDate(issue.created_at)}</span>
-              <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
+              <div className="flex items-center gap-3">
+                <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
+                {userId && issue.reporter === userId && (
+                  <button
+                    onClick={() => deleteIssue(issue.id)}
+                    disabled={deleting === issue.id}
+                    className="text-destructive hover:underline disabled:opacity-50"
+                  >
+                    {deleting === issue.id ? "Deleting..." : "Delete"}
+                  </button>
+                )}
+              </div>
             </div>
           </CardContent>
         </Card>
