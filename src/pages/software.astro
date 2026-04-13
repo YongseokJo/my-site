@@ -14,9 +14,12 @@ if (user) {
   const supabase = Astro.locals.supabase;
   const { data: profile } = await supabase
     .from("profiles")
-    .select("display_name")
+    .select("display_name, approved")
     .eq("id", user.id)
     .single();
+  if (profile?.approved) {
+    return Astro.redirect("/dashboard");
+  }
   initialUser = {
     email: user.email ?? "",
     displayName: profile?.display_name ?? "",
