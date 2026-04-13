@@ -1,7 +1,7 @@
 ---
 export const prerender = false;
 
-import BaseLayout from "../layouts/BaseLayout.astro";
+import WideLayout from "../layouts/WideLayout.astro";
 import Dashboard from "../islands/Dashboard.tsx";
 
 const user = Astro.locals.user;
@@ -20,7 +20,7 @@ if (!profile?.approved) {
 }
 ---
 
-<BaseLayout title="Dashboard - Enzo-Abyss">
+<WideLayout title="Dashboard - Enzo-Abyss">
   <div class="space-y-6">
     <div>
       <a href="/software" class="text-sm text-muted-foreground hover:text-foreground">
@@ -48,4 +48,4 @@ if (!profile?.approved) {
       displayName={profile.display_name}
     />
   </div>
-</BaseLayout>
+</WideLayout>
