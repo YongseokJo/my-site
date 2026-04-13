@@ -33,14 +33,14 @@ function isActive(href: string): boolean {
         <a
           href={link.href}
           class:list={[
-            "px-3 py-2 text-sm font-medium transition-colors duration-150 rounded-md min-h-[48px] flex items-center",
+            "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
             link.highlight
               ? isActive(link.href)
-                ? "bg-primary text-primary-foreground"
-                : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               : isActive(link.href)
-                ? "border-b-2 border-accent text-foreground hover:bg-muted"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                ? "bg-muted text-foreground border-transparent"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted",
           ]}
         >
           {link.name}
@@ -75,14 +75,14 @@ function isActive(href: string): boolean {
         <a
           href={link.href}
           class:list={[
-            "block px-3 py-3 text-sm font-medium transition-colors duration-150 rounded-md min-h-[48px] flex items-center",
+            "block px-3 py-3 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
             link.highlight
               ? isActive(link.href)
-                ? "bg-primary text-primary-foreground"
-                : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
               : isActive(link.href)
-                ? "border-l-2 border-accent text-foreground hover:bg-muted"
-                : "text-muted-foreground hover:text-foreground hover:bg-muted",
+                ? "bg-muted text-foreground border-transparent"
+                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted",
           ]}
         >
           {link.name}
