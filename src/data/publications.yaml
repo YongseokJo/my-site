@@ -1,130 +1,167 @@
-- id: jo-2025-toward
+- id: ballester-2026-learning-the-stellar
+  title: Learning the Stellar Structure Equations via Self-supervised Physics-Informed Neural Networks
+  authors: Ballester, Manuel; Lopez-Tapia, Santiago; Gossage, Seth; Koller, Patrick; Srivastava, Philipp M.; Demir, Ugur; Jo, Yongseok; Marquez, Almudena P.; Wuersch, Christoph; Chakraborty, Souvik; Kalogera, Vicky; Katsaggelos, Aggelos
+  venue: arXiv e-prints
+  year: 2026
+  date: '2026-04-01'
+  role: co-author
+  citations: 0
+  links:
+    arxiv: https://arxiv.org/abs/2604.06255
+    doi: https://doi.org/10.48550/arXiv.2604.06255
+    ads: https://ui.adsabs.harvard.edu/abs/2026arXiv260406255B
+    pdf: ''
+- id: jo-2026-evolution-of-nuclear
+  title: Evolution of Nuclear Star Cluster in Dwarf Galaxy through Mergers and In-Situ Star Formation
+  authors: Jo, Yongseok; Jung, Minyong; Bryan, Greg L.; Kim, Seoyoung; Kim, Ji-hoon; Lee, Ahram
+  venue: arXiv e-prints
+  year: 2026
+  date: '2026-03-01'
+  role: first-author
+  citations: 0
+  links:
+    arxiv: https://arxiv.org/abs/2603.18242
+    doi: https://doi.org/10.48550/arXiv.2603.18242
+    ads: https://ui.adsabs.harvard.edu/abs/2026arXiv260318242J
+    pdf: ''
+- id: jo-2026-on-the-significance
+  title: On the Significance of Covariance for Constraining Theoretical Models from Galaxy Observables
+  authors: Jo, Yongseok; Genel, Shy; Leja, Joel; Wandelt, Benjamin
+  venue: The Astrophysical Journal
+  year: 2026
+  date: '2026-02-01'
+  role: first-author
+  citations: 1
+  links:
+    arxiv: https://arxiv.org/abs/2410.21722
+    doi: https://doi.org/10.3847/1538-4357/ae19e4
+    ads: https://ui.adsabs.harvard.edu/abs/2026ApJ...998..238J
+    pdf: ''
+- id: jo-2025-toward-robustness-across
   title: Toward Robustness across Cosmological Simulation Models ILLUSTRISTNG, SIMBA, ASTRID, and SWIFT-EAGLE
   authors: Jo, Yongseok; Genel, Shy; Sengupta, Anirvan; Wandelt, Benjamin; Somerville, Rachel; Villaescusa-Navarro, Francisco
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2025
   date: '2025-09-01'
   role: first-author
+  citations: 10
   links:
     arxiv: https://arxiv.org/abs/2502.13239
     doi: https://doi.org/10.3847/1538-4357/adec78
     ads: https://ui.adsabs.harvard.edu/abs/2025ApJ...991..120J
     pdf: ''
-- id: lee-2024-inferring
+- id: lee-2024-inferring-cosmological-parameters
   title: Inferring Cosmological Parameters on SDSS via Domain-generalized Neural Networks and Light-cone Simulations
   authors: Lee, Jun-Young; Kim, Ji-hoon; Jung, Minyong; Oh, Boon Kiat; Jo, Yongseok; Park, Songyoun; Lee, Jaehyun; Ting, Yuan-Sen; Hwang, Ho Seong
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2024
   date: '2024-11-01'
   role: co-author
+  citations: 7
   links:
     arxiv: https://arxiv.org/abs/2409.02256
     doi: https://doi.org/10.3847/1538-4357/ad73d4
     ads: https://ui.adsabs.harvard.edu/abs/2024ApJ...975...38L
     pdf: ''
-- id: jo-2024-significance
-  title: On the Significance of Covariance for Constraining Theoretical Models From Galaxy Observables
-  authors: Jo, Yongseok; Genel, Shy; Leja, Joel; Wandelt, Benjamin
-  venue: arXiv e-prints
-  year: 2024
-  date: '2024-10-01'
-  role: first-author
-  links:
-    arxiv: https://arxiv.org/abs/2410.21722
-    doi: https://doi.org/10.48550/arXiv.2410.21722
-    ads: https://ui.adsabs.harvard.edu/abs/2024arXiv241021722J
-    pdf: ''
-- id: jo-2024-evolution
+- id: jo-2024-evolution-of-star
   title: Evolution of Star Clusters within Galaxies Using Self-consistent Hybrid Hydro/N-body Simulations
   authors: Jo, Yongseok; Kim, Seoyoung; Kim, Ji-hoon; Bryan, Greg L.
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2024
   date: '2024-10-01'
   role: first-author
+  citations: 5
   links:
     arxiv: https://arxiv.org/abs/2408.03128
     doi: https://doi.org/10.3847/1538-4357/ad6b16
     ads: https://ui.adsabs.harvard.edu/abs/2024ApJ...974..193J
     pdf: ''
-- id: ni-2023-camels
+- id: ni-2023-the-camels-project
   title: 'The CAMELS Project: Expanding the Galaxy Formation Model Space with New ASTRID and 28-parameter TNG and SIMBA Suites'
-  authors: Ni, Yueying; Genel, Shy; Anglés-Alcázar, Daniel; Villaescusa-Navarro, Francisco; Jo, Yongseok; Bird, Simeon; Di Matteo, Tiziana; Croft, Rupert; Chen, Nianyi; Santi, Natalı́ S. M.; Gebhardt, Matthew; Shao, Helen; Pandey, Shivam; Hernquist, Lars; Dave, Romeel
-  venue: ApJ
+  authors: Ni, Yueying; Genel, Shy; Anglés-Alcázar, Daniel; Villaescusa-Navarro, Francisco; Jo, Yongseok; Bird, Simeon; Di Matteo, Tiziana; Croft, Rupert; Chen, Nianyi; de Santi, Natalí S. M.; Gebhardt, Matthew; Shao, Helen; Pandey, Shivam; Hernquist, Lars; Dave, Romeel
+  venue: The Astrophysical Journal
   year: 2023
   date: '2023-12-01'
   role: co-author
+  citations: 81
   links:
     arxiv: https://arxiv.org/abs/2304.02096
     doi: https://doi.org/10.3847/1538-4357/ad022a
     ads: https://ui.adsabs.harvard.edu/abs/2023ApJ...959..136N
     pdf: ''
-- id: villaescusanavarro-2023-camels
+- id: villaescusa-navarro-2023-the-camels-project
   title: 'The CAMELS Project: Public Data Release'
   authors: Villaescusa-Navarro, Francisco; Genel, Shy; Anglés-Alcázar, Daniel; Perez, Lucia A.; Villanueva-Domingo, Pablo; Wadekar, Digvijay; Shao, Helen; Mohammad, Faizan G.; Hassan, Sultan; Moser, Emily; Lau, Erwin T.; Machado Poletti Valle, Luis Fernando; Nicola, Andrina; Thiele, Leander; Jo, Yongseok; Philcox, Oliver H. E.; Oppenheimer, Benjamin D.; Tillman, Megan; Hahn, ChangHoon; Kaushal, Neerav; Pisani, Alice; Gebhardt, Matthew; Delgado, Ana Maria; Caliendo, Joyce; Kreisch, Christina; Wong, Kaze W. K.; Coulton, William R.; Eickenberg, Michael; Parimbelli, Gabriele; Ni, Yueying; Steinwandel, Ulrich P.; La Torre, Valentina; Dave, Romeel; Battaglia, Nicholas; Nagai, Daisuke; Spergel, David N.; Hernquist, Lars; Burkhart, Blakesley; Narayanan, Desika; Wandelt, Benjamin; Somerville, Rachel S.; Bryan, Greg L.; Viel, Matteo; Li, Yin; Irsic, Vid; Kraljic, Katarina; Marinacci, Federico; Vogelsberger, Mark
-  venue: ApJS
+  venue: The Astrophysical Journal Supplement Series
   year: 2023
   date: '2023-04-01'
   role: co-author
+  citations: 102
   links:
     arxiv: https://arxiv.org/abs/2201.01300
     doi: https://doi.org/10.3847/1538-4365/acbf47
     ads: https://ui.adsabs.harvard.edu/abs/2023ApJS..265...54V
     pdf: ''
-- id: jo-2023-calibrating
+- id: jo-2023-calibrating-cosmological-simulations
   title: Calibrating Cosmological Simulations with Implicit Likelihood Inference Using Galaxy Growth Observables
   authors: Jo, Yongseok; Genel, Shy; Wandelt, Benjamin; Somerville, Rachel S.; Villaescusa-Navarro, Francisco; Bryan, Greg L.; Anglés-Alcázar, Daniel; Foreman-Mackey, Daniel; Nelson, Dylan; Kim, Ji-hoon
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2023
   date: '2023-02-01'
   role: first-author
+  citations: 21
   links:
     arxiv: https://arxiv.org/abs/2211.16461
     doi: https://doi.org/10.3847/1538-4357/aca8fe
     ads: https://ui.adsabs.harvard.edu/abs/2023ApJ...944...67J
     pdf: ''
-- id: villaescusanavarro-2022-camels
+- id: villaescusa-navarro-2022-the-camels-multifield
   title: 'The CAMELS Multifield Data Set: Learning the Universe''s Fundamental Parameters with Artificial Intelligence'
   authors: Villaescusa-Navarro, Francisco; Genel, Shy; Anglés-Alcázar, Daniel; Thiele, Leander; Dave, Romeel; Narayanan, Desika; Nicola, Andrina; Li, Yin; Villanueva-Domingo, Pablo; Wandelt, Benjamin; Spergel, David N.; Somerville, Rachel S.; Zorrilla Matilla, Jose Manuel; Mohammad, Faizan G.; Hassan, Sultan; Shao, Helen; Wadekar, Digvijay; Eickenberg, Michael; Wong, Kaze W. K.; Contardo, Gabriella; Jo, Yongseok; Moser, Emily; Lau, Erwin T.; Machado Poletti Valle, Luis Fernando; Perez, Lucia A.; Nagai, Daisuke; Battaglia, Nicholas; Vogelsberger, Mark
-  venue: ApJS
+  venue: The Astrophysical Journal Supplement Series
   year: 2022
   date: '2022-04-01'
   role: co-author
+  citations: 80
   links:
     arxiv: https://arxiv.org/abs/2109.10915
     doi: https://doi.org/10.3847/1538-4365/ac5ab0
     ads: https://ui.adsabs.harvard.edu/abs/2022ApJS..259...61V
     pdf: ''
-- id: shin-2020-dark
+- id: shin-2020-dark-matter-deficient
   title: Dark Matter Deficient Galaxies Produced via High-velocity Galaxy Collisions in High-resolution Numerical Simulations
   authors: Shin, Eun-jin; Jung, Minyong; Kwon, Goojin; Kim, Ji-hoon; Lee, Joohyun; Jo, Yongseok; Oh, Boon Kiat
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2020
   date: '2020-08-01'
   role: co-author
+  citations: 59
   links:
     arxiv: https://arxiv.org/abs/2007.09889
     doi: https://doi.org/10.3847/1538-4357/aba434
     ads: https://ui.adsabs.harvard.edu/abs/2020ApJ...899...25S
     pdf: ''
-- id: kim-2019-highredshift
+- id: kim-2019-high-redshift-galaxy
   title: 'High-redshift Galaxy Formation with Self-consistently Modeled Stars and Massive Black Holes: Stellar Feedback and Quasar Growth'
   authors: Kim, Ji-hoon; Wise, John H.; Abel, Tom; Jo, Yongseok; Primack, Joel R.; Hopkins, Philip F.
-  venue: ApJ
+  venue: The Astrophysical Journal
   year: 2019
   date: '2019-12-01'
   role: co-author
+  citations: 17
   links:
     arxiv: https://arxiv.org/abs/1910.12888
     doi: https://doi.org/10.3847/1538-4357/ab510b
     ads: https://ui.adsabs.harvard.edu/abs/2019ApJ...887..120K
     pdf: ''
-- id: jo-2019-machineassisted
+- id: jo-2019-machine-assisted-semi
   title: 'Machine-assisted semi-simulation model (MSSM): estimating galactic baryonic properties from their dark matter using a machine trained on hydrodynamic simulations'
   authors: Jo, Yongseok; Kim, Ji-hoon
-  venue: MNRAS
+  venue: Monthly Notices of the Royal Astronomical Society
   year: 2019
   date: '2019-11-01'
   role: first-author
+  citations: 44
   links:
     arxiv: https://arxiv.org/abs/1908.09844
     doi: https://doi.org/10.1093/mnras/stz2304
