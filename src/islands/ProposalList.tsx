@@ -154,7 +154,7 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
                 <span className="text-xs text-muted-foreground">
                   {formatDate(proposal.created_at)}
                 </span>
-                {proposal.status === "pending" && (userRole === "admin" || proposal.submitter === userId) && (
+                {proposal.status === "pending" && (userRole === "admin" || userRole === "co_admin" || proposal.submitter === userId) && (
                   <button
                     onClick={() => deleteProposal(proposal.id)}
                     disabled={deleting === proposal.id}

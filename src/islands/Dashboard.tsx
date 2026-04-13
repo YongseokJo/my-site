@@ -105,6 +105,7 @@ function formatDate(dateStr: string): string {
 function roleBadgeVariant(role: UserRole) {
   switch (role) {
     case "admin":
+    case "co_admin":
       return "destructive" as const;
     case "pi_mentor":
       return "default" as const;
@@ -119,6 +120,8 @@ function roleLabel(role: UserRole): string {
   switch (role) {
     case "admin":
       return "Admin";
+    case "co_admin":
+      return "Co-Admin";
     case "pi_mentor":
       return "PI / Mentor";
     case "developer":
@@ -244,6 +247,7 @@ function UserApprovalPanel({
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="co_admin">Co-Admin</SelectItem>
                       <SelectItem value="pi_mentor">PI / Mentor</SelectItem>
                       <SelectItem value="developer">Developer</SelectItem>
                       <SelectItem value="viewer">Viewer</SelectItem>
@@ -771,7 +775,7 @@ export default function Dashboard({
     try {
       setError("");
 
-      if (role === "admin") {
+      if (role === "admin" || role === "co_admin") {
         // Fetch pending users
         const { data: pending } = await supabase
           .from("profiles")
@@ -929,7 +933,7 @@ export default function Dashboard({
       <Separator />
 
       {/* Admin panels */}
-      {role === "admin" && (
+      {(role === "admin" || role === "co_admin") && (
         <>
           <UserApprovalPanel
             pendingUsers={pendingUsers}

@@ -1,4 +1,4 @@
-export type UserRole = "admin" | "pi_mentor" | "developer" | "viewer";
+export type UserRole = "admin" | "co_admin" | "pi_mentor" | "developer" | "viewer";
 
 export interface UserProfile {
   id: string;

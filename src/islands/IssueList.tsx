@@ -177,7 +177,7 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
               <span>{formatDate(issue.created_at)}</span>
               <div className="flex items-center gap-3">
                 <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
-                {issue.status === "open" && userId && (userRole === "admin" || issue.reporter === userId) && (
+                {issue.status === "open" && userId && (userRole === "admin" || userRole === "co_admin" || issue.reporter === userId) && (
                   <button
                     onClick={() => deleteIssue(issue.id)}
                     disabled={deleting === issue.id}
