@@ -14,6 +14,7 @@ interface ProposalFormData {
   scientific_mentor: string;
   mentor_email: string;
   position: string;
+  affiliation: string;
   basic_profile: string;
 }
 
@@ -26,6 +27,7 @@ interface FormErrors {
   scientific_mentor?: string;
   mentor_email?: string;
   position?: string;
+  affiliation?: string;
   basic_profile?: string;
 }
 
@@ -65,9 +67,10 @@ function validate(
     case "position":
       if (!trimmed) return "Position is required.";
       break;
+    case "affiliation":
+      if (!trimmed) return "Affiliation is required.";
+      break;
     case "basic_profile":
-      if (trimmed.length < 20)
-        return "Basic profile must be at least 20 characters.";
       break;
   }
   return undefined;
@@ -82,6 +85,7 @@ const allFields: (keyof ProposalFormData)[] = [
   "scientific_mentor",
   "mentor_email",
   "position",
+  "affiliation",
   "basic_profile",
 ];
 
@@ -95,6 +99,7 @@ export default function ProposalForm() {
     scientific_mentor: "",
     mentor_email: "",
     position: "",
+    affiliation: "",
     basic_profile: "",
   });
   const [errors, setErrors] = useState<FormErrors>({});
@@ -364,56 +369,55 @@ export default function ProposalForm() {
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="proposal-position">Position</Label>
-          <Input
-            id="proposal-position"
-            name="position"
-            type="text"
-            required
-            value={formData.position}
-            onChange={(e) => handleChange("position", e.target.value)}
-            onBlur={() => handleBlur("position")}
-            aria-describedby={
-              errors.position ? "prop-position-error" : undefined
-            }
-            aria-invalid={!!errors.position}
-            placeholder="Your position or title"
-          />
-          {errors.position && (
-            <p
-              id="prop-position-error"
-              className="text-sm text-destructive mt-1"
-            >
-              {errors.position}
-            </p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="proposal-position">Position</Label>
+            <Input
+              id="proposal-position"
+              name="position"
+              type="text"
+              required
+              value={formData.position}
+              onChange={(e) => handleChange("position", e.target.value)}
+              onBlur={() => handleBlur("position")}
+              aria-describedby={errors.position ? "prop-position-error" : undefined}
+              aria-invalid={!!errors.position}
+              placeholder="Your position or title"
+            />
+            {errors.position && (
+              <p id="prop-position-error" className="text-sm text-destructive mt-1">{errors.position}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proposal-affiliation">Affiliation</Label>
+            <Input
+              id="proposal-affiliation"
+              name="affiliation"
+              type="text"
+              required
+              value={formData.affiliation}
+              onChange={(e) => handleChange("affiliation", e.target.value)}
+              onBlur={() => handleBlur("affiliation")}
+              aria-describedby={errors.affiliation ? "prop-affiliation-error" : undefined}
+              aria-invalid={!!errors.affiliation}
+              placeholder="University or institution"
+            />
+            {errors.affiliation && (
+              <p id="prop-affiliation-error" className="text-sm text-destructive mt-1">{errors.affiliation}</p>
+            )}
+          </div>
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="proposal-profile">Basic Profile</Label>
+          <Label htmlFor="proposal-profile">Basic Profile <span className="text-muted-foreground font-normal">(optional)</span></Label>
           <Textarea
             id="proposal-profile"
             name="basic_profile"
-            required
             className="min-h-[80px]"
             value={formData.basic_profile}
             onChange={(e) => handleChange("basic_profile", e.target.value)}
-            onBlur={() => handleBlur("basic_profile")}
-            aria-describedby={
-              errors.basic_profile ? "prop-profile-error" : undefined
-            }
-            aria-invalid={!!errors.basic_profile}
             placeholder="Brief academic profile and relevant background"
           />
-          {errors.basic_profile && (
-            <p
-              id="prop-profile-error"
-              className="text-sm text-destructive mt-1"
-            >
-              {errors.basic_profile}
-            </p>
-          )}
         </div>
       </div>
 

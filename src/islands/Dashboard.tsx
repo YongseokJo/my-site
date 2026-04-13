@@ -1123,6 +1123,31 @@ export default function Dashboard({
         reviewer: userId,
       })
       .eq("id", proposalId);
+
+    // Send email notification on approval
+    if (status === "approved") {
+      const proposal = allProposals.find((p) => p.id === proposalId);
+      if (proposal) {
+        try {
+          await fetch("/api/proposals/notify-approval", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              proposalId,
+              proposalTitle: proposal.title,
+              piName: proposal.pi,
+              piEmail: (proposal as any).pi_email,
+              mentorName: proposal.scientific_mentor,
+              mentorEmail: (proposal as any).mentor_email,
+              status,
+              reviewComment: comment,
+            }),
+          });
+        } catch {
+          // Email failure should not block approval
+        }
+      }
+    }
   }
 
   if (loading) {
