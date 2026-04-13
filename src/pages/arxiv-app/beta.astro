@@ -1,0 +1,14 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+import BetaSignupForm from "../../islands/BetaSignupForm.tsx";
+---
+<BaseLayout title="Join the Beta" description="Sign up to get early access to Readea, a modern arXiv reading app.">
+  <Breadcrumb items={[
+    { label: "Readea", href: "/arxiv-app" },
+    { label: "Beta Signup" },
+  ]} />
+  <h1 class="text-2xl font-bold mt-6 mb-2">Join the Beta</h1>
+  <p class="text-base text-muted-foreground mb-8">Sign up to get early access to Readea</p>
+  <BetaSignupForm client:load />
+</BaseLayout>
