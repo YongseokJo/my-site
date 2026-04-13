@@ -1,5 +1,6 @@
 ---
 import DarkModeToggle from "../islands/DarkModeToggle.tsx";
+import SearchToggle from "../islands/SearchToggle.tsx";
 
 const currentPath = Astro.url.pathname;
 
@@ -42,6 +43,9 @@ function isActive(href: string): boolean {
         </a>
       ))}
       <div class="ml-2">
+        <SearchToggle client:load />
+      </div>
+      <div class="ml-2">
         <DarkModeToggle client:load />
       </div>
     </div>
@@ -76,6 +80,9 @@ function isActive(href: string): boolean {
           {link.name}
         </a>
       ))}
+      <div class="px-3 py-2">
+        <SearchToggle client:load />
+      </div>
       <div class="px-3 py-2">
         <DarkModeToggle client:load />
       </div>
