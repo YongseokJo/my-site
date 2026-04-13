@@ -29,18 +29,28 @@ function isActive(href: string): boolean {
 
     <!-- Desktop nav links -->
     <div class="hidden md:flex items-center gap-1">
-      {navLinks.map((link) => (
+      {navLinks.filter(l => !l.highlight).map((link) => (
         <a
           href={link.href}
           class:list={[
             "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
-            link.highlight
-              ? isActive(link.href)
-                ? "bg-primary text-primary-foreground border-primary"
-                : "border-primary text-primary hover:bg-primary hover:text-primary-foreground"
-              : isActive(link.href)
-                ? "bg-muted text-foreground border-transparent"
-                : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted",
+            isActive(link.href)
+              ? "bg-muted text-foreground border-transparent"
+              : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted",
+          ]}
+        >
+          {link.name}
+        </a>
+      ))}
+      <div class="w-px h-6 bg-border mx-2"></div>
+      {navLinks.filter(l => l.highlight).map((link) => (
+        <a
+          href={link.href}
+          class:list={[
+            "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
+            isActive(link.href)
+              ? "bg-primary text-primary-foreground border-primary"
+              : "border-primary text-primary hover:bg-primary hover:text-primary-foreground",
           ]}
         >
           {link.name}
