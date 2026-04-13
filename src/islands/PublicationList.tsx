@@ -145,7 +145,7 @@ export default function PublicationList({ publications }: PublicationListProps) 
       </div>
 
       {/* Publication cards */}
-      <div className="space-y-1 mt-2">
+      <div className="space-y-3 mt-2">
         {filtered.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">
             No publications match the selected filters.
@@ -153,7 +153,7 @@ export default function PublicationList({ publications }: PublicationListProps) 
         ) : (
           filtered.map((pub) => (
             <Card key={pub.id} className="bg-card border border-border">
-              <CardContent className="px-3 py-1.5">
+              <CardContent className="px-3 py-1">
                 <h3 className="text-base font-bold text-foreground mb-1">
                   {pub.title}
                 </h3>
