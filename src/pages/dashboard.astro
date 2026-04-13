@@ -1,0 +1,43 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Dashboard from "../islands/Dashboard.tsx";
+
+const user = Astro.locals.user;
+if (!user) {
+  return Astro.redirect("/login?redirect=" + encodeURIComponent(Astro.url.pathname));
+}
+
+const { data: profile } = await Astro.locals.supabase
+  .from("profiles")
+  .select("role, approved, display_name")
+  .eq("id", user.id)
+  .single();
+
+if (!profile?.approved) {
+  return Astro.redirect("/pending-approval");
+}
+---
+
+<BaseLayout title="Dashboard - Enzo-Abyss">
+  <div class="space-y-6">
+    <div>
+      <a href="/software" class="text-sm text-muted-foreground hover:text-foreground">
+        &larr; Back to Software
+      </a>
+    </div>
+
+    <div>
+      <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+    </div>
+
+    <Dashboard
+      client:load
+      userId={user.id}
+      userEmail={user.email ?? ""}
+      role={profile.role}
+      displayName={profile.display_name}
+    />
+  </div>
+</BaseLayout>
