@@ -1,0 +1,34 @@
+---
+export const prerender = false;
+
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const user = Astro.locals.user;
+if (user) {
+  const supabase = Astro.locals.supabase;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("approved")
+    .eq("id", user.id)
+    .single();
+
+  if (profile?.approved) {
+    return Astro.redirect("/dashboard");
+  }
+}
+---
+<BaseLayout title="Pending Approval">
+  <div class="py-16 text-center max-w-md mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Pending Approval</h1>
+    <p class="text-muted-foreground mb-8">
+      Your account is pending admin approval. You will be able to access
+      collaboration features once an administrator approves your account.
+    </p>
+    <a
+      href="/software"
+      class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity"
+    >
+      Back to Enzo-Abyss
+    </a>
+  </div>
+</BaseLayout>
