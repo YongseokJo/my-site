@@ -296,16 +296,22 @@ function AdminIssuesPanel({
 }) {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
+  const [collapsed, setCollapsed] = useState(false);
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>All Issues</CardTitle>
-        <CardDescription>
-          {issues.length} issue(s) total.
-        </CardDescription>
+      <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle className="flex items-center gap-2">
+              <svg className={`size-4 shrink-0 transition-transform ${collapsed ? "" : "rotate-90"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+              All Issues
+            </CardTitle>
+            <CardDescription>{issues.length} issue(s) total.</CardDescription>
+          </div>
+        </div>
       </CardHeader>
-      <CardContent>
+      {!collapsed && <CardContent>
         {issues.length === 0 ? (
           <p className="text-sm text-muted-foreground">No issues reported.</p>
         ) : (
@@ -405,7 +411,7 @@ function AdminIssuesPanel({
             ))}
           </div>
         )}
-      </CardContent>
+      </CardContent>}
     </Card>
   );
 }
@@ -433,6 +439,7 @@ function ProposalReviewPanel({
   const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [collapsed, setCollapsed] = useState(false);
 
   const pendingProposals = proposals.filter((p) => p.status === "pending");
   const currentProposal = pendingProposals.find((p) => p.id === reviewingId);
@@ -461,15 +468,18 @@ function ProposalReviewPanel({
 
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>Proposals Awaiting Review</CardTitle>
+      <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
+        <CardTitle className="flex items-center gap-2">
+          <svg className={`size-4 shrink-0 transition-transform ${collapsed ? "" : "rotate-90"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          Proposals Awaiting Review
+        </CardTitle>
         <CardDescription>
           {pendingProposals.length === 0
             ? "No proposals pending review."
             : `${pendingProposals.length} proposal(s) to review.`}
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      {!collapsed && <CardContent>
         {pendingProposals.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             All proposals have been reviewed.
@@ -546,7 +556,7 @@ function ProposalReviewPanel({
             ))}
           </div>
         )}
-      </CardContent>
+      </CardContent>}
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-lg max-h-[85vh] overflow-y-auto">
@@ -614,24 +624,28 @@ function ProposalReviewPanel({
 }
 
 function MyIssuesPanel({ issues }: { issues: Issue[] }) {
+  const [collapsed, setCollapsed] = useState(false);
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>My Issues</CardTitle>
+      <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
+        <CardTitle className="flex items-center gap-2">
+          <svg className={`size-4 shrink-0 transition-transform ${collapsed ? "" : "rotate-90"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          My Issues
+        </CardTitle>
         <CardDescription>
           {issues.length === 0
             ? "You haven't reported any issues."
             : `${issues.length} issue(s) submitted.`}
         </CardDescription>
         <CardAction>
-          <a href="/software/issues">
+          <a href="/software/issues" onClick={(e) => e.stopPropagation()}>
             <Button variant="outline" size="sm">
               Submit New
             </Button>
           </a>
         </CardAction>
       </CardHeader>
-      <CardContent>
+      {!collapsed && <CardContent>
         {issues.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             <a href="/software/issues" className="underline hover:text-foreground">
@@ -663,30 +677,34 @@ function MyIssuesPanel({ issues }: { issues: Issue[] }) {
             ))}
           </div>
         )}
-      </CardContent>
+      </CardContent>}
     </Card>
   );
 }
 
 function MyProposalsPanel({ proposals }: { proposals: Proposal[] }) {
+  const [collapsed, setCollapsed] = useState(false);
   return (
     <Card>
-      <CardHeader>
-        <CardTitle>My Proposals</CardTitle>
+      <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
+        <CardTitle className="flex items-center gap-2">
+          <svg className={`size-4 shrink-0 transition-transform ${collapsed ? "" : "rotate-90"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          My Proposals
+        </CardTitle>
         <CardDescription>
           {proposals.length === 0
             ? "You haven't submitted any proposals."
             : `${proposals.length} proposal(s) submitted.`}
         </CardDescription>
         <CardAction>
-          <a href="/software/proposals">
+          <a href="/software/proposals" onClick={(e) => e.stopPropagation()}>
             <Button variant="outline" size="sm">
               Submit New
             </Button>
           </a>
         </CardAction>
       </CardHeader>
-      <CardContent>
+      {!collapsed && <CardContent>
         {proposals.length === 0 ? (
           <p className="text-sm text-muted-foreground">
             <a
@@ -726,7 +744,7 @@ function MyProposalsPanel({ proposals }: { proposals: Proposal[] }) {
             ))}
           </div>
         )}
-      </CardContent>
+      </CardContent>}
     </Card>
   );
 }
