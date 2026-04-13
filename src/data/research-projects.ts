@@ -85,4 +85,22 @@ export const researchProjects: ResearchProject[] = [
       },
     ],
   },
+  {
+    id: "physics-ml",
+    title: "Physics-Driven Machine Learning",
+    brief:
+      "Leveraging physics-informed neural networks and self-supervised learning to solve fundamental equations in stellar astrophysics and beyond.",
+    description:
+      "This emerging research direction integrates physical laws directly into machine learning architectures. By encoding known physics—such as the stellar structure equations—as constraints within neural networks, we achieve models that are both data-efficient and physically consistent. Self-supervised approaches allow learning from the equations themselves rather than requiring labeled datasets, opening new possibilities for solving complex astrophysical problems where traditional numerical methods face computational limitations.",
+    status: "Active",
+    icon: "Atom",
+    relatedPublications: [
+      {
+        title:
+          "Learning the Stellar Structure Equations via Self-supervised Physics-Informed Neural Networks",
+        year: 2026,
+        url: "https://arxiv.org/abs/2604.06255",
+      },
+    ],
+  },
 ];
