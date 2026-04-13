@@ -21,6 +21,12 @@ export const researchProjects: ResearchProject[] = [
     relatedPublications: [
       {
         title:
+          "Evolution of Nuclear Star Cluster in Dwarf Galaxy through Mergers and In-Situ Star Formation",
+        year: 2026,
+        url: "https://arxiv.org/abs/2603.18242",
+      },
+      {
+        title:
           "Evolution of Star Clusters within Galaxies Using Self-consistent Hybrid Hydro/N-body Simulations",
         year: 2024,
         url: "https://arxiv.org/abs/2408.03128",
