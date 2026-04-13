@@ -12,14 +12,19 @@ import DeviceMockupPlaceholder from "./DeviceMockupPlaceholder.astro";
       A modern reading experience for arXiv papers on macOS and iOS
     </p>
     <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative">
-      <div class="relative">
+      <div class="relative cursor-zoom-in readea-zoomable">
         <img src="/images/readea1.png" alt="Readea app screenshot - dark theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-a" />
         <img src="/images/readea1_1.png" alt="Readea app screenshot - light theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-b absolute inset-0 opacity-0" />
       </div>
-      <div class="relative">
+      <div class="relative cursor-zoom-in readea-zoomable">
         <img src="/images/readea2.png" alt="Readea app screenshot 2 - dark theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-a" />
         <img src="/images/readea2_1.png" alt="Readea app screenshot 2 - light theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-b absolute inset-0 opacity-0" />
       </div>
+    </div>
+
+    <!-- Zoom overlay -->
+    <div id="zoom-overlay" class="fixed inset-0 z-50 bg-black/80 hidden items-center justify-center cursor-zoom-out" style="display:none;">
+      <img id="zoom-img" src="" alt="Zoomed screenshot" class="max-w-[90vw] max-h-[90vh] rounded-xl shadow-2xl" />
     </div>
     <a
       href="/contact"
@@ -45,4 +50,33 @@ import DeviceMockupPlaceholder from "./DeviceMockupPlaceholder.astro";
       el.classList.toggle('opacity-0');
     });
   }, 4000);
+
+  // Zoom on click
+  const overlay = document.getElementById('zoom-overlay');
+  const zoomImg = document.getElementById('zoom-img') as HTMLImageElement;
+
+  document.querySelectorAll('.readea-zoomable').forEach(container => {
+    container.addEventListener('click', () => {
+      // Find the visible image (the one without opacity-0)
+      const imgs = container.querySelectorAll('img');
+      let visibleSrc = '';
+      imgs.forEach(img => {
+        if (!img.classList.contains('opacity-0')) {
+          visibleSrc = img.src;
+        }
+      });
+      if (visibleSrc && overlay && zoomImg) {
+        zoomImg.src = visibleSrc;
+        overlay.style.display = 'flex';
+      }
+    });
+  });
+
+  overlay?.addEventListener('click', () => {
+    if (overlay) overlay.style.display = 'none';
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && overlay) overlay.style.display = 'none';
+  });
 </script>
