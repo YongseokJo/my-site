@@ -38,20 +38,24 @@ const ADS_API = "https://api.adsabs.harvard.edu/v1/search/query";
 const EXCLUDE_KEYWORDS = ["IGF", "IGFBP", "pediatric", "endocrine", "insulin", "serum", "clinical", "patients", "medical"];
 
 async function fetchPapers() {
-  const params = new URLSearchParams({
-    q: `author:"Jo, Yongseok" (orcid:${ORCID} OR aff:"Columbia" OR aff:"Chicago" OR aff:"SkAI" OR keyword:"cosmology" OR keyword:"galaxy" OR keyword:"simulation" OR keyword:"black hole" OR keyword:"star" OR keyword:"dark matter" OR keyword:"machine learning")`,
-    fq: [
-      '{!type=aqp v=$fq_author}',
-      '{!type=aqp v=$fq_database}',
-    ],
-    fq_author: '(author_facet_hier:"1/Jo, Y/Jo, Yongseok")',
-    fq_database: '(database:astronomy OR database:physics)',
+  // Build URL manually to support multiple fq params (URLSearchParams merges them)
+  const query = new URLSearchParams({
+    q: 'author:"Jo, Yongseok"',
     fl: "bibcode,title,author,pub,year,date,doi,identifier,doctype,citation_count",
-    sort: "date desc",
+    sort: "date desc, bibcode desc",
     rows: "200",
   });
+  const fqParams = [
+    'fq={!type=aqp v=$fq_database}',
+    'fq={!type=aqp v=$fq_author}',
+    'fq={!type=aqp v=$fq_bibstem_facet}',
+    'fq_author=' + encodeURIComponent('(author_facet_hier:"1/Jo, Y/Jo, Yongseok")'),
+    'fq_database=' + encodeURIComponent('(database:astronomy OR database:physics)'),
+    'fq_bibstem_facet=' + encodeURIComponent('(*:* NOT bibstem_facet:"BKAS")'),
+  ].join('&');
+  const url = `${ADS_API}?${query}&${fqParams}`;
 
-  const res = await fetch(`${ADS_API}?${params}`, {
+  const res = await fetch(url, {
     headers: { Authorization: `Bearer ${ADS_TOKEN}` },
   });
 
