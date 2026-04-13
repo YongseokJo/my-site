@@ -31,42 +31,46 @@ if (!ADS_TOKEN) {
 }
 
 const AUTHOR = "Jo, Yongseok";
-const ORCID = "0000-0003-3977-1761";
-const ADS_API = "https://api.adsabs.harvard.edu/v1/search/query";
-
-// Keywords that indicate this is NOT your paper (false positive from same-name authors)
-const EXCLUDE_KEYWORDS = ["IGF", "IGFBP", "pediatric", "endocrine", "insulin", "serum", "clinical", "patients", "medical"];
+const LIBRARY_ID = "miCGF6FnSgW_IUWliF3sDw";
+const ADS_API = "https://api.adsabs.harvard.edu/v1";
 
 async function fetchPapers() {
-  // Build URL manually to support multiple fq params (URLSearchParams merges them)
-  const query = new URLSearchParams({
-    q: 'author:"Jo, Yongseok"',
-    fl: "bibcode,title,author,pub,year,date,doi,identifier,doctype,citation_count",
-    sort: "date desc, bibcode desc",
-    rows: "200",
-  });
-  const fqParams = [
-    'fq={!type=aqp v=$fq_database}',
-    'fq={!type=aqp v=$fq_author}',
-    'fq={!type=aqp v=$fq_bibstem_facet}',
-    'fq_author=' + encodeURIComponent('(author_facet_hier:"1/Jo, Y/Jo, Yongseok")'),
-    'fq_database=' + encodeURIComponent('(database:astronomy OR database:physics)'),
-    'fq_bibstem_facet=' + encodeURIComponent('(*:* NOT bibstem_facet:"BKAS")'),
-  ].join('&');
-  const url = `${ADS_API}?${query}&${fqParams}`;
-
-  const res = await fetch(url, {
+  // Step 1: Get bibcodes from the public library
+  const libRes = await fetch(`${ADS_API}/biblib/libraries/${LIBRARY_ID}?rows=200`, {
     headers: { Authorization: `Bearer ${ADS_TOKEN}` },
   });
 
-  if (!res.ok) {
-    console.error(`ADS API error: ${res.status} ${res.statusText}`);
-    const body = await res.text();
+  if (!libRes.ok) {
+    console.error(`ADS Library API error: ${libRes.status} ${libRes.statusText}`);
+    const body = await libRes.text();
     console.error(body);
     process.exit(1);
   }
 
-  const data = await res.json();
+  const libData = await libRes.json();
+  const bibcodes = libData.documents || [];
+  console.log(`Library contains ${bibcodes.length} papers.`);
+
+  if (bibcodes.length === 0) return [];
+
+  // Step 2: Fetch full metadata for all bibcodes
+  const searchRes = await fetch(`${ADS_API}/search/query?${new URLSearchParams({
+    q: `bibcode:(${bibcodes.map(b => `"${b}"`).join(" OR ")})`,
+    fl: "bibcode,title,author,pub,year,date,doi,identifier,doctype,citation_count",
+    sort: "date desc",
+    rows: "200",
+  })}`, {
+    headers: { Authorization: `Bearer ${ADS_TOKEN}` },
+  });
+
+  if (!searchRes.ok) {
+    console.error(`ADS Search API error: ${searchRes.status} ${searchRes.statusText}`);
+    const body = await searchRes.text();
+    console.error(body);
+    process.exit(1);
+  }
+
+  const data = await searchRes.json();
   return data.response.docs;
 }
 
@@ -137,26 +141,15 @@ function toYaml(papers) {
 }
 
 async function main() {
-  console.log(`Fetching publications for "${AUTHOR}" from ADS...`);
+  console.log(`Fetching publications from ADS library ${LIBRARY_ID}...`);
   const papers = await fetchPapers();
   console.log(`Found ${papers.length} papers.`);
 
-  // Filter to only refereed articles and eprints (skip erratum, abstract, etc.)
-  const articles = papers.filter(
+  // Library is curated, so just filter doctypes
+  const filtered = papers.filter(
     (p) => p.doctype === "article" || p.doctype === "eprint"
   );
-  console.log(`${articles.length} articles/eprints after doctype filter.`);
-
-  // Remove false positives from same-name authors in other fields
-  const filtered = articles.filter((p) => {
-    const title = (Array.isArray(p.title) ? p.title[0] : p.title || "").toLowerCase();
-    const venue = (p.pub || "").toLowerCase();
-    const combined = title + " " + venue;
-    const excluded = EXCLUDE_KEYWORDS.some((kw) => combined.includes(kw.toLowerCase()));
-    if (excluded) console.log(`  Excluded: ${Array.isArray(p.title) ? p.title[0] : p.title}`);
-    return !excluded;
-  });
-  console.log(`${filtered.length} papers after excluding false positives.`);
+  console.log(`${filtered.length} articles/eprints after doctype filter.`);
 
   const yaml = toYaml(filtered);
   fs.writeFileSync(OUTPUT, yaml, "utf-8");
