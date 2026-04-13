@@ -1,0 +1,38 @@
+---
+import "@fontsource-variable/inter";
+
+interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+  ogType?: string;
+  canonicalUrl?: string;
+}
+const {
+  title,
+  description = "Yongseok Jo - Computational Astrophysicist",
+  ogImage = "/images/og-default.png",
+  ogType = "website",
+  canonicalUrl = Astro.url.href,
+} = Astro.props;
+
+const fullTitle = `${title} | Yongseok Jo`;
+---
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="generator" content={Astro.generator} />
+<meta name="description" content={description} />
+<title>{fullTitle}</title>
+<link rel="icon" type="image/x-icon" href="/favicon.ico" />
+<link rel="canonical" href={canonicalUrl} />
+<!-- OpenGraph -->
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={ogImage} />
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<slot />
