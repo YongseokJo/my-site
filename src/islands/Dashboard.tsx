@@ -401,7 +401,7 @@ function AdminIssuesPanel({
                         onRefresh();
                       }}
                       disabled={deleteLoading === issue.id}
-                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                      className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                     >
                       {deleteLoading === issue.id ? "Deleting..." : "Delete"}
                     </button>
@@ -543,7 +543,7 @@ function ProposalReviewPanel({
                         onRefresh();
                       }}
                       disabled={deleteLoading === proposal.id}
-                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                      className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                     >
                       {deleteLoading === proposal.id ? "Deleting..." : "Delete"}
                     </button>
@@ -682,7 +682,7 @@ function MyIssuesPanel({ issues, onDelete }: { issues: Issue[]; onDelete: (id: s
                         setDeleting(null);
                       }}
                       disabled={deleting === issue.id}
-                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                      className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                     >
                       {deleting === issue.id ? "..." : "Delete"}
                     </button>
@@ -754,7 +754,7 @@ function MyProposalsPanel({ proposals, onDelete }: { proposals: Proposal[]; onDe
                           setDeleting(null);
                         }}
                         disabled={deleting === proposal.id}
-                        className="text-xs text-destructive hover:underline disabled:opacity-50"
+                        className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                       >
                         {deleting === proposal.id ? "..." : "Delete"}
                       </button>

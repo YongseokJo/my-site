@@ -203,7 +203,7 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
                         <button
                           onClick={(e) => { e.stopPropagation(); deleteIssue(issue.id); }}
                           disabled={deleting === issue.id}
-                          className="text-destructive hover:underline disabled:opacity-50"
+                          className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                         >
                           {deleting === issue.id ? "Deleting..." : "Delete"}
                         </button>

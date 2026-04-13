@@ -200,7 +200,7 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
                       <button
                         onClick={(e) => { e.stopPropagation(); deleteProposal(proposal.id); }}
                         disabled={deleting === proposal.id}
-                        className="text-xs text-destructive hover:underline disabled:opacity-50"
+                        className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
                       >
                         {deleting === proposal.id ? "Deleting..." : "Delete"}
                       </button>
