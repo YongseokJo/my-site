@@ -68,6 +68,39 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editRationale, setEditRationale] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  function startEdit(proposal: Proposal) {
+    setEditing(proposal.id);
+    setEditTitle(proposal.title);
+    setEditDesc(proposal.description || "");
+    setEditRationale(proposal.rationale || "");
+  }
+
+  async function saveEdit(id: string) {
+    setSaving(true);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { error: updateErr } = await supabase
+        .from("proposals")
+        .update({ title: editTitle, description: editDesc || null, rationale: editRationale || null })
+        .eq("id", id);
+      if (updateErr) {
+        setError(updateErr.message);
+      } else {
+        setProposals((prev) => prev.map((p) => p.id === id ? { ...p, title: editTitle, description: editDesc || null, rationale: editRationale || null } : p));
+        setEditing(null);
+      }
+    } catch {
+      setError("Failed to save.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function fetchProposals() {
     try {
@@ -175,38 +208,96 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
             </CardHeader>
             {isExpanded && (
               <>
-                {proposal.description && (
+                {editing === proposal.id ? (
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {proposal.description}
-                    </p>
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium">Title</label>
+                        <input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="w-full mt-1 px-3 py-2 text-sm bg-background border border-border rounded-md"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium">Description</label>
+                        <textarea
+                          value={editDesc}
+                          onChange={(e) => setEditDesc(e.target.value)}
+                          rows={3}
+                          className="w-full mt-1 px-3 py-2 text-sm bg-background border border-border rounded-md"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium">Rationale</label>
+                        <textarea
+                          value={editRationale}
+                          onChange={(e) => setEditRationale(e.target.value)}
+                          rows={2}
+                          className="w-full mt-1 px-3 py-2 text-sm bg-background border border-border rounded-md"
+                        />
+                      </div>
+                      <div className="flex gap-2 justify-end">
+                        <button
+                          onClick={(e) => { e.stopPropagation(); setEditing(null); }}
+                          className="text-xs border border-border rounded-md px-3 py-1.5 hover:bg-muted transition-colors"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          onClick={(e) => { e.stopPropagation(); saveEdit(proposal.id); }}
+                          disabled={saving || !editTitle.trim()}
+                          className="text-xs bg-primary text-primary-foreground rounded-md px-3 py-1.5 hover:opacity-90 transition-opacity disabled:opacity-50"
+                        >
+                          {saving ? "Saving..." : "Save"}
+                        </button>
+                      </div>
+                    </div>
                   </CardContent>
-                )}
-                {proposal.review_comment &&
-                  (proposal.status === "approved" ||
-                    proposal.status === "rejected") && (
-                    <CardContent>
-                      <blockquote className="border-l-2 border-muted-foreground/30 pl-3 text-sm text-muted-foreground italic">
-                        <span className="font-medium not-italic">
-                          Review comment:
-                        </span>{" "}
-                        {proposal.review_comment}
-                      </blockquote>
-                    </CardContent>
-                  )}
-                <CardContent>
-                  <div className="flex justify-end">
-                    {proposal.status === "pending" && (userRole === "admin" || userRole === "co_admin" || proposal.submitter === userId) && (
-                      <button
-                        onClick={(e) => { e.stopPropagation(); deleteProposal(proposal.id); }}
-                        disabled={deleting === proposal.id}
-                        className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
-                      >
-                        {deleting === proposal.id ? "Deleting..." : "Delete"}
-                      </button>
+                ) : (
+                  <>
+                    {proposal.description && (
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          {proposal.description}
+                        </p>
+                      </CardContent>
                     )}
-                  </div>
-                </CardContent>
+                    {proposal.review_comment &&
+                      (proposal.status === "approved" ||
+                        proposal.status === "rejected") && (
+                        <CardContent>
+                          <blockquote className="border-l-2 border-muted-foreground/30 pl-3 text-sm text-muted-foreground italic">
+                            <span className="font-medium not-italic">
+                              Review comment:
+                            </span>{" "}
+                            {proposal.review_comment}
+                          </blockquote>
+                        </CardContent>
+                      )}
+                    <CardContent>
+                      <div className="flex justify-end gap-2">
+                        {proposal.status === "pending" && (userRole === "admin" || userRole === "co_admin" || proposal.submitter === userId) && (
+                          <>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); startEdit(proposal); }}
+                              className="text-xs border border-border rounded-md px-2 py-1 hover:bg-muted transition-colors"
+                            >
+                              Edit
+                            </button>
+                            <button
+                              onClick={(e) => { e.stopPropagation(); deleteProposal(proposal.id); }}
+                              disabled={deleting === proposal.id}
+                              className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
+                            >
+                              {deleting === proposal.id ? "Deleting..." : "Delete"}
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </CardContent>
+                  </>
+                )}
               </>
             )}
           </Card>

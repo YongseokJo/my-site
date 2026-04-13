@@ -83,6 +83,37 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [saving, setSaving] = useState(false);
+
+  function startEdit(issue: Issue) {
+    setEditing(issue.id);
+    setEditTitle(issue.title);
+    setEditDesc(issue.description || "");
+  }
+
+  async function saveEdit(id: string) {
+    setSaving(true);
+    try {
+      const supabase = createSupabaseBrowserClient();
+      const { error: updateErr } = await supabase
+        .from("issues")
+        .update({ title: editTitle, description: editDesc || null })
+        .eq("id", id);
+      if (updateErr) {
+        setError(updateErr.message);
+      } else {
+        setIssues((prev) => prev.map((i) => i.id === id ? { ...i, title: editTitle, description: editDesc || null } : i));
+        setEditing(null);
+      }
+    } catch {
+      setError("Failed to save.");
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function fetchIssues() {
     try {
@@ -187,30 +218,79 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
             </CardHeader>
             {isExpanded && (
               <>
-                {issue.description && (
+                {editing === issue.id ? (
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
-                      {issue.description}
-                    </p>
-                  </CardContent>
-                )}
-                <CardContent>
-                  <div className="flex justify-between items-center text-xs text-muted-foreground">
-                    <span>{formatDate(issue.created_at)}</span>
-                    <div className="flex items-center gap-3">
-                      <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
-                      {issue.status === "open" && userId && (userRole === "admin" || userRole === "co_admin" || issue.reporter === userId) && (
+                    <div className="space-y-3">
+                      <div>
+                        <label className="text-xs font-medium">Title</label>
+                        <input
+                          value={editTitle}
+                          onChange={(e) => setEditTitle(e.target.value)}
+                          className="w-full mt-1 px-3 py-2 text-sm bg-background border border-border rounded-md"
+                        />
+                      </div>
+                      <div>
+                        <label className="text-xs font-medium">Description</label>
+                        <textarea
+                          value={editDesc}
+                          onChange={(e) => setEditDesc(e.target.value)}
+                          rows={3}
+                          className="w-full mt-1 px-3 py-2 text-sm bg-background border border-border rounded-md"
+                        />
+                      </div>
+                      <div className="flex gap-2 justify-end">
                         <button
-                          onClick={(e) => { e.stopPropagation(); deleteIssue(issue.id); }}
-                          disabled={deleting === issue.id}
-                          className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
+                          onClick={(e) => { e.stopPropagation(); setEditing(null); }}
+                          className="text-xs border border-border rounded-md px-3 py-1.5 hover:bg-muted transition-colors"
                         >
-                          {deleting === issue.id ? "Deleting..." : "Delete"}
+                          Cancel
                         </button>
-                      )}
+                        <button
+                          onClick={(e) => { e.stopPropagation(); saveEdit(issue.id); }}
+                          disabled={saving || !editTitle.trim()}
+                          className="text-xs bg-primary text-primary-foreground rounded-md px-3 py-1.5 hover:opacity-90 transition-opacity disabled:opacity-50"
+                        >
+                          {saving ? "Saving..." : "Save"}
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                </CardContent>
+                  </CardContent>
+                ) : (
+                  <>
+                    {issue.description && (
+                      <CardContent>
+                        <p className="text-sm text-muted-foreground">
+                          {issue.description}
+                        </p>
+                      </CardContent>
+                    )}
+                    <CardContent>
+                      <div className="flex justify-between items-center text-xs text-muted-foreground">
+                        <span>{formatDate(issue.created_at)}</span>
+                        <div className="flex items-center gap-2">
+                          <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
+                          {issue.status === "open" && userId && (userRole === "admin" || userRole === "co_admin" || issue.reporter === userId) && (
+                            <>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); startEdit(issue); }}
+                                className="text-xs border border-border rounded-md px-2 py-1 hover:bg-muted transition-colors"
+                              >
+                                Edit
+                              </button>
+                              <button
+                                onClick={(e) => { e.stopPropagation(); deleteIssue(issue.id); }}
+                                disabled={deleting === issue.id}
+                                className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
+                              >
+                                {deleting === issue.id ? "Deleting..." : "Delete"}
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </>
+                )}
               </>
             )}
           </Card>
