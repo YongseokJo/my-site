@@ -68,11 +68,11 @@ Plans:
   5. All pages have meta tags and OpenGraph data; publications have schema.org structured data; Pagefind search works across all content
 **Plans:** 5 plans
 Plans:
-- [ ] 03-01-PLAN.md -- Install dependencies, create shared components (SEOHead, Breadcrumb, CodeBlock, FeatureCard, etc.), update layouts with SEOHead
-- [ ] 03-02-PLAN.md -- Enzo-Abyss landing page with features and quick-start, plus documentation sub-pages
-- [ ] 03-03-PLAN.md -- Readea landing page with hero and features, tutorials content collection and page template
-- [ ] 03-04-PLAN.md -- Readea beta signup and feedback forms using Formspree
-- [ ] 03-05-PLAN.md -- Schema.org structured data for publications and Pagefind site-wide search
+- [x] 03-01-PLAN.md -- Install dependencies, create shared components (SEOHead, Breadcrumb, CodeBlock, FeatureCard, etc.), update layouts with SEOHead
+- [x] 03-02-PLAN.md -- Enzo-Abyss landing page with features and quick-start, plus documentation sub-pages
+- [x] 03-03-PLAN.md -- Readea landing page with hero and features, tutorials content collection and page template
+- [x] 03-04-PLAN.md -- Readea beta signup and feedback forms using Formspree
+- [x] 03-05-PLAN.md -- Schema.org structured data for publications and Pagefind site-wide search
 **UI hint**: yes
 
 ### Phase 4: Backend Infrastructure & Auth
