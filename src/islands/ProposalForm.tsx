@@ -286,93 +286,82 @@ export default function ProposalForm() {
           Academic Context
         </h4>
 
-        <div className="space-y-2">
-          <Label htmlFor="proposal-pi">Principal Investigator</Label>
-          <Input
-            id="proposal-pi"
-            name="pi"
-            type="text"
-            required
-            value={formData.pi}
-            onChange={(e) => handleChange("pi", e.target.value)}
-            onBlur={() => handleBlur("pi")}
-            aria-describedby={errors.pi ? "prop-pi-error" : undefined}
-            aria-invalid={!!errors.pi}
-            placeholder="Name of the PI"
-          />
-          {errors.pi && (
-            <p id="prop-pi-error" className="text-sm text-destructive mt-1">
-              {errors.pi}
-            </p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="proposal-pi">Principal Investigator</Label>
+            <Input
+              id="proposal-pi"
+              name="pi"
+              type="text"
+              required
+              value={formData.pi}
+              onChange={(e) => handleChange("pi", e.target.value)}
+              onBlur={() => handleBlur("pi")}
+              aria-describedby={errors.pi ? "prop-pi-error" : undefined}
+              aria-invalid={!!errors.pi}
+              placeholder="Name of the PI"
+            />
+            {errors.pi && (
+              <p id="prop-pi-error" className="text-sm text-destructive mt-1">{errors.pi}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proposal-pi-email">PI Email</Label>
+            <Input
+              id="proposal-pi-email"
+              name="pi_email"
+              type="email"
+              required
+              value={formData.pi_email}
+              onChange={(e) => handleChange("pi_email", e.target.value)}
+              onBlur={() => handleBlur("pi_email")}
+              aria-describedby={errors.pi_email ? "prop-pi-email-error" : undefined}
+              aria-invalid={!!errors.pi_email}
+              placeholder="PI's email address"
+            />
+            {errors.pi_email && (
+              <p id="prop-pi-email-error" className="text-sm text-destructive mt-1">{errors.pi_email}</p>
+            )}
+          </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="proposal-pi-email">PI Email</Label>
-          <Input
-            id="proposal-pi-email"
-            name="pi_email"
-            type="email"
-            required
-            value={formData.pi_email}
-            onChange={(e) => handleChange("pi_email", e.target.value)}
-            onBlur={() => handleBlur("pi_email")}
-            aria-describedby={errors.pi_email ? "prop-pi-email-error" : undefined}
-            aria-invalid={!!errors.pi_email}
-            placeholder="PI's email address"
-          />
-          {errors.pi_email && (
-            <p id="prop-pi-email-error" className="text-sm text-destructive mt-1">
-              {errors.pi_email}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="proposal-mentor">Scientific Mentor</Label>
-          <Input
-            id="proposal-mentor"
-            name="scientific_mentor"
-            type="text"
-            required
-            value={formData.scientific_mentor}
-            onChange={(e) => handleChange("scientific_mentor", e.target.value)}
-            onBlur={() => handleBlur("scientific_mentor")}
-            aria-describedby={
-              errors.scientific_mentor ? "prop-mentor-error" : undefined
-            }
-            aria-invalid={!!errors.scientific_mentor}
-            placeholder="Name of the scientific mentor"
-          />
-          {errors.scientific_mentor && (
-            <p
-              id="prop-mentor-error"
-              className="text-sm text-destructive mt-1"
-            >
-              {errors.scientific_mentor}
-            </p>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <Label htmlFor="proposal-mentor-email">Mentor Email</Label>
-          <Input
-            id="proposal-mentor-email"
-            name="mentor_email"
-            type="email"
-            required
-            value={formData.mentor_email}
-            onChange={(e) => handleChange("mentor_email", e.target.value)}
-            onBlur={() => handleBlur("mentor_email")}
-            aria-describedby={errors.mentor_email ? "prop-mentor-email-error" : undefined}
-            aria-invalid={!!errors.mentor_email}
-            placeholder="Mentor's email address"
-          />
-          {errors.mentor_email && (
-            <p id="prop-mentor-email-error" className="text-sm text-destructive mt-1">
-              {errors.mentor_email}
-            </p>
-          )}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="space-y-2">
+            <Label htmlFor="proposal-mentor">Scientific Mentor</Label>
+            <Input
+              id="proposal-mentor"
+              name="scientific_mentor"
+              type="text"
+              required
+              value={formData.scientific_mentor}
+              onChange={(e) => handleChange("scientific_mentor", e.target.value)}
+              onBlur={() => handleBlur("scientific_mentor")}
+              aria-describedby={errors.scientific_mentor ? "prop-mentor-error" : undefined}
+              aria-invalid={!!errors.scientific_mentor}
+              placeholder="Name of the scientific mentor"
+            />
+            {errors.scientific_mentor && (
+              <p id="prop-mentor-error" className="text-sm text-destructive mt-1">{errors.scientific_mentor}</p>
+            )}
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="proposal-mentor-email">Mentor Email</Label>
+            <Input
+              id="proposal-mentor-email"
+              name="mentor_email"
+              type="email"
+              required
+              value={formData.mentor_email}
+              onChange={(e) => handleChange("mentor_email", e.target.value)}
+              onBlur={() => handleBlur("mentor_email")}
+              aria-describedby={errors.mentor_email ? "prop-mentor-email-error" : undefined}
+              aria-invalid={!!errors.mentor_email}
+              placeholder="Mentor's email address"
+            />
+            {errors.mentor_email && (
+              <p id="prop-mentor-email-error" className="text-sm text-destructive mt-1">{errors.mentor_email}</p>
+            )}
+          </div>
         </div>
 
         <div className="space-y-2">
