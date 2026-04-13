@@ -11,9 +11,15 @@ import DeviceMockupPlaceholder from "./DeviceMockupPlaceholder.astro";
     <p class="text-base text-[#94a3b8] mt-4 mb-8">
       A modern reading experience for arXiv papers on macOS and iOS
     </p>
-    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-      <img src="/images/readea1.png" alt="Readea app screenshot 1" class="rounded-xl shadow-2xl w-full h-auto" />
-      <img src="/images/readea2.png" alt="Readea app screenshot 2" class="rounded-xl shadow-2xl w-full h-auto" />
+    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6 relative">
+      <div class="relative">
+        <img src="/images/readea1.png" alt="Readea app screenshot - dark theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-a" />
+        <img src="/images/readea1_1.png" alt="Readea app screenshot - light theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-b absolute inset-0 opacity-0" />
+      </div>
+      <div class="relative">
+        <img src="/images/readea2.png" alt="Readea app screenshot 2 - dark theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-a" />
+        <img src="/images/readea2_1.png" alt="Readea app screenshot 2 - light theme" class="rounded-xl shadow-2xl w-full h-auto readea-img-b absolute inset-0 opacity-0" />
+      </div>
     </div>
     <a
       href="/contact"
@@ -23,3 +29,20 @@ import DeviceMockupPlaceholder from "./DeviceMockupPlaceholder.astro";
     </a>
   </div>
 </section>
+
+<style>
+  .readea-img-a, .readea-img-b {
+    transition: opacity 1s ease-in-out;
+  }
+</style>
+
+<script>
+  setInterval(() => {
+    document.querySelectorAll('.readea-img-a').forEach(el => {
+      el.classList.toggle('opacity-0');
+    });
+    document.querySelectorAll('.readea-img-b').forEach(el => {
+      el.classList.toggle('opacity-0');
+    });
+  }, 4000);
+</script>
