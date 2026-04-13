@@ -10,7 +10,9 @@ interface ProposalFormData {
   description: string;
   rationale: string;
   pi: string;
+  pi_email: string;
   scientific_mentor: string;
+  mentor_email: string;
   position: string;
   basic_profile: string;
 }
@@ -20,7 +22,9 @@ interface FormErrors {
   description?: string;
   rationale?: string;
   pi?: string;
+  pi_email?: string;
   scientific_mentor?: string;
+  mentor_email?: string;
   position?: string;
   basic_profile?: string;
 }
@@ -47,8 +51,16 @@ function validate(
     case "pi":
       if (!trimmed) return "Principal Investigator is required.";
       break;
+    case "pi_email":
+      if (!trimmed) return "PI email is required.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Invalid email address.";
+      break;
     case "scientific_mentor":
       if (!trimmed) return "Scientific mentor is required.";
+      break;
+    case "mentor_email":
+      if (!trimmed) return "Mentor email is required.";
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Invalid email address.";
       break;
     case "position":
       if (!trimmed) return "Position is required.";
@@ -66,7 +78,9 @@ const allFields: (keyof ProposalFormData)[] = [
   "description",
   "rationale",
   "pi",
+  "pi_email",
   "scientific_mentor",
+  "mentor_email",
   "position",
   "basic_profile",
 ];
@@ -77,7 +91,9 @@ export default function ProposalForm() {
     description: "",
     rationale: "",
     pi: "",
+    pi_email: "",
     scientific_mentor: "",
+    mentor_email: "",
     position: "",
     basic_profile: "",
   });
@@ -292,6 +308,27 @@ export default function ProposalForm() {
         </div>
 
         <div className="space-y-2">
+          <Label htmlFor="proposal-pi-email">PI Email</Label>
+          <Input
+            id="proposal-pi-email"
+            name="pi_email"
+            type="email"
+            required
+            value={formData.pi_email}
+            onChange={(e) => handleChange("pi_email", e.target.value)}
+            onBlur={() => handleBlur("pi_email")}
+            aria-describedby={errors.pi_email ? "prop-pi-email-error" : undefined}
+            aria-invalid={!!errors.pi_email}
+            placeholder="PI's email address"
+          />
+          {errors.pi_email && (
+            <p id="prop-pi-email-error" className="text-sm text-destructive mt-1">
+              {errors.pi_email}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
           <Label htmlFor="proposal-mentor">Scientific Mentor</Label>
           <Input
             id="proposal-mentor"
@@ -313,6 +350,27 @@ export default function ProposalForm() {
               className="text-sm text-destructive mt-1"
             >
               {errors.scientific_mentor}
+            </p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="proposal-mentor-email">Mentor Email</Label>
+          <Input
+            id="proposal-mentor-email"
+            name="mentor_email"
+            type="email"
+            required
+            value={formData.mentor_email}
+            onChange={(e) => handleChange("mentor_email", e.target.value)}
+            onBlur={() => handleBlur("mentor_email")}
+            aria-describedby={errors.mentor_email ? "prop-mentor-email-error" : undefined}
+            aria-invalid={!!errors.mentor_email}
+            placeholder="Mentor's email address"
+          />
+          {errors.mentor_email && (
+            <p id="prop-mentor-email-error" className="text-sm text-destructive mt-1">
+              {errors.mentor_email}
             </p>
           )}
         </div>
