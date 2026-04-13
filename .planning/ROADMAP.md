@@ -101,9 +101,9 @@ Plans:
   4. Role-based access (admin, developer, viewer) controls what each collaborator can see and do
 **Plans:** 3 plans
 Plans:
-- [ ] 05-01-PLAN.md -- Auth UI foundation: login/signup pages, middleware optimization, DB migration, UserMenu on Enzo-Abyss page
-- [ ] 05-02-PLAN.md -- Issue reporting and proposal submission pages with authenticated CRUD
-- [ ] 05-03-PLAN.md -- Role-specific developer dashboard with admin controls and proposal review
+- [x] 05-01-PLAN.md -- Auth UI foundation: login/signup pages, middleware optimization, DB migration, UserMenu on Enzo-Abyss page
+- [x] 05-02-PLAN.md -- Issue reporting and proposal submission pages with authenticated CRUD
+- [x] 05-03-PLAN.md -- Role-specific developer dashboard with admin controls and proposal review
 **UI hint**: yes
 
 ## Progress
