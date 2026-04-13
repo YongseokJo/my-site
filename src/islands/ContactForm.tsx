@@ -94,12 +94,12 @@ export default function ContactForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-[500px] mx-auto space-y-4"
+      className="max-w-[500px] mx-auto space-y-6"
       noValidate
     >
       <input name="bot-field" style={{ display: "none" }} tabIndex={-1} />
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="contact-name">Name</Label>
         <Input
           id="contact-name"
@@ -119,7 +119,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="contact-email">Email</Label>
         <Input
           id="contact-email"
@@ -139,7 +139,7 @@ export default function ContactForm() {
         )}
       </div>
 
-      <div>
+      <div className="space-y-2">
         <Label htmlFor="contact-message">Message</Label>
         <Textarea
           id="contact-message"
