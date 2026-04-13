@@ -23,7 +23,7 @@ if (!profile?.approved) {
 const canSubmit = ["admin", "co_admin", "pi_mentor", "developer"].includes(profile.role);
 ---
 
-<BaseLayout title="Issues - Enzo-Abyss">
+<BaseLayout title="To-Do / Issues - Enzo-Abyss">
   <div class="space-y-8">
     <div>
       <a href="/software" class="text-sm text-muted-foreground hover:text-foreground">
@@ -32,9 +32,9 @@ const canSubmit = ["admin", "co_admin", "pi_mentor", "developer"].includes(profi
     </div>
 
     <div>
-      <h1 class="text-2xl font-bold mb-2">Issues</h1>
+      <h1 class="text-2xl font-bold mb-2">To-Do / Issues</h1>
       <p class="text-muted-foreground">
-        Report and track issues related to the Enzo-Abyss simulation package.
+        Report and track to-do items and issues related to the Enzo-Abyss simulation package.
       </p>
     </div>
 
@@ -45,7 +45,7 @@ const canSubmit = ["admin", "co_admin", "pi_mentor", "developer"].includes(profi
     )}
 
     <section>
-      <h2 class="text-lg font-semibold mb-4">All Issues</h2>
+      <h2 class="text-lg font-semibold mb-4">All To-Do / Issues</h2>
       <IssueList client:load userId={user.id} userRole={profile.role} />
     </section>
   </div>

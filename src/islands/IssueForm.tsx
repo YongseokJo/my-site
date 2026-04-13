@@ -119,7 +119,7 @@ export default function IssueForm() {
       className="max-w-[500px] space-y-6"
       noValidate
     >
-      <h3 className="text-lg font-semibold">Report an Issue</h3>
+      <h3 className="text-lg font-semibold">Report a To-Do / Issue</h3>
 
       {status === "success" && (
         <div className="rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-200">
@@ -195,7 +195,7 @@ export default function IssueForm() {
         className="bg-primary text-primary-foreground"
         disabled={status === "submitting"}
       >
-        {status === "submitting" ? "Submitting..." : "Submit Issue"}
+        {status === "submitting" ? "Submitting..." : "Submit To-Do / Issue"}
       </Button>
     </form>
   );
