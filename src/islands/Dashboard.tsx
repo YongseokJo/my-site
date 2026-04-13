@@ -83,6 +83,8 @@ interface Proposal {
 interface ApprovedProfile {
   id: string;
   display_name: string | null;
+  role?: UserRole;
+  created_at?: string;
 }
 
 // ---- Helpers ----
@@ -274,6 +276,75 @@ function UserApprovalPanel({
           </div>
         )}
       </CardContent>
+    </Card>
+  );
+}
+
+function UserListPanel({
+  users,
+  onChangeRole,
+  onRefresh,
+}: {
+  users: ApprovedProfile[];
+  onChangeRole: (userId: string, newRole: UserRole) => Promise<void>;
+  onRefresh: () => void;
+}) {
+  const [collapsed, setCollapsed] = useState(false);
+  const [actionLoading, setActionLoading] = useState<string | null>(null);
+
+  return (
+    <Card>
+      <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
+        <CardTitle className="flex items-center gap-2">
+          <svg className={`size-4 shrink-0 transition-transform ${collapsed ? "" : "rotate-90"}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m9 18 6-6-6-6" /></svg>
+          All Users
+        </CardTitle>
+        <CardDescription>{users.length} approved user(s).</CardDescription>
+      </CardHeader>
+      {!collapsed && <CardContent>
+        {users.length === 0 ? (
+          <p className="text-sm text-muted-foreground">No approved users.</p>
+        ) : (
+          <div className="space-y-2">
+            {users.map((u) => (
+              <div
+                key={u.id}
+                className="flex flex-col sm:flex-row sm:items-center gap-2 p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium truncate">{u.display_name || u.id.slice(0, 8)}</p>
+                  {u.created_at && (
+                    <p className="text-xs text-muted-foreground">Joined {formatDate(u.created_at)}</p>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Select
+                    value={u.role || "developer"}
+                    onValueChange={async (val) => {
+                      setActionLoading(u.id);
+                      await onChangeRole(u.id, val as UserRole);
+                      setActionLoading(null);
+                      onRefresh();
+                    }}
+                  >
+                    <SelectTrigger size="sm">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="admin">Admin</SelectItem>
+                      <SelectItem value="co_admin">Co-Admin</SelectItem>
+                      <SelectItem value="pi_mentor">PI / Mentor</SelectItem>
+                      <SelectItem value="developer">Developer</SelectItem>
+                      <SelectItem value="viewer">Viewer</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  {actionLoading === u.id && <span className="text-xs text-muted-foreground">Saving...</span>}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </CardContent>}
     </Card>
   );
 }
@@ -917,10 +988,10 @@ export default function Dashboard({
           .order("created_at", { ascending: false });
         setAllProposals(proposals || []);
 
-        // Fetch approved profiles for assignee dropdown
+        // Fetch approved profiles for assignee dropdown and user list
         const { data: profiles } = await supabase
           .from("profiles")
-          .select("id, display_name")
+          .select("id, display_name, role, created_at")
           .eq("approved", true);
         setApprovedProfiles(profiles || []);
 
@@ -1005,6 +1076,10 @@ export default function Dashboard({
       .eq("id", targetUserId);
   }
 
+  async function handleChangeRole(targetUserId: string, newRole: UserRole) {
+    await supabase.from("profiles").update({ role: newRole }).eq("id", targetUserId);
+  }
+
   async function handleUpdateIssue(
     issueId: string,
     updates: Partial<Pick<Issue, "status" | "assignee">>
@@ -1076,6 +1151,11 @@ export default function Dashboard({
           <UserApprovalPanel
             pendingUsers={pendingUsers}
             onApprove={handleApproveUser}
+            onRefresh={fetchData}
+          />
+          <UserListPanel
+            users={approvedProfiles}
+            onChangeRole={handleChangeRole}
             onRefresh={fetchData}
           />
           <AdminIssuesPanel
