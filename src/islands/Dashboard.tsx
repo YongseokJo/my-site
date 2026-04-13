@@ -623,8 +623,9 @@ function ProposalReviewPanel({
   );
 }
 
-function MyIssuesPanel({ issues }: { issues: Issue[] }) {
+function MyIssuesPanel({ issues, onDelete }: { issues: Issue[]; onDelete: (id: string) => Promise<void> }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
   return (
     <Card>
       <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
@@ -665,13 +666,27 @@ function MyIssuesPanel({ issues }: { issues: Issue[] }) {
                     {formatDate(issue.created_at)}
                   </p>
                 </div>
-                <div className="flex gap-1 shrink-0">
+                <div className="flex items-center gap-2 shrink-0">
                   <Badge variant={statusVariant(issue.status)}>
                     {statusLabel(issue.status)}
                   </Badge>
                   <Badge variant={priorityVariant(issue.priority)}>
                     {issue.priority}
                   </Badge>
+                  {issue.status === "open" && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm("Delete this issue?")) return;
+                        setDeleting(issue.id);
+                        await onDelete(issue.id);
+                        setDeleting(null);
+                      }}
+                      disabled={deleting === issue.id}
+                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                    >
+                      {deleting === issue.id ? "..." : "Delete"}
+                    </button>
+                  )}
                 </div>
               </div>
             ))}
@@ -682,8 +697,9 @@ function MyIssuesPanel({ issues }: { issues: Issue[] }) {
   );
 }
 
-function MyProposalsPanel({ proposals }: { proposals: Proposal[] }) {
+function MyProposalsPanel({ proposals, onDelete }: { proposals: Proposal[]; onDelete: (id: string) => Promise<void> }) {
   const [collapsed, setCollapsed] = useState(false);
+  const [deleting, setDeleting] = useState<string | null>(null);
   return (
     <Card>
       <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
@@ -725,9 +741,25 @@ function MyProposalsPanel({ proposals }: { proposals: Proposal[] }) {
                   <p className="text-sm font-medium truncate">
                     {proposal.title}
                   </p>
-                  <Badge variant={proposalStatusVariant(proposal.status)}>
-                    {proposalStatusLabel(proposal.status)}
-                  </Badge>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <Badge variant={proposalStatusVariant(proposal.status)}>
+                      {proposalStatusLabel(proposal.status)}
+                    </Badge>
+                    {proposal.status === "pending" && (
+                      <button
+                        onClick={async () => {
+                          if (!confirm("Delete this proposal?")) return;
+                          setDeleting(proposal.id);
+                          await onDelete(proposal.id);
+                          setDeleting(null);
+                        }}
+                        disabled={deleting === proposal.id}
+                        className="text-xs text-destructive hover:underline disabled:opacity-50"
+                      >
+                        {deleting === proposal.id ? "..." : "Delete"}
+                      </button>
+                    )}
+                  </div>
                 </div>
                 {proposal.review_comment &&
                   (proposal.status === "approved" ||
@@ -1031,16 +1063,16 @@ export default function Dashboard({
             onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
-          <MyIssuesPanel issues={myIssues} />
-          <MyProposalsPanel proposals={myProposals} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} />
         </>
       )}
 
       {/* Developer panels */}
       {role === "developer" && (
         <>
-          <MyIssuesPanel issues={myIssues} />
-          <MyProposalsPanel proposals={myProposals} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} />
         </>
       )}
 
