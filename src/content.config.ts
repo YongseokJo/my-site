@@ -29,4 +29,14 @@ const pages = defineCollection({
   }),
 });
 
-export const collections = { publications, pages };
+const tutorials = defineCollection({
+  loader: glob({ pattern: "**/*.md", base: "./src/content/tutorials" }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string().optional(),
+    order: z.number(),
+    screenshot: z.string().optional(),
+  }),
+});
+
+export const collections = { publications, pages, tutorials };

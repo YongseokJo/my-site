@@ -1,8 +1,77 @@
 ---
-import BaseLayout from "../layouts/BaseLayout.astro";
+import HomeLayout from "../layouts/HomeLayout.astro";
+import ReadeaHero from "../components/ReadeaHero.astro";
+import FeatureGrid from "../components/FeatureGrid.astro";
+import FeatureCard from "../components/FeatureCard.astro";
 ---
-<BaseLayout title="ArXiv App" description="ArXiv reading app by Yongseok Jo">
-  <h1 class="text-3xl font-bold mb-8">ArXiv App</h1>
-  <p class="text-muted-foreground">Site Under Construction</p>
-  <p class="text-sm text-muted-foreground mt-2">This site is being rebuilt with a new design. Check back soon.</p>
-</BaseLayout>
+<HomeLayout title="Readea" description="Readea: a modern arXiv reading app for macOS and iOS with AI-powered paper recommendations.">
+  <Fragment slot="hero">
+    <ReadeaHero />
+  </Fragment>
+
+  <FeatureGrid sectionTitle="Features">
+    <FeatureCard title="AI Recommendations" description="Get personalized paper suggestions based on your reading interests and research topics.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
+        <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
+        <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
+        <path d="M17.599 6.5a3 3 0 0 0 .399-1.375" />
+        <path d="M6.003 5.125A3 3 0 0 0 6.401 6.5" />
+        <path d="M3.477 10.896a4 4 0 0 1 .585-.396" />
+        <path d="M19.938 10.5a4 4 0 0 1 .585.396" />
+        <path d="M6 18a4 4 0 0 1-1.967-.516" />
+        <path d="M19.967 17.484A4 4 0 0 1 18 18" />
+      </svg>
+    </FeatureCard>
+
+    <FeatureCard title="Cross-Platform" description="Read papers seamlessly on macOS and iOS with synced progress and collections.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect width="20" height="14" x="2" y="3" rx="2" />
+        <line x1="8" x2="16" y1="21" y2="21" />
+        <line x1="12" x2="12" y1="17" y2="21" />
+      </svg>
+    </FeatureCard>
+
+    <FeatureCard title="Smart Search" description="Find papers quickly with full-text search across titles, abstracts, and authors.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8" />
+        <path d="m21 21-4.3-4.3" />
+      </svg>
+    </FeatureCard>
+
+    <FeatureCard title="Reading Lists" description="Organize papers into custom collections for different projects or topics.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 7v14" />
+        <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+      </svg>
+    </FeatureCard>
+
+    <FeatureCard title="Offline Access" description="Download papers for reading without an internet connection.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+        <polyline points="7 10 12 15 17 10" />
+        <line x1="12" x2="12" y1="15" y2="3" />
+      </svg>
+    </FeatureCard>
+
+    <FeatureCard title="Daily Digest" description="Get notified about new papers matching your research interests.">
+      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
+        <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
+      </svg>
+    </FeatureCard>
+  </FeatureGrid>
+
+  <h2 class="text-2xl font-bold mb-6 mt-12">Getting Started</h2>
+  <a href="/arxiv-app/tutorials/getting-started" class="flex items-center gap-2 text-base text-primary hover:underline transition-all duration-150 py-2">
+    Getting Started with Readea &rarr;
+  </a>
+  <a href="/arxiv-app/tutorials/managing-feeds" class="flex items-center gap-2 text-base text-primary hover:underline transition-all duration-150 py-2">
+    Managing Your Feeds &rarr;
+  </a>
+
+  <div class="mt-12 flex flex-col sm:flex-row gap-4">
+    <a href="/arxiv-app/beta" class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity">Sign up for Beta</a>
+    <a href="/arxiv-app/feedback" class="inline-flex items-center justify-center px-6 py-3 border border-border text-foreground font-medium rounded-lg hover:bg-muted transition-colors">Send Feedback</a>
+  </div>
+</HomeLayout>
