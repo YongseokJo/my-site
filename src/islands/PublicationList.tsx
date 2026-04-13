@@ -145,7 +145,7 @@ export default function PublicationList({ publications }: PublicationListProps) 
       </div>
 
       {/* Publication cards */}
-      <div className="space-y-2 mt-3">
+      <div className="space-y-1 mt-2">
         {filtered.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">
             No publications match the selected filters.
