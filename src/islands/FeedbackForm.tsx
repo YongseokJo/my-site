@@ -74,7 +74,7 @@ export default function FeedbackForm() {
     setStatus("submitting");
     try {
       const response = await fetch(
-        "https://formspree.io/f/YOUR_FEEDBACK_FORM_ID",
+        "https://formspree.io/f/mpqkzyre",
         {
           method: "POST",
           headers: {

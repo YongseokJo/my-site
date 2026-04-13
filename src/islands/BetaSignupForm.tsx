@@ -56,7 +56,7 @@ export default function BetaSignupForm() {
     }
     setStatus("submitting");
     try {
-      const response = await fetch("https://formspree.io/f/YOUR_BETA_FORM_ID", {
+      const response = await fetch("https://formspree.io/f/mgorenyq", {
         method: "POST",
         headers: { "Content-Type": "application/json", Accept: "application/json" },
         body: JSON.stringify({ name: formData.name, email: formData.email }),
