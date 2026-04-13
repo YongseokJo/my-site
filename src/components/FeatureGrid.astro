@@ -1,0 +1,15 @@
+---
+interface Props {
+  sectionTitle?: string;
+}
+
+const { sectionTitle } = Astro.props;
+---
+<section>
+  {sectionTitle && (
+    <h2 class="text-2xl font-bold mb-6">{sectionTitle}</h2>
+  )}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+    <slot />
+  </div>
+</section>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  prev?: { title: string; href: string };
+  next?: { title: string; href: string };
+}
+
+const { prev, next } = Astro.props;
+---
+<nav class="flex justify-between items-center mt-12 pt-6 border-t border-border">
+  {prev ? (
+    <a
+      href={prev.href}
+      class="text-primary hover:underline transition-all duration-150 flex items-center gap-1"
+    >
+      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m15 18-6-6 6-6" />
+      </svg>
+      Previous: {prev.title}
+    </a>
+  ) : (
+    <span />
+  )}
+  {next ? (
+    <a
+      href={next.href}
+      class="text-primary hover:underline transition-all duration-150 flex items-center gap-1 ml-auto"
+    >
+      Next: {next.title}
+      <svg class="size-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="m9 18 6-6-6-6" />
+      </svg>
+    </a>
+  ) : (
+    <span />
+  )}
+</nav>
