@@ -623,9 +623,13 @@ function ProposalReviewPanel({
   );
 }
 
-function MyIssuesPanel({ issues, onDelete }: { issues: Issue[]; onDelete: (id: string) => Promise<void> }) {
+function MyIssuesPanel({ issues, onDelete, onEdit }: { issues: Issue[]; onDelete: (id: string) => Promise<void>; onEdit: (id: string, updates: { title: string; description: string | null }) => Promise<void> }) {
   const [collapsed, setCollapsed] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [saving, setSaving] = useState(false);
   return (
     <Card>
       <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
@@ -658,36 +662,48 @@ function MyIssuesPanel({ issues, onDelete }: { issues: Issue[]; onDelete: (id: s
             {issues.map((issue) => (
               <div
                 key={issue.id}
-                className="flex items-center justify-between gap-2 p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5"
+                className="p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5 space-y-2"
               >
-                <div className="min-w-0">
-                  <p className="text-sm font-medium truncate">{issue.title}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {formatDate(issue.created_at)}
-                  </p>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  <Badge variant={statusVariant(issue.status)}>
-                    {statusLabel(issue.status)}
-                  </Badge>
-                  <Badge variant={priorityVariant(issue.priority)}>
-                    {issue.priority}
-                  </Badge>
-                  {issue.status === "open" && (
-                    <button
-                      onClick={async () => {
-                        if (!confirm("Delete this issue?")) return;
-                        setDeleting(issue.id);
-                        await onDelete(issue.id);
-                        setDeleting(null);
-                      }}
-                      disabled={deleting === issue.id}
-                      className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
-                    >
-                      {deleting === issue.id ? "..." : "Delete"}
-                    </button>
-                  )}
-                </div>
+                {editing === issue.id ? (
+                  <div className="space-y-2">
+                    <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md" />
+                    <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows={2} className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md" />
+                    <div className="flex gap-2 justify-end">
+                      <button onClick={() => setEditing(null)} className="text-xs border border-border rounded-md px-3 py-1.5 hover:bg-muted transition-colors">Cancel</button>
+                      <button
+                        onClick={async () => {
+                          setSaving(true);
+                          await onEdit(issue.id, { title: editTitle, description: editDesc || null });
+                          setSaving(false);
+                          setEditing(null);
+                        }}
+                        disabled={saving || !editTitle.trim()}
+                        className="text-xs bg-primary text-primary-foreground rounded-md px-3 py-1.5 hover:opacity-90 transition-opacity disabled:opacity-50"
+                      >{saving ? "Saving..." : "Save"}</button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="flex items-center justify-between gap-2">
+                    <div className="min-w-0">
+                      <p className="text-sm font-medium truncate">{issue.title}</p>
+                      <p className="text-xs text-muted-foreground">{formatDate(issue.created_at)}</p>
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <Badge variant={statusVariant(issue.status)}>{statusLabel(issue.status)}</Badge>
+                      <Badge variant={priorityVariant(issue.priority)}>{issue.priority}</Badge>
+                      {issue.status === "open" && (
+                        <>
+                          <button onClick={() => { setEditing(issue.id); setEditTitle(issue.title); setEditDesc(issue.description || ""); }} className="text-xs border border-border rounded-md px-2 py-1 hover:bg-muted transition-colors">Edit</button>
+                          <button
+                            onClick={async () => { if (!confirm("Delete this issue?")) return; setDeleting(issue.id); await onDelete(issue.id); setDeleting(null); }}
+                            disabled={deleting === issue.id}
+                            className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
+                          >{deleting === issue.id ? "..." : "Delete"}</button>
+                        </>
+                      )}
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -697,9 +713,14 @@ function MyIssuesPanel({ issues, onDelete }: { issues: Issue[]; onDelete: (id: s
   );
 }
 
-function MyProposalsPanel({ proposals, onDelete }: { proposals: Proposal[]; onDelete: (id: string) => Promise<void> }) {
+function MyProposalsPanel({ proposals, onDelete, onEdit }: { proposals: Proposal[]; onDelete: (id: string) => Promise<void>; onEdit: (id: string, updates: { title: string; description: string | null; rationale: string | null }) => Promise<void> }) {
   const [collapsed, setCollapsed] = useState(false);
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [editing, setEditing] = useState<string | null>(null);
+  const [editTitle, setEditTitle] = useState("");
+  const [editDesc, setEditDesc] = useState("");
+  const [editRationale, setEditRationale] = useState("");
+  const [saving, setSaving] = useState(false);
   return (
     <Card>
       <CardHeader className="cursor-pointer select-none" onClick={() => setCollapsed(!collapsed)}>
@@ -735,43 +756,54 @@ function MyProposalsPanel({ proposals, onDelete }: { proposals: Proposal[]; onDe
             {proposals.map((proposal) => (
               <div
                 key={proposal.id}
-                className="p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5 space-y-1"
+                className="p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5 space-y-2"
               >
-                <div className="flex items-center justify-between gap-2">
-                  <p className="text-sm font-medium truncate">
-                    {proposal.title}
-                  </p>
-                  <div className="flex items-center gap-2 shrink-0">
-                    <Badge variant={proposalStatusVariant(proposal.status)}>
-                      {proposalStatusLabel(proposal.status)}
-                    </Badge>
-                    {proposal.status === "pending" && (
+                {editing === proposal.id ? (
+                  <div className="space-y-2">
+                    <input value={editTitle} onChange={(e) => setEditTitle(e.target.value)} className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md" />
+                    <textarea value={editDesc} onChange={(e) => setEditDesc(e.target.value)} rows={2} placeholder="Description" className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md" />
+                    <textarea value={editRationale} onChange={(e) => setEditRationale(e.target.value)} rows={2} placeholder="Rationale" className="w-full px-3 py-1.5 text-sm bg-background border border-border rounded-md" />
+                    <div className="flex gap-2 justify-end">
+                      <button onClick={() => setEditing(null)} className="text-xs border border-border rounded-md px-3 py-1.5 hover:bg-muted transition-colors">Cancel</button>
                       <button
                         onClick={async () => {
-                          if (!confirm("Delete this proposal?")) return;
-                          setDeleting(proposal.id);
-                          await onDelete(proposal.id);
-                          setDeleting(null);
+                          setSaving(true);
+                          await onEdit(proposal.id, { title: editTitle, description: editDesc || null, rationale: editRationale || null });
+                          setSaving(false);
+                          setEditing(null);
                         }}
-                        disabled={deleting === proposal.id}
-                        className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
-                      >
-                        {deleting === proposal.id ? "..." : "Delete"}
-                      </button>
-                    )}
+                        disabled={saving || !editTitle.trim()}
+                        className="text-xs bg-primary text-primary-foreground rounded-md px-3 py-1.5 hover:opacity-90 transition-opacity disabled:opacity-50"
+                      >{saving ? "Saving..." : "Save"}</button>
+                    </div>
                   </div>
-                </div>
-                {proposal.review_comment &&
-                  (proposal.status === "approved" ||
-                    proposal.status === "rejected") && (
-                    <blockquote className="border-l-2 border-muted-foreground/30 pl-2 text-xs text-muted-foreground italic">
-                      <span className="font-medium not-italic">Review:</span>{" "}
-                      {proposal.review_comment}
-                    </blockquote>
-                  )}
-                <p className="text-xs text-muted-foreground">
-                  {formatDate(proposal.created_at)}
-                </p>
+                ) : (
+                  <>
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-sm font-medium truncate">{proposal.title}</p>
+                      <div className="flex items-center gap-2 shrink-0">
+                        <Badge variant={proposalStatusVariant(proposal.status)}>{proposalStatusLabel(proposal.status)}</Badge>
+                        {proposal.status === "pending" && (
+                          <>
+                            <button onClick={() => { setEditing(proposal.id); setEditTitle(proposal.title); setEditDesc(proposal.description || ""); setEditRationale(proposal.rationale || ""); }} className="text-xs border border-border rounded-md px-2 py-1 hover:bg-muted transition-colors">Edit</button>
+                            <button
+                              onClick={async () => { if (!confirm("Delete this proposal?")) return; setDeleting(proposal.id); await onDelete(proposal.id); setDeleting(null); }}
+                              disabled={deleting === proposal.id}
+                              className="text-xs text-destructive border border-destructive rounded-md px-2 py-1 hover:bg-destructive hover:text-white transition-colors disabled:opacity-50"
+                            >{deleting === proposal.id ? "..." : "Delete"}</button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                    {proposal.review_comment &&
+                      (proposal.status === "approved" || proposal.status === "rejected") && (
+                        <blockquote className="border-l-2 border-muted-foreground/30 pl-2 text-xs text-muted-foreground italic">
+                          <span className="font-medium not-italic">Review:</span> {proposal.review_comment}
+                        </blockquote>
+                      )}
+                    <p className="text-xs text-muted-foreground">{formatDate(proposal.created_at)}</p>
+                  </>
+                )}
               </div>
             ))}
           </div>
@@ -988,6 +1020,16 @@ export default function Dashboard({
     await supabase.from("proposals").delete().eq("id", proposalId);
   }
 
+  async function handleEditIssue(issueId: string, updates: { title: string; description: string | null }) {
+    await supabase.from("issues").update(updates).eq("id", issueId);
+    fetchData();
+  }
+
+  async function handleEditProposal(proposalId: string, updates: { title: string; description: string | null; rationale: string | null }) {
+    await supabase.from("proposals").update(updates).eq("id", proposalId);
+    fetchData();
+  }
+
   async function handleReviewProposal(
     proposalId: string,
     status: "approved" | "rejected",
@@ -1063,16 +1105,16 @@ export default function Dashboard({
             onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
-          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} />
-          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
       )}
 
       {/* Developer panels */}
       {role === "developer" && (
         <>
-          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} />
-          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
       )}
 
