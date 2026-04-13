@@ -1,0 +1,42 @@
+---
+interface Props {
+  title: string;
+  authors: string;
+  year: number;
+  venue: string;
+  links: { arxiv?: string; doi?: string; ads?: string; pdf?: string };
+}
+const { title, authors, year, venue, links } = Astro.props;
+
+// Parse semicolon-separated author string into Person objects
+const authorList = authors
+  .split(";")
+  .map((a) => a.trim())
+  .filter((a) => a.length > 0)
+  .map((name) => ({
+    "@type": "Person" as const,
+    name,
+  }));
+
+// Build JSON-LD — omit properties when data is missing (per UI-SPEC contract #4)
+const jsonLd: Record<string, unknown> = {
+  "@context": "https://schema.org",
+  "@type": "ScholarlyArticle",
+  name: title,
+  author: authorList,
+  datePublished: String(year),
+};
+
+// Add URL: prefer DOI, fallback to arXiv (per RESEARCH Pattern 4)
+if (links.doi && links.doi.length > 0) {
+  jsonLd.url = links.doi;
+} else if (links.arxiv && links.arxiv.length > 0) {
+  jsonLd.url = links.arxiv;
+}
+
+// Add publisher only if venue exists and is non-empty
+if (venue && venue.length > 0) {
+  jsonLd.publisher = { "@type": "Organization", name: venue };
+}
+---
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

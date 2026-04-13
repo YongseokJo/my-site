@@ -2,6 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import { getCollection } from "astro:content";
 import PublicationList from "../islands/PublicationList.tsx";
+import SchemaOrgPublication from "../components/SchemaOrgPublication.astro";
 
 const publications = await getCollection("publications");
 const pubData = publications
@@ -12,4 +13,15 @@ const pubData = publications
 <BaseLayout title="Publications" description="Research publications by Yongseok Jo in computational astrophysics and machine learning">
   <h1 class="text-2xl font-bold mb-8">Publications</h1>
   <PublicationList client:load publications={pubData} />
+
+  {/* Schema.org structured data for each publication */}
+  {pubData.map((pub) => (
+    <SchemaOrgPublication
+      title={pub.title}
+      authors={pub.authors}
+      year={pub.year}
+      venue={pub.venue}
+      links={pub.links}
+    />
+  ))}
 </BaseLayout>
