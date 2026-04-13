@@ -153,7 +153,7 @@ export default function PublicationList({ publications }: PublicationListProps) 
         ) : (
           filtered.map((pub) => (
             <Card key={pub.id} className="bg-card border border-border">
-              <CardContent className="p-6">
+              <CardContent className="p-3">
                 <h3 className="text-base font-bold text-foreground mb-1">
                   {pub.title}
                 </h3>
