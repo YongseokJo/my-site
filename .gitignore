@@ -48,4 +48,5 @@ hugo_cache/
 .env
 .env.local
 .env.*
+!.env.example
 .astro/
