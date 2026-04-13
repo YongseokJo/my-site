@@ -84,6 +84,11 @@ Plans:
   2. Simulation collaborators can create an account and log in with email/password
   3. Row-Level Security policies prevent users from accessing other users' data
   4. Keep-alive mechanism runs automatically and prevents Supabase free-tier project pausing
+**Plans:** 3 plans
+Plans:
+- [ ] 04-01-PLAN.md -- Database schema (profiles, issues, proposals) and RLS policies as SQL migrations
+- [ ] 04-02-PLAN.md -- Supabase client, Astro hybrid mode, auth middleware, and API endpoints
+- [ ] 04-03-PLAN.md -- GitHub Actions keep-alive cron workflow
 
 ### Phase 5: Dynamic Collaboration Features
 **Goal**: Simulation collaborators can submit issues, propose projects, and manage their work through authenticated workflows
@@ -106,5 +111,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 1. Framework Migration & Design System | 4/4 | Complete | - |
 | 2. Academic Content | 0/4 | Planning complete | - |
 | 3. Product Pages & SEO | 0/5 | Planning complete | - |
-| 4. Backend Infrastructure & Auth | 0/TBD | Not started | - |
+| 4. Backend Infrastructure & Auth | 0/3 | Planning complete | - |
 | 5. Dynamic Collaboration Features | 0/TBD | Not started | - |
