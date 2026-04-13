@@ -35,13 +35,13 @@ if (user) {
   </div>
 
   <FeatureGrid sectionTitle="Features">
-    <FeatureCard title="Adaptive Mesh Refinement" description="Multi-level grid refinement for resolving small-scale structure within large cosmological volumes.">
+    <FeatureCard title="Enzo" description="A community-developed adaptive mesh refinement (AMR) code for multi-physics cosmological hydrodynamic simulations, combining Eulerian hydrodynamics with dark matter N-body dynamics, radiative cooling, and star formation physics.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <rect width="7" height="7" x="14" y="3" rx="1" />
         <path d="M10 21V8a1 1 0 0 0-1-1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-5a1 1 0 0 0-1-1H3" />
       </svg>
     </FeatureCard>
-    <FeatureCard title="N-body + Hydrodynamics" description="Self-consistent hybrid approach coupling gravitational N-body dynamics with hydrodynamic gas evolution.">
+    <FeatureCard title="Direct N-body Dynamics" description="Solves gravitational equations of motion for N particles without approximations, calculating exact pairwise interactions. Essential for modeling star cluster dynamics and close-encounter interactions at high fidelity.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="3" />
         <circle cx="19" cy="5" r="2" />
@@ -50,25 +50,16 @@ if (user) {
         <path d="M13.6 2.1a10 10 0 0 0-9.941 15.416" />
       </svg>
     </FeatureCard>
-    <FeatureCard title="Star Formation & Feedback" description="Sub-grid models for star formation, supernova feedback, and chemical enrichment in early universe environments.">
+    <FeatureCard title="Star-by-Star Physics" description="Tracks individual stars throughout their lifecycles at parsec-scale resolution within live cosmological simulations, modeling star-by-star chemical enrichment, feedback, and interactions in early galaxy formation environments.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .963 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.963 0z" />
       </svg>
     </FeatureCard>
-    <FeatureCard title="Black Hole Physics" description="Formation and growth of massive black holes with accretion and feedback processes in primordial halos.">
+    <FeatureCard title="Robust Black Hole Physics (On-going)" description="AI-powered black hole physics informed by general-relativistic magnetohydrodynamic (GRMHD) simulations. Leveraging machine learning to model black hole accretion, feedback, and jet dynamics with unprecedented physical accuracy.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="12" cy="12" r="10" />
-      </svg>
-    </FeatureCard>
-    <FeatureCard title="Scalable Performance" description="Optimized for high-performance computing clusters with efficient parallel decomposition.">
-      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z" />
-      </svg>
-    </FeatureCard>
-    <FeatureCard title="Analysis Toolkit" description="Built-in tools for halo finding, merger tree construction, and visualization of simulation outputs.">
-      <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 3v16a2 2 0 0 0 2 2h16" />
-        <path d="M7 16l4-8 4 4 4-6" />
+        <circle cx="12" cy="12" r="4" />
+        <path d="M12 2a14.5 14.5 0 0 0 0 20a14.5 14.5 0 0 0 0-20" />
       </svg>
     </FeatureCard>
   </FeatureGrid>
