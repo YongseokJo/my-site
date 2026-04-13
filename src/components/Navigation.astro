@@ -43,19 +43,22 @@ function isActive(href: string): boolean {
         </a>
       ))}
       <div class="w-px h-6 bg-border mx-2"></div>
-      {navLinks.filter(l => l.highlight).map((link) => (
-        <a
-          href={link.href}
-          class:list={[
-            "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
-            isActive(link.href)
-              ? "bg-primary text-primary-foreground border-primary"
-              : "border-primary text-primary hover:bg-primary hover:text-primary-foreground",
-          ]}
-        >
-          {link.name}
-        </a>
-      ))}
+      <div class="flex items-center gap-2">
+        {navLinks.filter(l => l.highlight).map((link) => (
+          <a
+            href={link.href}
+            class:list={[
+              "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
+              isActive(link.href)
+                ? "bg-primary text-primary-foreground border-primary"
+                : "border-primary text-primary hover:bg-primary hover:text-primary-foreground",
+            ]}
+          >
+            {link.name}
+          </a>
+        ))}
+      </div>
+      <div class="w-px h-6 bg-border mx-2"></div>
       <div class="ml-2">
         <SearchToggle client:load />
       </div>
