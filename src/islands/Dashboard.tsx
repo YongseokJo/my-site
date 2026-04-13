@@ -282,6 +282,7 @@ function AdminIssuesPanel({
   issues,
   approvedProfiles,
   onUpdateIssue,
+  onDeleteIssue,
   onRefresh,
 }: {
   issues: Issue[];
@@ -290,9 +291,11 @@ function AdminIssuesPanel({
     issueId: string,
     updates: Partial<Pick<Issue, "status" | "assignee">>
   ) => Promise<void>;
+  onDeleteIssue: (issueId: string) => Promise<void>;
   onRefresh: () => void;
 }) {
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
 
   return (
     <Card>
@@ -377,10 +380,27 @@ function AdminIssuesPanel({
                     </SelectContent>
                   </Select>
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  {formatDate(issue.created_at)}
-                  {actionLoading === issue.id && " -- Updating..."}
-                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-xs text-muted-foreground">
+                    {formatDate(issue.created_at)}
+                    {actionLoading === issue.id && " -- Updating..."}
+                  </p>
+                  {issue.status === "open" && (
+                    <button
+                      onClick={async () => {
+                        if (!confirm("Delete this issue?")) return;
+                        setDeleteLoading(issue.id);
+                        await onDeleteIssue(issue.id);
+                        setDeleteLoading(null);
+                        onRefresh();
+                      }}
+                      disabled={deleteLoading === issue.id}
+                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                    >
+                      {deleteLoading === issue.id ? "Deleting..." : "Delete"}
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
           </div>
@@ -394,6 +414,7 @@ function ProposalReviewPanel({
   proposals,
   userId,
   onReview,
+  onDeleteProposal,
   onRefresh,
 }: {
   proposals: Proposal[];
@@ -403,11 +424,13 @@ function ProposalReviewPanel({
     status: "approved" | "rejected",
     comment: string
   ) => Promise<void>;
+  onDeleteProposal: (proposalId: string) => Promise<void>;
   onRefresh: () => void;
 }) {
   const [reviewComment, setReviewComment] = useState("");
   const [commentError, setCommentError] = useState("");
   const [actionLoading, setActionLoading] = useState(false);
+  const [deleteLoading, setDeleteLoading] = useState<string | null>(null);
   const [reviewingId, setReviewingId] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -500,9 +523,24 @@ function ProposalReviewPanel({
                   <span className="text-xs text-muted-foreground">
                     {formatDate(proposal.created_at)}
                   </span>
-                  <Button size="sm" onClick={() => openReview(proposal.id)}>
-                    Review
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={async () => {
+                        if (!confirm("Delete this proposal?")) return;
+                        setDeleteLoading(proposal.id);
+                        await onDeleteProposal(proposal.id);
+                        setDeleteLoading(null);
+                        onRefresh();
+                      }}
+                      disabled={deleteLoading === proposal.id}
+                      className="text-xs text-destructive hover:underline disabled:opacity-50"
+                    >
+                      {deleteLoading === proposal.id ? "Deleting..." : "Delete"}
+                    </button>
+                    <Button size="sm" onClick={() => openReview(proposal.id)}>
+                      Review
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -892,6 +930,14 @@ export default function Dashboard({
     await supabase.from("issues").update(updates).eq("id", issueId);
   }
 
+  async function handleDeleteIssue(issueId: string) {
+    await supabase.from("issues").delete().eq("id", issueId);
+  }
+
+  async function handleDeleteProposal(proposalId: string) {
+    await supabase.from("proposals").delete().eq("id", proposalId);
+  }
+
   async function handleReviewProposal(
     proposalId: string,
     status: "approved" | "rejected",
@@ -944,12 +990,14 @@ export default function Dashboard({
             issues={allIssues}
             approvedProfiles={approvedProfiles}
             onUpdateIssue={handleUpdateIssue}
+            onDeleteIssue={handleDeleteIssue}
             onRefresh={fetchData}
           />
           <ProposalReviewPanel
             proposals={allProposals}
             userId={userId}
             onReview={handleReviewProposal}
+            onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
         </>
@@ -962,6 +1010,7 @@ export default function Dashboard({
             proposals={allProposals}
             userId={userId}
             onReview={handleReviewProposal}
+            onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
           <MyIssuesPanel issues={myIssues} />
