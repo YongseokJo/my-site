@@ -67,6 +67,7 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   async function fetchProposals() {
     try {
@@ -135,58 +136,82 @@ export default function ProposalList({ userId, userRole }: ProposalListProps) {
 
   return (
     <div className="space-y-3">
-      {proposals.map((proposal) => (
-        <Card key={proposal.id} size="sm">
-          <CardHeader>
-            <CardTitle>
-              {proposal.title}
-              {proposal.submitter === userId && (
-                <span className="ml-2 text-xs text-muted-foreground font-normal">
-                  (yours)
-                </span>
-              )}
-            </CardTitle>
-            <CardDescription>
-              <div className="flex flex-wrap items-center gap-2 mt-1">
-                <Badge variant={statusVariant(proposal.status)}>
-                  {statusLabel(proposal.status)}
-                </Badge>
-                <span className="text-xs text-muted-foreground">
-                  {formatDate(proposal.created_at)}
-                </span>
-                {proposal.status === "pending" && (userRole === "admin" || userRole === "co_admin" || proposal.submitter === userId) && (
-                  <button
-                    onClick={() => deleteProposal(proposal.id)}
-                    disabled={deleting === proposal.id}
-                    className="text-xs text-destructive hover:underline disabled:opacity-50"
+      {proposals.map((proposal) => {
+        const isExpanded = expanded.has(proposal.id);
+        return (
+          <Card key={proposal.id} size="sm">
+            <CardHeader
+              className="cursor-pointer select-none"
+              onClick={() => setExpanded((prev) => {
+                const next = new Set(prev);
+                if (next.has(proposal.id)) next.delete(proposal.id);
+                else next.add(proposal.id);
+                return next;
+              })}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <CardTitle className="flex items-center gap-2">
+                  <svg
+                    className={`size-4 shrink-0 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                   >
-                    {deleting === proposal.id ? "Deleting..." : "Delete"}
-                  </button>
-                )}
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                  {proposal.title}
+                  {proposal.submitter === userId && (
+                    <span className="text-xs text-muted-foreground font-normal">(yours)</span>
+                  )}
+                </CardTitle>
+                <div className="flex items-center gap-2 shrink-0">
+                  <Badge variant={statusVariant(proposal.status)}>
+                    {statusLabel(proposal.status)}
+                  </Badge>
+                  <span className="text-xs text-muted-foreground">
+                    {formatDate(proposal.created_at)}
+                  </span>
+                </div>
               </div>
-            </CardDescription>
-          </CardHeader>
-          {proposal.description && (
-            <CardContent>
-              <p className="text-sm text-muted-foreground line-clamp-2">
-                {proposal.description}
-              </p>
-            </CardContent>
-          )}
-          {proposal.review_comment &&
-            (proposal.status === "approved" ||
-              proposal.status === "rejected") && (
-              <CardContent>
-                <blockquote className="border-l-2 border-muted-foreground/30 pl-3 text-sm text-muted-foreground italic">
-                  <span className="font-medium not-italic">
-                    Review comment:
-                  </span>{" "}
-                  {proposal.review_comment}
-                </blockquote>
-              </CardContent>
+            </CardHeader>
+            {isExpanded && (
+              <>
+                {proposal.description && (
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      {proposal.description}
+                    </p>
+                  </CardContent>
+                )}
+                {proposal.review_comment &&
+                  (proposal.status === "approved" ||
+                    proposal.status === "rejected") && (
+                    <CardContent>
+                      <blockquote className="border-l-2 border-muted-foreground/30 pl-3 text-sm text-muted-foreground italic">
+                        <span className="font-medium not-italic">
+                          Review comment:
+                        </span>{" "}
+                        {proposal.review_comment}
+                      </blockquote>
+                    </CardContent>
+                  )}
+                <CardContent>
+                  <div className="flex justify-end">
+                    {proposal.status === "pending" && (userRole === "admin" || userRole === "co_admin" || proposal.submitter === userId) && (
+                      <button
+                        onClick={(e) => { e.stopPropagation(); deleteProposal(proposal.id); }}
+                        disabled={deleting === proposal.id}
+                        className="text-xs text-destructive hover:underline disabled:opacity-50"
+                      >
+                        {deleting === proposal.id ? "Deleting..." : "Delete"}
+                      </button>
+                    )}
+                  </div>
+                </CardContent>
+              </>
             )}
-        </Card>
-      ))}
+          </Card>
+        );
+      })}
     </div>
   );
 }

@@ -82,6 +82,7 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [deleting, setDeleting] = useState<string | null>(null);
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
 
   async function fetchIssues() {
     try {
@@ -150,47 +151,71 @@ export default function IssueList({ userId, userRole }: IssueListProps) {
 
   return (
     <div className="space-y-3">
-      {issues.map((issue) => (
-        <Card key={issue.id} size="sm">
-          <CardHeader>
-            <CardTitle>{issue.title}</CardTitle>
-            <CardDescription>
-              <div className="flex flex-wrap gap-2 mt-1">
-                <Badge variant={statusVariant(issue.status)}>
-                  {statusLabel(issue.status)}
-                </Badge>
-                <Badge variant={priorityVariant(issue.priority)}>
-                  {issue.priority}
-                </Badge>
-              </div>
-            </CardDescription>
-          </CardHeader>
-          {issue.description && (
-            <CardContent>
-              <p className="text-sm text-muted-foreground line-clamp-2">
-                {issue.description}
-              </p>
-            </CardContent>
-          )}
-          <CardContent>
-            <div className="flex justify-between items-center text-xs text-muted-foreground">
-              <span>{formatDate(issue.created_at)}</span>
-              <div className="flex items-center gap-3">
-                <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
-                {issue.status === "open" && userId && (userRole === "admin" || userRole === "co_admin" || issue.reporter === userId) && (
-                  <button
-                    onClick={() => deleteIssue(issue.id)}
-                    disabled={deleting === issue.id}
-                    className="text-destructive hover:underline disabled:opacity-50"
+      {issues.map((issue) => {
+        const isExpanded = expanded.has(issue.id);
+        return (
+          <Card key={issue.id} size="sm">
+            <CardHeader
+              className="cursor-pointer select-none"
+              onClick={() => setExpanded((prev) => {
+                const next = new Set(prev);
+                if (next.has(issue.id)) next.delete(issue.id);
+                else next.add(issue.id);
+                return next;
+              })}
+            >
+              <div className="flex items-center justify-between gap-2">
+                <CardTitle className="flex items-center gap-2">
+                  <svg
+                    className={`size-4 shrink-0 transition-transform ${isExpanded ? "rotate-90" : ""}`}
+                    xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
                   >
-                    {deleting === issue.id ? "Deleting..." : "Delete"}
-                  </button>
-                )}
+                    <path d="m9 18 6-6-6-6" />
+                  </svg>
+                  {issue.title}
+                </CardTitle>
+                <div className="flex gap-1 shrink-0">
+                  <Badge variant={statusVariant(issue.status)}>
+                    {statusLabel(issue.status)}
+                  </Badge>
+                  <Badge variant={priorityVariant(issue.priority)}>
+                    {issue.priority}
+                  </Badge>
+                </div>
               </div>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
+            </CardHeader>
+            {isExpanded && (
+              <>
+                {issue.description && (
+                  <CardContent>
+                    <p className="text-sm text-muted-foreground">
+                      {issue.description}
+                    </p>
+                  </CardContent>
+                )}
+                <CardContent>
+                  <div className="flex justify-between items-center text-xs text-muted-foreground">
+                    <span>{formatDate(issue.created_at)}</span>
+                    <div className="flex items-center gap-3">
+                      <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
+                      {issue.status === "open" && userId && (userRole === "admin" || userRole === "co_admin" || issue.reporter === userId) && (
+                        <button
+                          onClick={(e) => { e.stopPropagation(); deleteIssue(issue.id); }}
+                          disabled={deleting === issue.id}
+                          className="text-destructive hover:underline disabled:opacity-50"
+                        >
+                          {deleting === issue.id ? "Deleting..." : "Delete"}
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </CardContent>
+              </>
+            )}
+          </Card>
+        );
+      })}
     </div>
   );
 }
