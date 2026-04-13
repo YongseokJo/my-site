@@ -28,8 +28,16 @@ if (!profile?.approved) {
       </a>
     </div>
 
-    <div>
-      <h1 class="text-2xl font-bold mb-2">Dashboard</h1>
+    <div class="flex items-center justify-between">
+      <h1 class="text-2xl font-bold">Dashboard</h1>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-muted-foreground">{profile.display_name || user.email}</span>
+        <form method="POST" action="/api/auth/signout">
+          <button type="submit" class="text-sm text-muted-foreground hover:text-foreground border border-border rounded-md px-3 py-1.5 hover:bg-muted transition-colors">
+            Sign Out
+          </button>
+        </form>
+      </div>
     </div>
 
     <Dashboard
