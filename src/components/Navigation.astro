@@ -5,13 +5,13 @@ import SearchToggle from "../islands/SearchToggle.tsx";
 const currentPath = Astro.url.pathname;
 
 const navLinks = [
-  { name: "Home", href: "/" },
-  { name: "Research", href: "/research" },
-  { name: "Publications", href: "/publications" },
-  { name: "Enzo-Abyss", href: "/software" },
-  { name: "Readea", href: "/arxiv-app" },
-  { name: "About", href: "/about" },
-  { name: "Contact", href: "/contact" },
+  { name: "Home", href: "/", highlight: false },
+  { name: "Research", href: "/research", highlight: false },
+  { name: "Publications", href: "/publications", highlight: false },
+  { name: "About", href: "/about", highlight: false },
+  { name: "Contact", href: "/contact", highlight: false },
+  { name: "Enzo-Abyss", href: "/software", highlight: true },
+  { name: "Readea", href: "/arxiv-app", highlight: true },
 ];
 
 function isActive(href: string): boolean {
@@ -33,10 +33,14 @@ function isActive(href: string): boolean {
         <a
           href={link.href}
           class:list={[
-            "px-3 py-2 text-sm font-medium transition-colors duration-150 hover:bg-muted rounded-md min-h-[48px] flex items-center",
-            isActive(link.href)
-              ? "border-b-2 border-accent text-foreground"
-              : "text-muted-foreground hover:text-foreground",
+            "px-3 py-2 text-sm font-medium transition-colors duration-150 rounded-md min-h-[48px] flex items-center",
+            link.highlight
+              ? isActive(link.href)
+                ? "bg-primary text-primary-foreground"
+                : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              : isActive(link.href)
+                ? "border-b-2 border-accent text-foreground hover:bg-muted"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted",
           ]}
         >
           {link.name}
@@ -71,10 +75,14 @@ function isActive(href: string): boolean {
         <a
           href={link.href}
           class:list={[
-            "block px-3 py-3 text-sm font-medium transition-colors duration-150 hover:bg-muted rounded-md min-h-[48px] flex items-center",
-            isActive(link.href)
-              ? "border-l-2 border-accent text-foreground"
-              : "text-muted-foreground hover:text-foreground",
+            "block px-3 py-3 text-sm font-medium transition-colors duration-150 rounded-md min-h-[48px] flex items-center",
+            link.highlight
+              ? isActive(link.href)
+                ? "bg-primary text-primary-foreground"
+                : "border border-primary text-primary hover:bg-primary hover:text-primary-foreground"
+              : isActive(link.href)
+                ? "border-l-2 border-accent text-foreground hover:bg-muted"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted",
           ]}
         >
           {link.name}
