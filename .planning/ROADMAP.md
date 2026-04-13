@@ -86,8 +86,8 @@ Plans:
   4. Keep-alive mechanism runs automatically and prevents Supabase free-tier project pausing
 **Plans:** 3 plans
 Plans:
-- [ ] 04-01-PLAN.md -- Database schema (profiles, issues, proposals) and RLS policies as SQL migrations
-- [ ] 04-02-PLAN.md -- Supabase client, Astro hybrid mode, auth middleware, and API endpoints
+- [x] 04-01-PLAN.md -- Database schema (profiles, issues, proposals) and RLS policies as SQL migrations
+- [x] 04-02-PLAN.md -- Supabase client, Astro hybrid mode, auth middleware, and API endpoints
 - [ ] 04-03-PLAN.md -- GitHub Actions keep-alive cron workflow
 
 ### Phase 5: Dynamic Collaboration Features
