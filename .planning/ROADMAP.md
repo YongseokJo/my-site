@@ -99,6 +99,11 @@ Plans:
   2. Authenticated collaborators can submit project proposals
   3. Developer dashboard shows a user's assigned issues and proposal statuses
   4. Role-based access (admin, developer, viewer) controls what each collaborator can see and do
+**Plans:** 3 plans
+Plans:
+- [ ] 05-01-PLAN.md -- Auth UI foundation: login/signup pages, middleware optimization, DB migration, UserMenu on Enzo-Abyss page
+- [ ] 05-02-PLAN.md -- Issue reporting and proposal submission pages with authenticated CRUD
+- [ ] 05-03-PLAN.md -- Role-specific developer dashboard with admin controls and proposal review
 **UI hint**: yes
 
 ## Progress
@@ -112,4 +117,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5
 | 2. Academic Content | 0/4 | Planning complete | - |
 | 3. Product Pages & SEO | 0/5 | Planning complete | - |
 | 4. Backend Infrastructure & Auth | 0/3 | Planning complete | - |
-| 5. Dynamic Collaboration Features | 0/TBD | Not started | - |
+| 5. Dynamic Collaboration Features | 0/3 | Planning complete | - |
