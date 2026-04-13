@@ -59,9 +59,10 @@ function formatDate(dateStr: string): string {
 
 interface ProposalListProps {
   userId: string;
+  userRole?: string;
 }
 
-export default function ProposalList({ userId }: ProposalListProps) {
+export default function ProposalList({ userId, userRole }: ProposalListProps) {
   const [proposals, setProposals] = useState<Proposal[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -153,7 +154,7 @@ export default function ProposalList({ userId }: ProposalListProps) {
                 <span className="text-xs text-muted-foreground">
                   {formatDate(proposal.created_at)}
                 </span>
-                {proposal.submitter === userId && (
+                {proposal.status === "pending" && (userRole === "admin" || proposal.submitter === userId) && (
                   <button
                     onClick={() => deleteProposal(proposal.id)}
                     disabled={deleting === proposal.id}

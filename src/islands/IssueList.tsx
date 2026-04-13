@@ -74,9 +74,10 @@ function formatDate(dateStr: string): string {
 
 interface IssueListProps {
   userId?: string;
+  userRole?: string;
 }
 
-export default function IssueList({ userId }: IssueListProps) {
+export default function IssueList({ userId, userRole }: IssueListProps) {
   const [issues, setIssues] = useState<Issue[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -176,7 +177,7 @@ export default function IssueList({ userId }: IssueListProps) {
               <span>{formatDate(issue.created_at)}</span>
               <div className="flex items-center gap-3">
                 <span>{issue.assignee ? "Assigned" : "Unassigned"}</span>
-                {userId && issue.reporter === userId && (
+                {issue.status === "open" && userId && (userRole === "admin" || issue.reporter === userId) && (
                   <button
                     onClick={() => deleteIssue(issue.id)}
                     disabled={deleting === issue.id}

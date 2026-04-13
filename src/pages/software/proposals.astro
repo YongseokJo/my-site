@@ -47,7 +47,7 @@ const canSubmit = ["admin", "pi_mentor", "developer"].includes(profile.role);
 
     <section>
       <h2 class="text-lg font-semibold mb-4">All Proposals</h2>
-      <ProposalList client:load userId={user.id} />
+      <ProposalList client:load userId={user.id} userRole={profile.role} />
     </section>
   </div>
 </BaseLayout>
