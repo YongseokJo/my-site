@@ -3,6 +3,14 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { createSupabaseBrowserClient } from "@/lib/supabase";
 
 interface ProposalFormData {
@@ -296,7 +304,30 @@ export default function ProposalForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="proposal-pi">Principal Investigator</Label>
+            <div className="flex items-center gap-1.5">
+              <Label htmlFor="proposal-pi">Principal Investigator</Label>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="What qualifies as a Principal Investigator?"
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-muted-foreground/40 text-[10px] text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                  >
+                    ?
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Principal Investigator</DialogTitle>
+                    <DialogDescription>
+                      Should be a faculty member or senior researcher (Professor,
+                      Associate Professor, Staff Scientist) with authority to oversee
+                      the project and sign off on outputs.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
             <Input
               id="proposal-pi"
               name="pi"
@@ -335,7 +366,30 @@ export default function ProposalForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="proposal-mentor">Mentor/Collab</Label>
+            <div className="flex items-center gap-1.5">
+              <Label htmlFor="proposal-mentor">Mentor/Collab</Label>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <button
+                    type="button"
+                    aria-label="What qualifies as a Mentor/Collab?"
+                    className="inline-flex items-center justify-center w-4 h-4 rounded-full border border-muted-foreground/40 text-[10px] text-muted-foreground hover:text-primary hover:border-primary transition-colors"
+                  >
+                    ?
+                  </button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>Mentor/Collab</DialogTitle>
+                    <DialogDescription>
+                      A researcher providing either specific scientific feedback and
+                      comment — typically a co-PI or external collaborator with relevant
+                      expertise.
+                    </DialogDescription>
+                  </DialogHeader>
+                </DialogContent>
+              </Dialog>
+            </div>
             <Input
               id="proposal-mentor"
               name="scientific_mentor"

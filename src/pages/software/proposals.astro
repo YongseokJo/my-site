@@ -40,7 +40,12 @@ const canSubmit = ["admin", "co_admin", "pi_mentor", "developer"].includes(profi
     </div>
 
     {canSubmit && (
-      <section>
+      <section class="space-y-4">
+        <div class="rounded-lg border border-primary/30 bg-primary/5 p-3 text-sm text-muted-foreground">
+          <strong class="text-foreground">Heads up:</strong> when an admin approves your proposal,
+          an automatic notification email is sent to the PI and Mentor/Collab using the addresses
+          you enter below — please make sure both are correct.
+        </div>
         <ProposalForm client:load />
       </section>
     )}
