@@ -62,16 +62,14 @@ export default function ContactForm() {
     }
     setStatus("submitting");
     try {
-      const body = new URLSearchParams({
-        "form-name": "contact",
-        name: formData.name,
-        email: formData.email,
-        message: formData.message,
-      });
-      const response = await fetch("/", {
+      const response = await fetch("https://formspree.io/f/xwvakzly", {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: body.toString(),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
       });
       if (!response.ok) throw new Error("Submit failed");
       setStatus("success");
@@ -97,7 +95,7 @@ export default function ContactForm() {
       className="max-w-[500px] mx-auto space-y-6"
       noValidate
     >
-      <input name="bot-field" style={{ display: "none" }} tabIndex={-1} />
+      <input name="_gotcha" style={{ display: "none" }} tabIndex={-1} />
 
       <div className="space-y-2">
         <Label htmlFor="contact-name">Name</Label>
