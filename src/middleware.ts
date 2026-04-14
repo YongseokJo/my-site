@@ -33,5 +33,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   context.locals.supabase = supabase;
   context.locals.user = user;
 
-  return next();
+  const response = await next();
+
+  // CRITICAL on Cloudflare: Supabase's @supabase/ssr writes Set-Cookie on
+  // refresh. If Cloudflare's CDN caches a response containing a refreshed
+  // auth cookie, a different user could be served that cookie and
+  // effectively be signed in as someone else. Mark every auth-touching
+  // route as uncacheable so the CDN never holds onto these responses.
+  response.headers.set("Cache-Control", "private, no-store");
+
+  return response;
 });

@@ -39,6 +39,9 @@ hugo_cache/
 # Netlify build output (optional, if you use it)
 .netlify/
 
+# Cloudflare Wrangler local cache + state
+.wrangler/
+
 # If you ever use Git LFS for images
 *.zip
 *.tar.gz

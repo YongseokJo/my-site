@@ -1,0 +1,17 @@
+# Cloudflare Pages / Workers configuration
+# This is read by `wrangler` (local dev) and by Cloudflare Pages on build.
+# Most settings (env vars, custom domain, build command) live in the
+# Cloudflare dashboard — this file only carries runtime flags that the
+# code needs to function.
+
+name = "yongseokjo-com"
+compatibility_date = "2025-04-01"
+
+# Required: Resend SDK and other npm packages depend on Node.js built-ins
+# (crypto, buffer, stream). Without this flag, Workers throws ReferenceError.
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# Public env vars can be set here. Secrets (RESEND_API_KEY,
+# PUBLIC_SUPABASE_*) MUST be set in the Cloudflare dashboard, not in this
+# file — anything in [vars] is committed to git.
