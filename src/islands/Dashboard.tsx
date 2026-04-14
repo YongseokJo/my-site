@@ -73,6 +73,7 @@ interface Proposal {
   pi: string | null;
   scientific_mentor: string | null;
   position: string | null;
+  affiliation: string | null;
   basic_profile: string | null;
   submitter: string;
   review_comment: string | null;
@@ -83,6 +84,7 @@ interface Proposal {
 interface ApprovedProfile {
   id: string;
   display_name: string | null;
+  email?: string | null;
   role?: UserRole;
   created_at?: string;
 }
@@ -887,53 +889,149 @@ function MyProposalsPanel({ proposals, onDelete, onEdit }: { proposals: Proposal
   );
 }
 
-function ViewerProposalsPanel({ proposals }: { proposals: Proposal[] }) {
+function ProjectsPanel({
+  proposals,
+  profiles,
+  role,
+  onDelete,
+}: {
+  proposals: Proposal[];
+  profiles: ApprovedProfile[];
+  role: UserRole;
+  onDelete: (proposalId: string) => Promise<void>;
+}) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
+  const profileById = new Map(profiles.map((p) => [p.id, p]));
+  const isAdmin = role === "admin" || role === "co_admin";
+
+  function toggle(id: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Approved Proposals</CardTitle>
+        <CardTitle>Projects</CardTitle>
         <CardDescription>
           {proposals.length === 0
-            ? "No approved proposals yet."
-            : `${proposals.length} approved proposal(s).`}
+            ? "No active projects yet."
+            : `${proposals.length} active project(s).`}
         </CardDescription>
       </CardHeader>
       <CardContent>
         {proposals.length === 0 ? (
           <p className="text-sm text-muted-foreground">
-            Check back later for approved proposals.
+            Approved proposals will appear here as projects.
           </p>
         ) : (
           <div className="space-y-2">
-            {proposals.map((proposal) => (
-              <div
-                key={proposal.id}
-                className="p-2 rounded-lg bg-muted/30 ring-1 ring-foreground/5 space-y-1"
-              >
-                <p className="text-sm font-medium">{proposal.title}</p>
-                {proposal.description && (
-                  <p className="text-xs text-muted-foreground line-clamp-2">
-                    {proposal.description}
-                  </p>
-                )}
-                <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
-                  {proposal.pi && (
-                    <span>
-                      <span className="font-medium">PI:</span> {proposal.pi}
-                    </span>
+            {proposals.map((proposal) => {
+              const isOpen = expanded.has(proposal.id);
+              const owner = profileById.get(proposal.submitter);
+              const ownerName = owner?.display_name || "—";
+              const ownerEmail = owner?.email || null;
+              const canDelete = isAdmin;
+              const isDeleting = deletingId === proposal.id;
+              return (
+                <div
+                  key={proposal.id}
+                  className="rounded-lg bg-muted/30 ring-1 ring-foreground/5"
+                >
+                  <div className="flex items-center gap-1">
+                    <button
+                      type="button"
+                      onClick={() => toggle(proposal.id)}
+                      aria-expanded={isOpen}
+                      className="flex-1 min-w-0 flex items-center justify-between gap-3 p-2 text-left hover:bg-muted/50 rounded-lg transition-colors"
+                    >
+                      <div className="min-w-0 flex-1">
+                        <p className="text-sm font-medium truncate">{proposal.title}</p>
+                        <p className="text-xs text-muted-foreground truncate">
+                          Owner: {ownerName}
+                          {proposal.position && ` (${proposal.position})`}
+                          {proposal.affiliation && ` · ${proposal.affiliation}`}
+                        </p>
+                      </div>
+                      <span
+                        aria-hidden="true"
+                        className={`text-xs text-muted-foreground shrink-0 transition-transform ${
+                          isOpen ? "rotate-90" : ""
+                        }`}
+                      >
+                        ▸
+                      </span>
+                    </button>
+                    {canDelete && (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-destructive hover:text-destructive shrink-0 mr-2"
+                        disabled={isDeleting}
+                        onClick={async () => {
+                          if (!confirm(`Delete project "${proposal.title}"?`)) return;
+                          setDeletingId(proposal.id);
+                          try {
+                            await onDelete(proposal.id);
+                          } finally {
+                            setDeletingId(null);
+                          }
+                        }}
+                      >
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </Button>
+                    )}
+                  </div>
+                  {ownerEmail && (
+                    <div className="px-2 pb-2 -mt-1 text-xs">
+                      <a
+                        href={`mailto:${ownerEmail}`}
+                        className="text-muted-foreground underline hover:text-primary truncate inline-block max-w-full"
+                      >
+                        {ownerEmail}
+                      </a>
+                    </div>
                   )}
-                  {proposal.scientific_mentor && (
-                    <span>
-                      <span className="font-medium">Mentor:</span>{" "}
-                      {proposal.scientific_mentor}
-                    </span>
+                  {isOpen && (
+                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
+                      {proposal.description && (
+                        <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                          {proposal.description}
+                        </p>
+                      )}
+                      {proposal.rationale && (
+                        <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                          <span className="font-medium">Rationale:</span>{" "}
+                          {proposal.rationale}
+                        </p>
+                      )}
+                      <div className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted-foreground">
+                        {proposal.pi && (
+                          <span>
+                            <span className="font-medium">PI:</span> {proposal.pi}
+                          </span>
+                        )}
+                        {proposal.scientific_mentor && (
+                          <span>
+                            <span className="font-medium">Mentor:</span>{" "}
+                            {proposal.scientific_mentor}
+                          </span>
+                        )}
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(proposal.created_at)}
+                      </p>
+                    </div>
                   )}
                 </div>
-                <p className="text-xs text-muted-foreground">
-                  {formatDate(proposal.created_at)}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </CardContent>
@@ -994,7 +1092,7 @@ export default function Dashboard({
         // Fetch approved profiles for assignee dropdown and user list
         const { data: profiles } = await supabase
           .from("profiles")
-          .select("id, display_name, role, created_at")
+          .select("id, display_name, email, role, created_at")
           .eq("approved", true);
         setApprovedProfiles(profiles || []);
 
@@ -1019,6 +1117,13 @@ export default function Dashboard({
           .select("*")
           .order("created_at", { ascending: false });
         setAllProposals(proposals || []);
+
+        // Fetch profiles for submitter-name lookup in Projects panel
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, display_name, email, role, created_at")
+          .eq("approved", true);
+        setApprovedProfiles(profiles || []);
 
         // Fetch my issues
         const { data: mIssues } = await supabase
@@ -1051,6 +1156,21 @@ export default function Dashboard({
           .eq("submitter", userId)
           .order("created_at", { ascending: false });
         setMyProposals(mProposals || []);
+
+        // Fetch community-approved proposals (approved by anyone — read-only view)
+        const { data: approved } = await supabase
+          .from("proposals")
+          .select("*")
+          .eq("status", "approved")
+          .order("created_at", { ascending: false });
+        setViewerProposals(approved || []);
+
+        // Fetch profiles for submitter-name lookup in Projects panel
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, display_name, email, role, created_at")
+          .eq("approved", true);
+        setApprovedProfiles(profiles || []);
       } else if (role === "viewer" || role === "researcher") {
         // Viewers can only see approved proposals (RLS enforced)
         const { data: proposals } = await supabase
@@ -1059,6 +1179,13 @@ export default function Dashboard({
           .eq("status", "approved")
           .order("created_at", { ascending: false });
         setViewerProposals(proposals || []);
+
+        // Fetch profiles for submitter-name lookup in Projects panel
+        const { data: profiles } = await supabase
+          .from("profiles")
+          .select("id, display_name, email, role, created_at")
+          .eq("approved", true);
+        setApprovedProfiles(profiles || []);
       }
     } catch {
       setError("Failed to load dashboard data.");
@@ -1197,6 +1324,12 @@ export default function Dashboard({
             onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
+          <ProjectsPanel
+            proposals={allProposals.filter((p) => p.status === "approved")}
+            profiles={approvedProfiles}
+            role={role}
+            onDelete={handleDeleteProposal}
+          />
           <UserListPanel
             users={approvedProfiles}
             onChangeRole={handleChangeRole}
@@ -1215,6 +1348,12 @@ export default function Dashboard({
             onDeleteProposal={handleDeleteProposal}
             onRefresh={fetchData}
           />
+          <ProjectsPanel
+            proposals={allProposals.filter((p) => p.status === "approved")}
+            profiles={approvedProfiles}
+            role={role}
+            onDelete={handleDeleteProposal}
+          />
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
@@ -1225,13 +1364,24 @@ export default function Dashboard({
         <>
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
+          <ProjectsPanel
+            proposals={viewerProposals}
+            profiles={approvedProfiles}
+            role={role}
+            onDelete={handleDeleteProposal}
+          />
         </>
       )}
 
       {/* Researcher panels */}
       {(role === "viewer" || role === "researcher") && (
         <>
-          <ViewerProposalsPanel proposals={viewerProposals} />
+          <ProjectsPanel
+            proposals={viewerProposals}
+            profiles={approvedProfiles}
+            role={role}
+            onDelete={handleDeleteProposal}
+          />
           <Card>
             <CardContent className="pt-4">
               <p className="text-sm text-muted-foreground">
