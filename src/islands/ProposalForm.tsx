@@ -320,9 +320,10 @@ export default function ProposalForm() {
                   <DialogHeader>
                     <DialogTitle>Principal Investigator</DialogTitle>
                     <DialogDescription>
-                      Should be a faculty member or senior researcher (Professor,
-                      Associate Professor, Staff Scientist) with authority to oversee
-                      the project and sign off on outputs.
+                      A researcher eligible to be a PI — typically a faculty member
+                      or senior researcher (Professor, Associate Professor, Staff
+                      Scientist) with authority to oversee the project and sign off
+                      on outputs, including oneself.
                     </DialogDescription>
                   </DialogHeader>
                 </DialogContent>
