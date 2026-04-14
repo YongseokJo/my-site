@@ -4,7 +4,7 @@
 # Cloudflare dashboard — this file only carries runtime flags that the
 # code needs to function.
 
-name = "yongseokjo-com"
+name = "my-site"
 compatibility_date = "2025-04-01"
 
 # Required: Resend SDK and other npm packages depend on Node.js built-ins
