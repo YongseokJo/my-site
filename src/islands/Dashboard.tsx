@@ -94,7 +94,9 @@ interface Proposal {
   status: ProposalStatus;
   rationale: string | null;
   pi: string | null;
+  pi_email: string | null;
   scientific_mentor: string | null;
+  mentor_email: string | null;
   position: string | null;
   affiliation: string | null;
   basic_profile: string | null;
@@ -615,12 +617,34 @@ function ProposalReviewPanel({
                   {proposal.pi && (
                     <span>
                       <span className="font-medium">PI:</span> {proposal.pi}
+                      {proposal.pi_email && (
+                        <>
+                          {" — "}
+                          <a
+                            href={`mailto:${proposal.pi_email}`}
+                            className="underline hover:text-primary"
+                          >
+                            {proposal.pi_email}
+                          </a>
+                        </>
+                      )}
                     </span>
                   )}
                   {proposal.scientific_mentor && (
                     <span>
-                      <span className="font-medium">Mentor:</span>{" "}
+                      <span className="font-medium">Mentor/Collab:</span>{" "}
                       {proposal.scientific_mentor}
+                      {proposal.mentor_email && (
+                        <>
+                          {" — "}
+                          <a
+                            href={`mailto:${proposal.mentor_email}`}
+                            className="underline hover:text-primary"
+                          >
+                            {proposal.mentor_email}
+                          </a>
+                        </>
+                      )}
                     </span>
                   )}
                   {proposal.position && (
@@ -1140,12 +1164,34 @@ function ProjectsPanel({
                         {proposal.pi && (
                           <span>
                             <span className="font-medium">PI:</span> {proposal.pi}
+                            {proposal.pi_email && (
+                              <>
+                                {" — "}
+                                <a
+                                  href={`mailto:${proposal.pi_email}`}
+                                  className="underline hover:text-primary"
+                                >
+                                  {proposal.pi_email}
+                                </a>
+                              </>
+                            )}
                           </span>
                         )}
                         {proposal.scientific_mentor && (
                           <span>
-                            <span className="font-medium">Mentor:</span>{" "}
+                            <span className="font-medium">Mentor/Collab:</span>{" "}
                             {proposal.scientific_mentor}
+                            {proposal.mentor_email && (
+                              <>
+                                {" — "}
+                                <a
+                                  href={`mailto:${proposal.mentor_email}`}
+                                  className="underline hover:text-primary"
+                                >
+                                  {proposal.mentor_email}
+                                </a>
+                              </>
+                            )}
                           </span>
                         )}
                       </div>
@@ -1415,9 +1461,9 @@ export default function Dashboard({
               proposalId,
               proposalTitle: proposal.title,
               piName: proposal.pi,
-              piEmail: (proposal as any).pi_email,
+              piEmail: proposal.pi_email,
               mentorName: proposal.scientific_mentor,
-              mentorEmail: (proposal as any).mentor_email,
+              mentorEmail: proposal.mentor_email,
               status,
               reviewComment: comment,
             }),

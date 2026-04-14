@@ -58,10 +58,10 @@ function validate(
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Invalid email address.";
       break;
     case "scientific_mentor":
-      if (!trimmed) return "Scientific mentor is required.";
+      if (!trimmed) return "Mentor/Collab is required.";
       break;
     case "mentor_email":
-      if (!trimmed) return "Mentor email is required.";
+      if (!trimmed) return "Mentor/Collab email is required.";
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(trimmed)) return "Invalid email address.";
       break;
     case "position":
@@ -152,8 +152,11 @@ export default function ProposalForm() {
         description: formData.description.trim(),
         rationale: formData.rationale.trim(),
         pi: formData.pi.trim(),
+        pi_email: formData.pi_email.trim(),
         scientific_mentor: formData.scientific_mentor.trim(),
+        mentor_email: formData.mentor_email.trim(),
         position: formData.position.trim(),
+        affiliation: formData.affiliation.trim(),
         basic_profile: formData.basic_profile.trim(),
         submitter: user.id,
       });
@@ -332,7 +335,7 @@ export default function ProposalForm() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="space-y-2">
-            <Label htmlFor="proposal-mentor">Scientific Mentor</Label>
+            <Label htmlFor="proposal-mentor">Mentor/Collab</Label>
             <Input
               id="proposal-mentor"
               name="scientific_mentor"
@@ -343,14 +346,14 @@ export default function ProposalForm() {
               onBlur={() => handleBlur("scientific_mentor")}
               aria-describedby={errors.scientific_mentor ? "prop-mentor-error" : undefined}
               aria-invalid={!!errors.scientific_mentor}
-              placeholder="Name of the scientific mentor"
+              placeholder="Name of the mentor or collaborator"
             />
             {errors.scientific_mentor && (
               <p id="prop-mentor-error" className="text-sm text-destructive mt-1">{errors.scientific_mentor}</p>
             )}
           </div>
           <div className="space-y-2">
-            <Label htmlFor="proposal-mentor-email">Mentor Email</Label>
+            <Label htmlFor="proposal-mentor-email">Mentor/Collab Email</Label>
             <Input
               id="proposal-mentor-email"
               name="mentor_email"
@@ -361,7 +364,7 @@ export default function ProposalForm() {
               onBlur={() => handleBlur("mentor_email")}
               aria-describedby={errors.mentor_email ? "prop-mentor-email-error" : undefined}
               aria-invalid={!!errors.mentor_email}
-              placeholder="Mentor's email address"
+              placeholder="Mentor/Collab's email address"
             />
             {errors.mentor_email && (
               <p id="prop-mentor-email-error" className="text-sm text-destructive mt-1">{errors.mentor_email}</p>

@@ -38,7 +38,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const emails: { to: string; name: string }[] = [];
   if (piEmail) emails.push({ to: piEmail, name: piName || "PI" });
-  if (mentorEmail) emails.push({ to: mentorEmail, name: mentorName || "Mentor" });
+  if (mentorEmail) emails.push({ to: mentorEmail, name: mentorName || "Mentor/Collab" });
 
   const results = [];
 
@@ -56,7 +56,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
             <strong>${proposalTitle}</strong>
           </blockquote>
           ${reviewComment ? `<p><strong>Review comment:</strong> ${reviewComment}</p>` : ""}
-          <p>You are listed as a ${recipient.to === piEmail ? "Principal Investigator" : "Scientific Mentor"} for this project.</p>
+          <p>You are listed as a ${recipient.to === piEmail ? "Principal Investigator" : "Mentor/Collaborator"} for this project.</p>
           <p>If you do not wish to serve in this role, please respond to this email to let us know.</p>
           <br>
           <p>Best regards,<br>Enzo-Abyss Team</p>
