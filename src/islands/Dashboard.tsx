@@ -64,6 +64,29 @@ interface Issue {
   created_at: string;
 }
 
+type ProjectProgress =
+  | "in_progress"
+  | "on_hold"
+  | "stalled"
+  | "published"
+  | "completed"
+  | "aborted";
+
+const PROGRESS_OPTIONS: { value: ProjectProgress; label: string; dotClass: string }[] = [
+  { value: "in_progress", label: "In Progress", dotClass: "bg-green-500" },
+  { value: "on_hold", label: "On Hold", dotClass: "bg-gray-400" },
+  { value: "stalled", label: "Stalled", dotClass: "bg-yellow-500" },
+  { value: "published", label: "Published", dotClass: "bg-blue-500" },
+  { value: "completed", label: "Completed", dotClass: "bg-teal-500" },
+  { value: "aborted", label: "Aborted", dotClass: "bg-red-500" },
+];
+
+function progressMeta(progress: ProjectProgress | null | undefined) {
+  return (
+    PROGRESS_OPTIONS.find((o) => o.value === progress) ?? PROGRESS_OPTIONS[0]
+  );
+}
+
 interface Proposal {
   id: string;
   title: string;
@@ -78,6 +101,8 @@ interface Proposal {
   submitter: string;
   review_comment: string | null;
   reviewer: string | null;
+  progress: ProjectProgress | null;
+  is_locked: boolean;
   created_at: string;
 }
 
@@ -892,16 +917,24 @@ function MyProposalsPanel({ proposals, onDelete, onEdit }: { proposals: Proposal
 function ProjectsPanel({
   proposals,
   profiles,
+  userId,
   role,
   onDelete,
+  onUpdateProgress,
+  onToggleLock,
 }: {
   proposals: Proposal[];
   profiles: ApprovedProfile[];
+  userId: string;
   role: UserRole;
   onDelete: (proposalId: string) => Promise<void>;
+  onUpdateProgress: (proposalId: string, progress: ProjectProgress) => Promise<void>;
+  onToggleLock: (proposalId: string, locked: boolean) => Promise<void>;
 }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [savingProgressId, setSavingProgressId] = useState<string | null>(null);
+  const [togglingLockId, setTogglingLockId] = useState<string | null>(null);
 
   const profileById = new Map(profiles.map((p) => [p.id, p]));
   const isAdmin = role === "admin" || role === "co_admin";
@@ -938,7 +971,12 @@ function ProjectsPanel({
               const ownerName = owner?.display_name || "—";
               const ownerEmail = owner?.email || null;
               const canDelete = isAdmin;
+              const canEditProgress =
+                isAdmin || (proposal.submitter === userId && !proposal.is_locked);
               const isDeleting = deletingId === proposal.id;
+              const isSavingProgress = savingProgressId === proposal.id;
+              const isTogglingLock = togglingLockId === proposal.id;
+              const progress = progressMeta(proposal.progress);
               return (
                 <div
                   key={proposal.id}
@@ -952,7 +990,30 @@ function ProjectsPanel({
                       className="flex-1 min-w-0 flex items-center justify-between gap-3 p-2 text-left hover:bg-muted/50 rounded-lg transition-colors"
                     >
                       <div className="min-w-0 flex-1">
-                        <p className="text-sm font-medium truncate">{proposal.title}</p>
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span
+                            aria-hidden="true"
+                            title={progress.label}
+                            className={`shrink-0 inline-block w-2.5 h-2.5 rounded-full ${progress.dotClass}`}
+                          />
+                          {proposal.is_locked && (
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2.5"
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              className="w-3 h-3 shrink-0 text-muted-foreground"
+                              aria-label="Locked"
+                            >
+                              <rect x="3" y="11" width="18" height="11" rx="2" />
+                              <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+                            </svg>
+                          )}
+                          <p className="text-sm font-medium truncate">{proposal.title}</p>
+                        </div>
                         <p className="text-xs text-muted-foreground truncate">
                           Owner: {ownerName}
                           {proposal.position && ` (${proposal.position})`}
@@ -999,7 +1060,71 @@ function ProjectsPanel({
                     </div>
                   )}
                   {isOpen && (
-                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
+                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-2">
+                      <div className="flex items-center justify-between gap-2 text-xs text-muted-foreground">
+                        <div className="flex items-center gap-2">
+                          <span className="font-medium">Progress:</span>
+                          {canEditProgress ? (
+                          <Select
+                            value={progress.value}
+                            onValueChange={async (v) => {
+                              setSavingProgressId(proposal.id);
+                              try {
+                                await onUpdateProgress(proposal.id, v as ProjectProgress);
+                              } finally {
+                                setSavingProgressId(null);
+                              }
+                            }}
+                            disabled={isSavingProgress}
+                          >
+                            <SelectTrigger className="h-7 w-[160px] text-xs">
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {PROGRESS_OPTIONS.map((opt) => (
+                                <SelectItem key={opt.value} value={opt.value}>
+                                  <span className="flex items-center gap-2">
+                                    <span
+                                      className={`inline-block w-2.5 h-2.5 rounded-full ${opt.dotClass}`}
+                                    />
+                                    {opt.label}
+                                  </span>
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        ) : (
+                          <span className="flex items-center gap-1.5">
+                            <span
+                              className={`inline-block w-2.5 h-2.5 rounded-full ${progress.dotClass}`}
+                            />
+                            {progress.label}
+                          </span>
+                        )}
+                        </div>
+                        {isAdmin && (
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 text-xs"
+                            disabled={isTogglingLock}
+                            onClick={async () => {
+                              setTogglingLockId(proposal.id);
+                              try {
+                                await onToggleLock(proposal.id, !proposal.is_locked);
+                              } finally {
+                                setTogglingLockId(null);
+                              }
+                            }}
+                          >
+                            {isTogglingLock
+                              ? "..."
+                              : proposal.is_locked
+                                ? "Unlock"
+                                : "Lock"}
+                          </Button>
+                        )}
+                      </div>
                       {proposal.description && (
                         <p className="text-xs text-muted-foreground whitespace-pre-wrap">
                           {proposal.description}
@@ -1227,6 +1352,33 @@ export default function Dashboard({
     fetchData();
   }
 
+  async function handleUpdateProgress(
+    proposalId: string,
+    progress: ProjectProgress
+  ) {
+    const { error } = await supabase.rpc("update_project_progress", {
+      proposal_id: proposalId,
+      new_progress: progress,
+    });
+    if (error) {
+      setError(`Failed to update progress: ${error.message}`);
+      return;
+    }
+    fetchData();
+  }
+
+  async function handleToggleLock(proposalId: string, locked: boolean) {
+    const { error } = await supabase.rpc("set_project_lock", {
+      proposal_id: proposalId,
+      locked,
+    });
+    if (error) {
+      setError(`Failed to ${locked ? "lock" : "unlock"} project: ${error.message}`);
+      return;
+    }
+    fetchData();
+  }
+
   async function handleEditIssue(issueId: string, updates: { title: string; description: string | null }) {
     await supabase.from("issues").update(updates).eq("id", issueId);
     fetchData();
@@ -1327,8 +1479,11 @@ export default function Dashboard({
           <ProjectsPanel
             proposals={allProposals.filter((p) => p.status === "approved")}
             profiles={approvedProfiles}
+            userId={userId}
             role={role}
             onDelete={handleDeleteProposal}
+            onUpdateProgress={handleUpdateProgress}
+            onToggleLock={handleToggleLock}
           />
           <UserListPanel
             users={approvedProfiles}
@@ -1351,8 +1506,11 @@ export default function Dashboard({
           <ProjectsPanel
             proposals={allProposals.filter((p) => p.status === "approved")}
             profiles={approvedProfiles}
+            userId={userId}
             role={role}
             onDelete={handleDeleteProposal}
+            onUpdateProgress={handleUpdateProgress}
+            onToggleLock={handleToggleLock}
           />
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
@@ -1367,8 +1525,11 @@ export default function Dashboard({
           <ProjectsPanel
             proposals={viewerProposals}
             profiles={approvedProfiles}
+            userId={userId}
             role={role}
             onDelete={handleDeleteProposal}
+            onUpdateProgress={handleUpdateProgress}
+            onToggleLock={handleToggleLock}
           />
         </>
       )}
@@ -1379,8 +1540,11 @@ export default function Dashboard({
           <ProjectsPanel
             proposals={viewerProposals}
             profiles={approvedProfiles}
+            userId={userId}
             role={role}
             onDelete={handleDeleteProposal}
+            onUpdateProgress={handleUpdateProgress}
+            onToggleLock={handleToggleLock}
           />
           <Card>
             <CardContent className="pt-4">
