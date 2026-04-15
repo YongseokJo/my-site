@@ -493,7 +493,21 @@ function AdminIssuesPanel({
                       <SelectItem value="">Unassigned</SelectItem>
                       {approvedProfiles.map((p) => (
                         <SelectItem key={p.id} value={p.id}>
-                          {p.display_name || p.id.slice(0, 8)}
+                          <span className="flex flex-col items-start gap-0">
+                            <span className="text-sm">
+                              {p.display_name || p.id.slice(0, 8)}
+                              {p.role && (
+                                <span className="text-xs text-muted-foreground ml-1.5">
+                                  · {roleLabel(p.role)}
+                                </span>
+                              )}
+                            </span>
+                            {p.email && (
+                              <span className="text-xs text-muted-foreground">
+                                {p.email}
+                              </span>
+                            )}
+                          </span>
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -1265,8 +1279,17 @@ function CommunityIssuesPanel({
               const isOpen = expanded.has(issue.id);
               const reporter = profileById.get(issue.reporter);
               const reporterName = reporter?.display_name || "—";
-              const assignee = issue.assignee
-                ? profileById.get(issue.assignee)?.display_name || "—"
+              const reporterEmail = reporter?.email || null;
+              const reporterRole = reporter?.role
+                ? roleLabel(reporter.role)
+                : null;
+              const assigneeProfile = issue.assignee
+                ? profileById.get(issue.assignee)
+                : null;
+              const assigneeName = assigneeProfile?.display_name || "—";
+              const assigneeEmail = assigneeProfile?.email || null;
+              const assigneeRole = assigneeProfile?.role
+                ? roleLabel(assigneeProfile.role)
                 : null;
               return (
                 <div
@@ -1289,10 +1312,6 @@ function CommunityIssuesPanel({
                           {issue.priority}
                         </Badge>
                       </div>
-                      <p className="text-xs text-muted-foreground truncate">
-                        Reporter: {reporterName}
-                        {assignee && ` · Assignee: ${assignee}`}
-                      </p>
                     </div>
                     <span
                       aria-hidden="true"
@@ -1303,6 +1322,164 @@ function CommunityIssuesPanel({
                       ▸
                     </span>
                   </button>
+                  <div className="px-2 pb-2 -mt-1 text-xs text-muted-foreground space-y-0.5">
+                    <p className="truncate">
+                      <span className="font-medium">Reporter:</span>{" "}
+                      {reporterName}
+                      {reporterEmail && (
+                        <>
+                          {" · "}
+                          <a
+                            href={`mailto:${reporterEmail}`}
+                            className="underline hover:text-primary"
+                          >
+                            {reporterEmail}
+                          </a>
+                        </>
+                      )}
+                      {reporterRole && ` · ${reporterRole}`}
+                    </p>
+                    {issue.assignee && (
+                      <p className="truncate">
+                        <span className="font-medium">Assignee:</span>{" "}
+                        {assigneeName}
+                        {assigneeEmail && (
+                          <>
+                            {" · "}
+                            <a
+                              href={`mailto:${assigneeEmail}`}
+                              className="underline hover:text-primary"
+                            >
+                              {assigneeEmail}
+                            </a>
+                          </>
+                        )}
+                        {assigneeRole && ` · ${assigneeRole}`}
+                      </p>
+                    )}
+                  </div>
+                  {isOpen && (
+                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
+                      {issue.description && (
+                        <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                          {issue.description}
+                        </p>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(issue.created_at)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
+// ---- Assigned Issues Panel (issues assigned TO the current user) ----
+
+function AssignedIssuesPanel({
+  issues,
+  profiles,
+  userId,
+}: {
+  issues: Issue[];
+  profiles: ApprovedProfile[];
+  userId: string;
+}) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const profileById = new Map(profiles.map((p) => [p.id, p]));
+
+  function toggle(id: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  // Show issues assigned to me that are not closed
+  const myAssigned = issues.filter(
+    (i) => i.assignee === userId && i.status !== "closed"
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Assigned to Me</CardTitle>
+        <CardDescription>
+          {myAssigned.length === 0
+            ? "Nothing assigned to you right now."
+            : `${myAssigned.length} open item(s) assigned to you.`}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {myAssigned.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            When someone assigns a to-do or issue to you, it will show up here.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {myAssigned.map((issue) => {
+              const isOpen = expanded.has(issue.id);
+              const reporter = profileById.get(issue.reporter);
+              const reporterName = reporter?.display_name || "—";
+              const reporterEmail = reporter?.email || null;
+              const reporterRole = reporter?.role ? roleLabel(reporter.role) : null;
+              return (
+                <div
+                  key={issue.id}
+                  className="rounded-lg bg-muted/30 ring-1 ring-foreground/5"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggle(issue.id)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between gap-3 p-2 text-left hover:bg-muted/50 rounded-lg transition-colors"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                        <p className="text-sm font-medium truncate">{issue.title}</p>
+                        <Badge variant={statusVariant(issue.status)} className="text-xs">
+                          {statusLabel(issue.status)}
+                        </Badge>
+                        <Badge variant={priorityVariant(issue.priority)} className="text-xs">
+                          {issue.priority}
+                        </Badge>
+                      </div>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      className={`text-xs text-muted-foreground shrink-0 transition-transform ${
+                        isOpen ? "rotate-90" : ""
+                      }`}
+                    >
+                      ▸
+                    </span>
+                  </button>
+                  <div className="px-2 pb-2 -mt-1 text-xs text-muted-foreground">
+                    <p className="truncate">
+                      <span className="font-medium">Reporter:</span>{" "}
+                      {reporterName}
+                      {reporterEmail && (
+                        <>
+                          {" · "}
+                          <a
+                            href={`mailto:${reporterEmail}`}
+                            className="underline hover:text-primary"
+                          >
+                            {reporterEmail}
+                          </a>
+                        </>
+                      )}
+                      {reporterRole && ` · ${reporterRole}`}
+                    </p>
+                  </div>
                   {isOpen && (
                     <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
                       {issue.description && (
@@ -1494,6 +1671,14 @@ export default function Dashboard({
           .eq("submitter", userId)
           .order("created_at", { ascending: false });
         setMyProposals(mProposals || []);
+
+        // Fetch my issues (researchers can now submit issues)
+        const { data: mIssues } = await supabase
+          .from("issues")
+          .select("*")
+          .eq("reporter", userId)
+          .order("created_at", { ascending: false });
+        setMyIssues(mIssues || []);
 
         // Fetch profiles for submitter-name lookup in Projects panel
         const { data: profiles } = await supabase
@@ -1721,6 +1906,7 @@ export default function Dashboard({
             onToggleLock={handleToggleLock}
           />
           <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
+          <AssignedIssuesPanel issues={allIssues} profiles={approvedProfiles} userId={userId} />
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
@@ -1739,6 +1925,7 @@ export default function Dashboard({
             onToggleLock={handleToggleLock}
           />
           <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
       )}
