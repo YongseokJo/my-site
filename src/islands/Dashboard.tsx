@@ -61,6 +61,7 @@ interface Issue {
   priority: IssuePriority;
   reporter: string;
   assignee: string | null;
+  work_notes: string | null;
   created_at: string;
 }
 
@@ -452,6 +453,12 @@ function AdminIssuesPanel({
                     </Badge>
                   </div>
                 </div>
+                {issue.work_notes && (
+                  <div className="text-xs text-muted-foreground bg-muted/40 rounded-md p-2 border border-border/60 whitespace-pre-wrap">
+                    <span className="font-medium">Work notes:</span>{" "}
+                    {issue.work_notes}
+                  </div>
+                )}
                 <div className="flex flex-wrap items-center gap-2">
                   <span className="text-xs text-muted-foreground">Status:</span>
                   <Select
@@ -487,18 +494,18 @@ function AdminIssuesPanel({
                     }}
                   >
                     <SelectTrigger size="sm" className="min-w-[220px]">
-                      <SelectValue placeholder="Unassigned" />
+                      <SelectValue placeholder="Unassigned">
+                        {(val: string) => {
+                          if (!val) return "Unassigned";
+                          const p = approvedProfiles.find((x) => x.id === val);
+                          return p?.display_name || val.slice(0, 8);
+                        }}
+                      </SelectValue>
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="" label="Unassigned">
-                        Unassigned
-                      </SelectItem>
+                      <SelectItem value="">Unassigned</SelectItem>
                       {approvedProfiles.map((p) => (
-                        <SelectItem
-                          key={p.id}
-                          value={p.id}
-                          label={p.display_name || p.id.slice(0, 8)}
-                        >
+                        <SelectItem key={p.id} value={p.id}>
                           <span className="flex flex-col items-start gap-0">
                             <span className="text-sm">
                               {p.display_name || p.id.slice(0, 8)}
@@ -1371,6 +1378,12 @@ function CommunityIssuesPanel({
                           {issue.description}
                         </p>
                       )}
+                      {issue.work_notes && (
+                        <div className="text-xs text-muted-foreground bg-muted/40 rounded-md p-2 border border-border/60 whitespace-pre-wrap">
+                          <span className="font-medium">Work notes:</span>{" "}
+                          {issue.work_notes}
+                        </div>
+                      )}
                       <p className="text-xs text-muted-foreground">
                         {formatDate(issue.created_at)}
                       </p>
@@ -1392,12 +1405,19 @@ function AssignedIssuesPanel({
   issues,
   profiles,
   userId,
+  onUpdateStatus,
+  onUpdateNotes,
 }: {
   issues: Issue[];
   profiles: ApprovedProfile[];
   userId: string;
+  onUpdateStatus: (issueId: string, status: IssueStatus) => Promise<void>;
+  onUpdateNotes: (issueId: string, notes: string) => Promise<void>;
 }) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [notesDraft, setNotesDraft] = useState<Record<string, string>>({});
+  const [savingNotesId, setSavingNotesId] = useState<string | null>(null);
   const profileById = new Map(profiles.map((p) => [p.id, p]));
 
   function toggle(id: string) {
@@ -1487,12 +1507,86 @@ function AssignedIssuesPanel({
                     </p>
                   </div>
                   {isOpen && (
-                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
+                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-2">
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <span className="font-medium">Status:</span>
+                        <Select
+                          value={issue.status}
+                          onValueChange={async (v) => {
+                            setSavingId(issue.id);
+                            try {
+                              await onUpdateStatus(issue.id, v as IssueStatus);
+                            } finally {
+                              setSavingId(null);
+                            }
+                          }}
+                          disabled={savingId === issue.id}
+                        >
+                          <SelectTrigger className="h-7 w-[140px] text-xs">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="open">Open</SelectItem>
+                            <SelectItem value="in_progress">In Progress</SelectItem>
+                            <SelectItem value="closed">Closed</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
                       {issue.description && (
                         <p className="text-xs text-muted-foreground whitespace-pre-wrap">
                           {issue.description}
                         </p>
                       )}
+                      <div className="space-y-1">
+                        <label
+                          htmlFor={`notes-${issue.id}`}
+                          className="text-xs font-medium text-muted-foreground"
+                        >
+                          Work notes
+                        </label>
+                        <Textarea
+                          id={`notes-${issue.id}`}
+                          value={notesDraft[issue.id] ?? issue.work_notes ?? ""}
+                          onChange={(e) =>
+                            setNotesDraft((prev) => ({
+                              ...prev,
+                              [issue.id]: e.target.value,
+                            }))
+                          }
+                          placeholder="Log progress, blockers, questions, or resolution notes..."
+                          className="text-xs min-h-[80px]"
+                          disabled={savingNotesId === issue.id}
+                        />
+                        <div className="flex justify-end">
+                          <Button
+                            size="sm"
+                            variant="outline"
+                            className="h-7 text-xs"
+                            disabled={
+                              savingNotesId === issue.id ||
+                              (notesDraft[issue.id] ?? issue.work_notes ?? "") ===
+                                (issue.work_notes ?? "")
+                            }
+                            onClick={async () => {
+                              const newNotes =
+                                notesDraft[issue.id] ?? issue.work_notes ?? "";
+                              setSavingNotesId(issue.id);
+                              try {
+                                await onUpdateNotes(issue.id, newNotes);
+                                setNotesDraft((prev) => {
+                                  const next = { ...prev };
+                                  delete next[issue.id];
+                                  return next;
+                                });
+                              } finally {
+                                setSavingNotesId(null);
+                              }
+                            }}
+                          >
+                            {savingNotesId === issue.id ? "Saving..." : "Save notes"}
+                          </Button>
+                        </div>
+                      </div>
                       <p className="text-xs text-muted-foreground">
                         {formatDate(issue.created_at)}
                       </p>
@@ -1601,11 +1695,15 @@ export default function Dashboard({
           .order("created_at", { ascending: false });
         setAllIssues(issues || []);
 
-        // Fetch my issues
+        // Fetch my issues — only those I reported that haven't been
+        // assigned to someone else yet. Once assigned, the issue moves
+        // to the assignee's AssignedToMe panel (and still visible in the
+        // community To-Do/Issues list).
         const { data: mIssues } = await supabase
           .from("issues")
           .select("*")
           .eq("reporter", userId)
+          .is("assignee", null)
           .order("created_at", { ascending: false });
         setMyIssues(mIssues || []);
 
@@ -1624,11 +1722,15 @@ export default function Dashboard({
           .order("created_at", { ascending: false });
         setAllIssues(issues || []);
 
-        // Fetch my issues
+        // Fetch my issues — only those I reported that haven't been
+        // assigned to someone else yet. Once assigned, the issue moves
+        // to the assignee's AssignedToMe panel (and still visible in the
+        // community To-Do/Issues list).
         const { data: mIssues } = await supabase
           .from("issues")
           .select("*")
           .eq("reporter", userId)
+          .is("assignee", null)
           .order("created_at", { ascending: false });
         setMyIssues(mIssues || []);
 
@@ -1912,7 +2014,22 @@ export default function Dashboard({
             onToggleLock={handleToggleLock}
           />
           <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
-          <AssignedIssuesPanel issues={allIssues} profiles={approvedProfiles} userId={userId} />
+          <AssignedIssuesPanel
+            issues={allIssues}
+            profiles={approvedProfiles}
+            userId={userId}
+            onUpdateStatus={async (id, status) => {
+              await handleUpdateIssue(id, { status });
+              fetchData();
+            }}
+            onUpdateNotes={async (id, notes) => {
+              await supabase
+                .from("issues")
+                .update({ work_notes: notes })
+                .eq("id", id);
+              fetchData();
+            }}
+          />
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
