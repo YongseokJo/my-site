@@ -486,13 +486,19 @@ function AdminIssuesPanel({
                       onRefresh();
                     }}
                   >
-                    <SelectTrigger size="sm">
+                    <SelectTrigger size="sm" className="min-w-[220px]">
                       <SelectValue placeholder="Unassigned" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="">Unassigned</SelectItem>
+                      <SelectItem value="" label="Unassigned">
+                        Unassigned
+                      </SelectItem>
                       {approvedProfiles.map((p) => (
-                        <SelectItem key={p.id} value={p.id}>
+                        <SelectItem
+                          key={p.id}
+                          value={p.id}
+                          label={p.display_name || p.id.slice(0, 8)}
+                        >
                           <span className="flex flex-col items-start gap-0">
                             <span className="text-sm">
                               {p.display_name || p.id.slice(0, 8)}
