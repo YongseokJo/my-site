@@ -20,7 +20,7 @@ if (!profile?.approved) {
   return Astro.redirect("/pending-approval");
 }
 
-const canSubmit = ["admin", "co_admin", "pi_mentor", "developer"].includes(profile.role);
+const canSubmit = ["admin", "co_admin", "pi_mentor", "developer", "researcher"].includes(profile.role);
 ---
 
 <BaseLayout title="Proposals - Enzo-Abyss">

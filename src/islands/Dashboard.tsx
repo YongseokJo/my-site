@@ -345,6 +345,16 @@ function UserListPanel({
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium truncate">{u.display_name || u.id.slice(0, 8)}</p>
+                  {u.email && (
+                    <p className="text-xs text-muted-foreground truncate">
+                      <a
+                        href={`mailto:${u.email}`}
+                        className="underline hover:text-primary"
+                      >
+                        {u.email}
+                      </a>
+                    </p>
+                  )}
                   {u.created_at && (
                     <p className="text-xs text-muted-foreground">Joined {formatDate(u.created_at)}</p>
                   )}
@@ -1210,6 +1220,111 @@ function ProjectsPanel({
   );
 }
 
+// ---- Community Issues Panel (read-only for non-admins) ----
+
+function CommunityIssuesPanel({
+  issues,
+  profiles,
+}: {
+  issues: Issue[];
+  profiles: ApprovedProfile[];
+}) {
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const profileById = new Map(profiles.map((p) => [p.id, p]));
+
+  function toggle(id: string) {
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+  }
+
+  // Visible issues: hide closed from the community view by default
+  const visibleIssues = issues.filter((i) => i.status !== "closed");
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>To-Do / Issues</CardTitle>
+        <CardDescription>
+          {visibleIssues.length === 0
+            ? "No open to-dos / issues."
+            : `${visibleIssues.length} open to-do(s) / issue(s).`}
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        {visibleIssues.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            Nothing active right now.
+          </p>
+        ) : (
+          <div className="space-y-2">
+            {visibleIssues.map((issue) => {
+              const isOpen = expanded.has(issue.id);
+              const reporter = profileById.get(issue.reporter);
+              const reporterName = reporter?.display_name || "—";
+              const assignee = issue.assignee
+                ? profileById.get(issue.assignee)?.display_name || "—"
+                : null;
+              return (
+                <div
+                  key={issue.id}
+                  className="rounded-lg bg-muted/30 ring-1 ring-foreground/5"
+                >
+                  <button
+                    type="button"
+                    onClick={() => toggle(issue.id)}
+                    aria-expanded={isOpen}
+                    className="w-full flex items-center justify-between gap-3 p-2 text-left hover:bg-muted/50 rounded-lg transition-colors"
+                  >
+                    <div className="min-w-0 flex-1">
+                      <div className="flex items-center gap-2 min-w-0 flex-wrap">
+                        <p className="text-sm font-medium truncate">{issue.title}</p>
+                        <Badge variant={statusVariant(issue.status)} className="text-xs">
+                          {statusLabel(issue.status)}
+                        </Badge>
+                        <Badge variant={priorityVariant(issue.priority)} className="text-xs">
+                          {issue.priority}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground truncate">
+                        Reporter: {reporterName}
+                        {assignee && ` · Assignee: ${assignee}`}
+                      </p>
+                    </div>
+                    <span
+                      aria-hidden="true"
+                      className={`text-xs text-muted-foreground shrink-0 transition-transform ${
+                        isOpen ? "rotate-90" : ""
+                      }`}
+                    >
+                      ▸
+                    </span>
+                  </button>
+                  {isOpen && (
+                    <div className="px-2 pb-2 pt-1 border-t border-foreground/5 space-y-1">
+                      {issue.description && (
+                        <p className="text-xs text-muted-foreground whitespace-pre-wrap">
+                          {issue.description}
+                        </p>
+                      )}
+                      <p className="text-xs text-muted-foreground">
+                        {formatDate(issue.created_at)}
+                      </p>
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 // ---- Main Dashboard Component ----
 
 export default function Dashboard({
@@ -1296,6 +1411,13 @@ export default function Dashboard({
           .eq("approved", true);
         setApprovedProfiles(profiles || []);
 
+        // Fetch all issues for community To-Do / Issues panel
+        const { data: issues } = await supabase
+          .from("issues")
+          .select("*")
+          .order("created_at", { ascending: false });
+        setAllIssues(issues || []);
+
         // Fetch my issues
         const { data: mIssues } = await supabase
           .from("issues")
@@ -1312,6 +1434,13 @@ export default function Dashboard({
           .order("created_at", { ascending: false });
         setMyProposals(mProposals || []);
       } else if (role === "developer") {
+        // Fetch all issues for community To-Do / Issues panel
+        const { data: issues } = await supabase
+          .from("issues")
+          .select("*")
+          .order("created_at", { ascending: false });
+        setAllIssues(issues || []);
+
         // Fetch my issues
         const { data: mIssues } = await supabase
           .from("issues")
@@ -1350,6 +1479,21 @@ export default function Dashboard({
           .eq("status", "approved")
           .order("created_at", { ascending: false });
         setViewerProposals(proposals || []);
+
+        // Fetch all issues for community To-Do / Issues panel
+        const { data: issues } = await supabase
+          .from("issues")
+          .select("*")
+          .order("created_at", { ascending: false });
+        setAllIssues(issues || []);
+
+        // Fetch my proposals (researchers can now submit proposals)
+        const { data: mProposals } = await supabase
+          .from("proposals")
+          .select("*")
+          .eq("submitter", userId)
+          .order("created_at", { ascending: false });
+        setMyProposals(mProposals || []);
 
         // Fetch profiles for submitter-name lookup in Projects panel
         const { data: profiles } = await supabase
@@ -1558,6 +1702,7 @@ export default function Dashboard({
             onUpdateProgress={handleUpdateProgress}
             onToggleLock={handleToggleLock}
           />
+          <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
           <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
           <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
@@ -1566,8 +1711,6 @@ export default function Dashboard({
       {/* Developer panels */}
       {role === "developer" && (
         <>
-          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
-          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
           <ProjectsPanel
             proposals={viewerProposals}
             profiles={approvedProfiles}
@@ -1577,6 +1720,9 @@ export default function Dashboard({
             onUpdateProgress={handleUpdateProgress}
             onToggleLock={handleToggleLock}
           />
+          <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
+          <MyIssuesPanel issues={myIssues} onDelete={handleDeleteIssue} onEdit={handleEditIssue} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
       )}
 
@@ -1592,13 +1738,8 @@ export default function Dashboard({
             onUpdateProgress={handleUpdateProgress}
             onToggleLock={handleToggleLock}
           />
-          <Card>
-            <CardContent className="pt-4">
-              <p className="text-sm text-muted-foreground">
-                To-do / issue tracking is available for developers and above.
-              </p>
-            </CardContent>
-          </Card>
+          <CommunityIssuesPanel issues={allIssues} profiles={approvedProfiles} />
+          <MyProposalsPanel proposals={myProposals} onDelete={handleDeleteProposal} onEdit={handleEditProposal} />
         </>
       )}
 
