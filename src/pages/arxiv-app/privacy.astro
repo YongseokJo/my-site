@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+---
+<BaseLayout title="READEA Save Privacy Policy" description="How the READEA Save Chrome extension handles pages you choose to import.">
+  <Breadcrumb items={[
+    { label: "Readea", href: "/arxiv-app" },
+    { label: "Privacy Policy" },
+  ]} />
+  <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-foreground">
+    <header class="space-y-2">
+      <h1 class="text-3xl font-bold">READEA Save Privacy Policy</h1>
+      <p class="text-sm text-muted-foreground">Effective October 8, 2026</p>
+    </header>
+
+    <p>READEA Save imports a browser page you choose into the READEA app on your Mac.</p>
+
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Information used</h2>
+      <p>When you open the extension on a tab, it reads that tab’s URL and available page or citation information. This may include the title, authors, abstract, DOI, PDF link, and other website text needed to identify the item. READEA Save does not monitor tabs in the background or collect your full browsing history.</p>
+      <p>The extension does not request account credentials, payment information, or the contents of unrelated tabs. Do not use it to import pages containing information you do not want saved in READEA.</p>
+    </section>
+
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">How the information is used</h2>
+      <p>The extension previews the detected item. If you choose <strong>Save to Library</strong>, it sends that item’s URL and available metadata to the locally installed READEA app through a <code>readea://</code> link. The extension does not send page information to a server operated by the extension publisher and does not use advertising or analytics services.</p>
+      <p>READEA stores items you save in your library. If you enable iCloud Sync in READEA, saved item data may be synchronized through Apple’s iCloud service across your devices. READEA may contact the paper source to retrieve publication metadata or a PDF after import.</p>
+      <p>The extension does not retain a separate copy of the imported page. You can delete saved items in READEA or uninstall the extension.</p>
+    </section>
+
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Limited use</h2>
+      <p>Information received from Google APIs is used only to provide the user-requested import feature. READEA Save’s use and transfer of that information follows the Chrome Web Store User Data Policy, including its Limited Use requirements. It is not sold, used for advertising, or used to determine creditworthiness.</p>
+    </section>
+
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Contact</h2>
+      <p>For privacy questions, email <a class="text-primary underline" href="mailto:g.kerex@gmail.com">g.kerex@gmail.com</a>.</p>
+    </section>
+  </article>
+</BaseLayout>
