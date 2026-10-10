@@ -1,4 +1,5 @@
 import { env } from "cloudflare:workers";
+import { paperPostTemplate } from "./paper-share-template";
 import type { LinkedInStore } from "./linkedin-store";
 
 const REDIRECT_URI = "https://yongseokjo.com/readea/linkedin/callback";
@@ -332,6 +333,18 @@ export async function share(request: Request): Promise<Response> {
 	)
 		return error("Invalid title or URL", 400);
 
+    let commentary = `${title.trim()}\n${url}`;
+    if (paperURL.hostname === "yongseokjo.com" && paperURL.pathname === "/readea/share") {
+        const token = paperURL.searchParams.get("id") ?? "";
+        if (/^[A-Za-z0-9_-]{20,80}$/.test(token)) {
+            const payload = await requireStore().getPaperShare(token);
+            if (payload) {
+                const bundle = JSON.parse(payload);
+                commentary = paperPostTemplate(bundle.papers, url);
+            }
+        }
+    }
+
 	try {
 		const response = await fetch("https://api.linkedin.com/rest/posts", {
 			method: "POST",
@@ -343,7 +356,7 @@ export async function share(request: Request): Promise<Response> {
 			},
 			body: JSON.stringify({
 				author: `urn:li:person:${session.member_id}`,
-				commentary: `${title.trim()}\n${url}`,
+				commentary,
 				visibility: "PUBLIC",
 				distribution: {
 					feedDistribution: "MAIN_FEED",
