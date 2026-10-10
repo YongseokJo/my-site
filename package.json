@@ -46,6 +46,7 @@
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
     "@biomejs/biome": "^2.4.11",
+    "@cloudflare/workers-types": "^4.20260702.1",
     "typescript": "^5.9.3"
   }
 }

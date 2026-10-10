@@ -5,6 +5,7 @@
 # code needs to function.
 
 name = "my-site"
+main = "./src/worker.ts"
 compatibility_date = "2025-04-01"
 
 # Required: Resend SDK and other npm packages depend on Node.js built-ins
@@ -15,3 +16,11 @@ compatibility_flags = ["nodejs_compat"]
 # Public env vars can be set here. Secrets (RESEND_API_KEY,
 # PUBLIC_SUPABASE_*) MUST be set in the Cloudflare dashboard, not in this
 # file — anything in [vars] is committed to git.
+
+[[durable_objects.bindings]]
+name = "LINKEDIN_STORE"
+class_name = "LinkedInStore"
+
+[[migrations]]
+tag = "linkedin-store-v1"
+new_sqlite_classes = ["LinkedInStore"]
