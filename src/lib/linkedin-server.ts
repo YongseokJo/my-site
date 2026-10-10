@@ -121,6 +121,7 @@ async function rateLimit(
 
 async function readJson(
 	request: Request,
+    maxLength = 4096,
 ): Promise<Record<string, unknown> | null> {
 	if (
 		!request.headers
@@ -129,9 +130,9 @@ async function readJson(
 			.startsWith("application/json")
 	)
 		return null;
-	if (Number(request.headers.get("Content-Length")) > 4096) return null;
+	if (Number(request.headers.get("Content-Length")) > maxLength) return null;
 	const text = await request.text();
-	if (text.length > 4096) return null;
+	if (text.length > maxLength) return null;
 	try {
 		const parsed: unknown = JSON.parse(text);
 		return parsed && typeof parsed === "object" && !Array.isArray(parsed)
@@ -306,7 +307,7 @@ export async function share(request: Request): Promise<Response> {
 	}
 	const session = await requireStore().getSession(sessionHash, Date.now());
 	if (!session) return error("Session expired or disconnected", 401);
-	const body = await readJson(request);
+	const body = await readJson(request, 16_384);
 	const title = body?.title;
 	const url = body?.url;
 	if (
@@ -333,8 +334,14 @@ export async function share(request: Request): Promise<Response> {
 	)
 		return error("Invalid title or URL", 400);
 
-    let commentary = `${title.trim()}\n${url}`;
-    if (paperURL.hostname === "yongseokjo.com" && paperURL.pathname === "/readea/share") {
+    const editedText = body?.commentary;
+    if (editedText !== undefined && (
+        typeof editedText !== "string" || !editedText.trim() || editedText.length > 3000 ||
+        /[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(editedText)
+    )) return error("Post text must contain between 1 and 3,000 characters", 400);
+
+    let commentary = typeof editedText === "string" ? editedText : `${title.trim()}\n${url}`;
+    if (editedText === undefined && paperURL.hostname === "yongseokjo.com" && paperURL.pathname === "/readea/share") {
         const token = paperURL.searchParams.get("id") ?? "";
         if (/^[A-Za-z0-9_-]{20,80}$/.test(token)) {
             const payload = await requireStore().getPaperShare(token);
