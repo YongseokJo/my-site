@@ -36,6 +36,9 @@ export class LinkedInStore extends DurableObject {
         token_hash TEXT PRIMARY KEY, member_id TEXT NOT NULL, name TEXT NOT NULL,
         linkedin_token TEXT NOT NULL, expires_at INTEGER NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS paper_shares (
+        token TEXT PRIMARY KEY, payload TEXT NOT NULL, created_at INTEGER NOT NULL
+      );
       CREATE TABLE IF NOT EXISTS rate_limits (
         key TEXT PRIMARY KEY, window_start INTEGER NOT NULL, count INTEGER NOT NULL
       );
@@ -52,7 +55,7 @@ export class LinkedInStore extends DurableObject {
 		sql.exec("DELETE FROM oauth_states WHERE expires_at <= ?", now);
 		sql.exec("DELETE FROM tickets WHERE expires_at <= ?", now);
 		sql.exec("DELETE FROM sessions WHERE expires_at <= ?", now);
-		sql.exec("DELETE FROM rate_limits WHERE window_start <= ?", now - 600_000);
+		sql.exec("DELETE FROM rate_limits WHERE window_start <= ?", now - 3_600_000);
 		const row = sql
 			.exec("SELECT window_start, count FROM rate_limits WHERE key = ?", key)
 			.toArray()[0] as { window_start: number; count: number } | undefined;
@@ -68,6 +71,20 @@ export class LinkedInStore extends DurableObject {
 		sql.exec("UPDATE rate_limits SET count = count + 1 WHERE key = ?", key);
 		return true;
 	}
+
+    putPaperShare(token: string, payload: string, now: number): void {
+        this.ctx.storage.sql.exec(
+            "INSERT INTO paper_shares (token, payload, created_at) VALUES (?, ?, ?)",
+            token, payload, now,
+        );
+    }
+
+    getPaperShare(token: string): string | null {
+        const row = this.ctx.storage.sql.exec(
+            "SELECT payload FROM paper_shares WHERE token = ?", token,
+        ).toArray()[0] as { payload: string } | undefined;
+        return row?.payload ?? null;
+    }
 
 	putState(hash: string, appState: string, expiresAt: number): void {
 		this.ctx.storage.sql.exec(
