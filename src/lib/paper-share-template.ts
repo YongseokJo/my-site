@@ -23,3 +23,11 @@ export function paperPostTemplate(papers: SharePaper[], importURL: string): stri
     }
     return `${body}\n\n${footer}`;
 }
+
+/** Add the attribution exactly once, including for older app versions. */
+export function withREADEAFooter(text: string): string {
+    const body = text.split(/\r?\n/)
+        .filter(line => !/^\s*(?:Research )?shared with READEA\s*$/i.test(line))
+        .join("\n").trim();
+    return `${body}\n\nShared with READEA`;
+}

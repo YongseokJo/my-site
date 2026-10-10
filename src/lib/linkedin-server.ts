@@ -1,5 +1,5 @@
 import { env } from "cloudflare:workers";
-import { paperPostTemplate } from "./paper-share-template";
+import { paperPostTemplate, withREADEAFooter } from "./paper-share-template";
 import type { LinkedInStore } from "./linkedin-store";
 
 const REDIRECT_URI = "https://yongseokjo.com/readea/linkedin/callback";
@@ -351,6 +351,9 @@ export async function share(request: Request): Promise<Response> {
             }
         }
     }
+
+    commentary = withREADEAFooter(commentary);
+    if (commentary.length > 3000) return error("Shorten the post slightly to leave room for the READEA footer", 400);
 
 	try {
 		const response = await fetch("https://api.linkedin.com/rest/posts", {
