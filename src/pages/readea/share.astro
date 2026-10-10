@@ -6,38 +6,74 @@ export const prerender = true;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f7f5f2" />
     <title>Shared papers · READEA</title>
-    <meta name="description" content="Open shared research papers in READEA." />
-    <style>
-      :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
-      body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #f6f3f1; color: #25232a; }
-      main { width: min(100% - 36px, 560px); margin: 48px auto; background: white; border: 1px solid #e8e2df; border-radius: 22px; box-shadow: 0 16px 52px #35142612; padding: clamp(24px, 5vw, 40px); }
-      .eyebrow { color: #6f233c; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
-      h1 { font-size: clamp(26px, 5vw, 34px); letter-spacing: -.03em; margin: 12px 0 8px; }
-      p { color: #66616a; line-height: 1.5; }
-      ol { padding-left: 24px; margin: 26px 0; }
-      li { padding: 9px 0; line-height: 1.4; overflow-wrap: anywhere; }
-      .actions { margin-top: 28px; }
-      .button { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: 0 18px; border-radius: 10px; background: #6f233c; color: white; font-weight: 600; text-decoration: none; }
-      .button:hover { background: #52182d; }
-      .note { font-size: 13px; margin-top: 14px; }
+    <meta name="description" content="Explore shared papers and add them to your READEA library." />
+    <style is:global>
+      :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #27252a; background: #f7f5f2; }
+      * { box-sizing: border-box; }
+      [hidden] { display: none !important; }
+      body { margin: 0; min-height: 100svh; background: radial-gradient(ellipse at 90% 0%, #6e233b07, transparent 60%); }
+      a { color: inherit; text-decoration: none; }
+      a:focus-visible, button:focus-visible { outline: 3px solid #8f5368; outline-offset: 5px; }
+      .shell { width: min(100% - 48px, 760px); margin: 0 auto; }
+      header { padding: 36px 0 30px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ded9d4; }
+      .brand { display: inline-flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; letter-spacing: .13em; }
+      .brand img { width: 40px; height: 40px; border-radius: 10px; }
+      .header-note { font-size: 12px; color: #787179; }
+      main { padding: 44px 0 0; }
+      .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8a6571; }
+      h1 { font-size: 28px; font-weight: 500; letter-spacing: -.035em; margin: 10px 0 10px; }
+      #intro { font-size: 14px; line-height: 1.6; color: #79727a; margin: 0 0 28px; }
+      #papers { display: grid; gap: 16px; list-style: none; padding: 0; margin: 0; }
+      .paper { padding: 30px 32px; background: #fffefd; border: 1px solid #e9e4df; border-radius: 18px; box-shadow: 0 3px 16px #33212a04; }
+      .paper-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 17px; font-size: 11px; color: #888088; letter-spacing: .04em; }
+      .source { color: #743047; background: #f6eef0; padding: 5px 9px; border-radius: 6px; font-weight: 500; letter-spacing: 0; }
+      .paper h2 { font-family: Georgia, "Times New Roman", serif; font-size: clamp(23px, 4vw, 30px); line-height: 1.27; letter-spacing: -.025em; font-weight: 400; margin: 0; overflow-wrap: anywhere; }
+      .paper h2 a:hover { color: #743047; }
+      .authors { color: #79727a; font-size: 13px; line-height: 1.7; margin: 16px 0 0; }
+      .source-link { display: inline-flex; gap: 8px; align-items: center; font-size: 12px; font-weight: 500; color: #743047; margin-top: 23px; }
+      .source-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+      .import { display: flex; align-items: center; justify-content: space-between; gap: 24px; margin-top: 24px; padding: 26px 0; }
+      .import h2 { font-size: 15px; font-weight: 600; letter-spacing: -.015em; margin: 0 0 6px; }
+      .import p { font-size: 12px; line-height: 1.6; color: #79727a; margin: 0; }
+      .button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 44px; padding: 0 20px; border-radius: 10px; background: #6c233b; color: #fffaf3; font-size: 13px; font-weight: 500; white-space: nowrap; box-shadow: 0 4px 12px #6c233b16; transition: background .15s, transform .15s; }
+      .button:hover { background: #832f49; transform: translateY(-1px); }
+      footer { border-top: 1px solid #ded9d4; margin-top: 12px; padding: 22px 0 32px; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 11px; color: #8b838b; }
+      footer a:hover { color: #6c233b; }
+      .loading { height: 180px; border-radius: 18px; border: 1px solid #e9e4df; background: linear-gradient(100deg, #fffefd 30%, #f0ece8 50%, #fffefd 70%); background-size: 200% 100%; animation: shimmer 1.8s ease-in-out infinite; }
+      @keyframes shimmer { to { background-position: -200% 0; } }
+      @media (max-width: 520px) { .shell { width: calc(100% - 32px); } header { padding: 24px 0; } .header-note { display: none; } main { padding-top: 30px; } .paper { padding: 24px; } .import { flex-direction: column; align-items: stretch; gap: 16px; } .button { width: 100%; } }
+      @media (prefers-reduced-motion: reduce) { .loading { animation: none; } .button { transition: none; } }
     </style>
   </head>
   <body>
-    <main>
-      <div class="eyebrow">READEA</div>
-      <h1>Shared papers</h1>
-      <p id="intro">Checking this share link…</p>
-      <ol id="papers" hidden></ol>
-      <div class="actions"><a id="open" class="button" hidden>Open in READEA</a></div>
-      <p id="note" class="note" hidden>If the app does not open automatically, use the button above on a device with READEA installed.</p>
-    </main>
+    <div class="shell">
+      <header>
+        <a class="brand" href="/arxiv-app"><img src="/images/readea-mark.png" alt="" width="40" height="40" />READEA</a>
+        <span class="header-note">A place for your papers.</span>
+      </header>
+      <main>
+        <div class="eyebrow">Shared with you</div>
+        <h1 id="heading">Your next read.</h1>
+        <p id="intro" role="status">Loading shared papers…</p>
+        <div id="loading" class="loading" aria-hidden="true"></div>
+        <ol id="papers" hidden></ol>
+        <section id="import" class="import" hidden aria-label="Import shared papers">
+          <div><h2>Keep it in your library.</h2><p id="import-note">Open READEA to add these papers to your library.</p></div>
+          <a id="open" class="button">Open in READEA <span aria-hidden="true">↗</span></a>
+        </section>
+      </main>
+      <footer><span>Shared with READEA</span><a href="/arxiv-app">Discover READEA ↗</a></footer>
+    </div>
     <script is:inline>
       const id = new URLSearchParams(location.search).get('id');
       const intro = document.getElementById('intro');
       const list = document.getElementById('papers');
-      const open = document.getElementById('open');
-      const note = document.getElementById('note');
+      function authorName(value) {
+        const accents = {"'": '\u0301', '`': '\u0300', '^': '\u0302', '~': '\u0303', '"': '\u0308'};
+        return value.replace(/\\(['`^~"])(?:\{([A-Za-z])\}|([A-Za-z]))/g, (_, mark, grouped, plain) => ((grouped || plain) + accents[mark]).normalize('NFC'));
+      }
       async function showShare() {
         try {
           if (!id || !/^[A-Za-z0-9_-]{20,80}$/.test(id)) throw new Error('invalid');
@@ -45,26 +81,42 @@ export const prerender = true;
           if (!response.ok) throw new Error('missing');
           const bundle = await response.json();
           if (bundle.version !== 1 || !Array.isArray(bundle.papers) || bundle.papers.length < 1 || bundle.papers.length > 40) throw new Error('invalid');
-          for (const paper of bundle.papers) {
+          const fragment = document.createDocumentFragment();
+          for (const [index, paper] of bundle.papers.entries()) {
             if (typeof paper.title !== 'string' || !paper.title.trim() || typeof paper.url !== 'string') throw new Error('invalid');
             const source = new URL(paper.url);
             if (!['https:', 'http:'].includes(source.protocol)) throw new Error('invalid');
-            const item = document.createElement('li');
-            const link = document.createElement('a');
-            link.href = source.href;
-            link.textContent = paper.title;
-            link.rel = 'noopener noreferrer';
-            item.append(link);
-            list.append(item);
+            const item = document.createElement('li'); item.className = 'paper';
+            const metadata = document.createElement('div'); metadata.className = 'paper-meta';
+            const badge = document.createElement('span'); badge.className = 'source';
+            badge.textContent = source.hostname === 'arxiv.org' ? 'arXiv' : source.hostname.replace(/^www\./, '');
+            const number = document.createElement('span'); number.textContent = bundle.papers.length > 1 ? `${String(index + 1).padStart(2, '0')} / ${String(bundle.papers.length).padStart(2, '0')}` : 'PAPER';
+            metadata.append(badge, number);
+            const title = document.createElement('h2'); const link = document.createElement('a');
+            link.href = source.href; link.textContent = paper.title; link.rel = 'noopener noreferrer'; title.append(link);
+            item.append(metadata, title);
+            if (Array.isArray(paper.authors) && paper.authors.length) {
+              const authors = document.createElement('p'); authors.className = 'authors';
+              authors.textContent = paper.authors.filter(a => typeof a === 'string').map(authorName).join(' · '); item.append(authors);
+            }
+            const original = document.createElement('a'); original.className = 'source-link'; original.href = source.href;
+            original.textContent = 'View original ↗'; original.rel = 'noopener noreferrer'; item.append(original);
+            fragment.append(item);
           }
-          intro.textContent = bundle.papers.length === 1 ? 'One paper is ready to import into READEA.' : `${bundle.papers.length} papers are ready to import into READEA.`;
+          list.replaceChildren(fragment);
+          const singular = bundle.papers.length === 1;
+          document.getElementById('heading').textContent = singular ? 'A paper, shared with you.' : `${bundle.papers.length} papers, one collection.`;
+          intro.textContent = 'Read the original, or bring it into your own library.';
+          if (!singular) intro.textContent = 'Explore the papers, or save the collection to your library.';
+          document.title = singular ? `${bundle.papers[0].title} · READEA` : `${bundle.papers.length} shared papers · READEA`;
           list.hidden = false;
-          open.href = `readea://share?id=${encodeURIComponent(id)}`;
-          open.hidden = false;
-          note.hidden = false;
+          document.getElementById('open').href = `readea://share?id=${encodeURIComponent(id)}`;
+          document.getElementById('import-note').textContent = `Requires READEA on your Mac, iPhone, or iPad.`;
+          document.getElementById('import').hidden = false;
         } catch {
-          intro.textContent = 'This share link is incomplete or unavailable. Ask the sender to share the papers again.';
-        }
+          document.getElementById('heading').textContent = 'This link is unavailable.';
+          intro.textContent = 'Check your connection and reload, or ask the sender for a new link.';
+        } finally { document.getElementById('loading').hidden = true; }
       }
       showShare();
     </script>
