@@ -10,7 +10,7 @@ import FeatureCard from "../components/FeatureCard.astro";
   </Fragment>
 
   <FeatureGrid sectionTitle="Features">
-    <FeatureCard title="AI Recommendations" description="Get personalized paper suggestions based on your reading interests and research topics.">
+    <FeatureCard title="Personalized Ranking" description="Shape your daily paper order with likes and dislikes as READEA learns your interests.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 5a3 3 0 1 0-5.997.125 4 4 0 0 0-2.526 5.77 4 4 0 0 0 .556 6.588A4 4 0 1 0 12 18Z" />
         <path d="M12 5a3 3 0 1 1 5.997.125 4 4 0 0 1 2.526 5.77 4 4 0 0 1-.556 6.588A4 4 0 1 1 12 18Z" />
@@ -32,14 +32,14 @@ import FeatureCard from "../components/FeatureCard.astro";
       </svg>
     </FeatureCard>
 
-    <FeatureCard title="Smart Search" description="Find papers quickly with full-text search across titles, abstracts, and authors.">
+    <FeatureCard title="Smart Search" description="Search arXiv, your saved papers, and supported literature sources from one place.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8" />
         <path d="m21 21-4.3-4.3" />
       </svg>
     </FeatureCard>
 
-    <FeatureCard title="Reading Lists" description="Organize papers into custom collections for different projects or topics.">
+    <FeatureCard title="Collections" description="Organize saved papers with collections and tags for different projects or topics.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M12 7v14" />
         <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
@@ -54,7 +54,7 @@ import FeatureCard from "../components/FeatureCard.astro";
       </svg>
     </FeatureCard>
 
-    <FeatureCard title="Daily Digest" description="Get notified about new papers matching your research interests.">
+    <FeatureCard title="Browse by Date" description="Return to an earlier arXiv announcement day from the Feed calendar.">
       <svg class="size-6 text-primary" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9" />
         <path d="M10.3 21a1.94 1.94 0 0 0 3.4 0" />
@@ -62,13 +62,12 @@ import FeatureCard from "../components/FeatureCard.astro";
     </FeatureCard>
   </FeatureGrid>
 
-  <h2 class="text-2xl font-bold mb-6 mt-12">Getting Started</h2>
-  <a href="/arxiv-app/tutorials/getting-started" class="flex items-center gap-2 text-base text-primary hover:underline transition-all duration-150 py-2">
-    Getting Started with Readea &rarr;
-  </a>
-  <a href="/arxiv-app/tutorials/managing-feeds" class="flex items-center gap-2 text-base text-primary hover:underline transition-all duration-150 py-2">
-    Managing Your Feeds &rarr;
-  </a>
+  <section class="mt-12 rounded-xl border border-border bg-card p-6">
+    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Learn READEA</p>
+    <h2 class="mt-2 text-2xl font-semibold">The user manual</h2>
+    <p class="mt-2 text-muted-foreground leading-relaxed">Follow your Feed, save papers, read and annotate PDFs, organize your Library, and sync across Apple devices. Includes current app screenshots.</p>
+    <a href="/arxiv-app/manual" class="mt-5 inline-flex items-center gap-2 rounded-lg bg-primary px-5 py-3 font-medium text-primary-foreground transition-opacity hover:opacity-90">Read the manual <span aria-hidden="true">→</span></a>
+  </section>
 
   <div class="mt-12 flex flex-col sm:flex-row gap-4">
     <a href="/arxiv-app/beta" class="inline-flex items-center justify-center px-6 py-3 bg-primary text-primary-foreground font-medium rounded-lg hover:opacity-90 transition-opacity">Sign up for Beta</a>

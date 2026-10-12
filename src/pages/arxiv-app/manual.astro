@@ -1,0 +1,126 @@
+---
+import WideLayout from "../../layouts/WideLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+
+const sections = [
+  { id: "start", label: "Get started" },
+  { id: "feed", label: "Feed & paper cards" },
+  { id: "read", label: "Read & annotate" },
+  { id: "library", label: "Library & collections" },
+  { id: "search", label: "Search" },
+  { id: "sync", label: "Sync & settings" },
+  { id: "connections", label: "Connections & sharing" },
+];
+---
+<WideLayout title="READEA Manual" description="Learn to find, read, annotate, organize, and sync research papers with READEA on Mac, iPhone, and iPad.">
+  <div class="mx-auto max-w-6xl">
+    <Breadcrumb items={[{ label: "READEA", href: "/arxiv-app" }, { label: "Manual" }]} />
+
+    <header class="mt-8 border-b border-border pb-9">
+      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Beta user guide</p>
+      <h1 class="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">READEA Manual</h1>
+      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
+        A practical guide to your daily feed, paper library, PDF reader, and cross-device sync.
+      </p>
+      <p class="mt-3 text-sm text-muted-foreground">Screenshots show the macOS app. The same features may have a different layout on iPhone and iPad.</p>
+    </header>
+
+    <div class="mt-10 grid gap-12 lg:grid-cols-[180px_minmax(0,1fr)]">
+      <aside class="hidden lg:block">
+        <nav aria-label="On this page" class="sticky top-24 space-y-1">
+          <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">On this page</p>
+          {sections.map((section) => (
+            <a href={`#${section.id}`} class="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{section.label}</a>
+          ))}
+        </nav>
+      </aside>
+
+      <div class="min-w-0 space-y-14">
+        <section id="start" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Get started</h2>
+          <ol class="mt-5 space-y-3 text-base leading-relaxed text-muted-foreground">
+            <li><strong class="text-foreground">1. Install the beta.</strong> Open your READEA TestFlight invitation on each Apple device you want to use.</li>
+            <li><strong class="text-foreground">2. Choose your arXiv categories.</strong> In Settings, open <strong class="text-foreground">arXiv Categories</strong> and follow the fields you want in your Feed.</li>
+            <li><strong class="text-foreground">3. Turn on iCloud Sync.</strong> Use the same Apple Account in system settings on each device, then enable <strong class="text-foreground">iCloud Sync</strong> in READEA Settings.</li>
+          </ol>
+          <div class="mt-6 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
+            <strong class="text-foreground">Find your way around:</strong> Home shows recent reading and Weekly Summary; Library holds saved papers; Feed shows arXiv papers; Search opens Smart Search; Lab contains experimental tools. On Mac, use the gear button for Settings. On iPhone and iPad, Settings has its own tab.
+          </div>
+        </section>
+
+        <section id="feed" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Feed & paper cards</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground">The Feed shows papers for the current arXiv announcement day. Use the category chips to focus on one field, and the calendar button in the lower-right corner to browse an earlier date. When you are viewing an earlier date, use <strong class="text-foreground">Today</strong> to return.</p>
+          <figure class="manual-shot mt-6">
+            <a href="/images/readea-manual/feed.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size READEA Feed screenshot"><img src="/images/readea-manual/feed.png" alt="READEA Feed with arXiv category chips, paper cards, and calendar button" width="1800" height="1504" loading="lazy" /></a>
+            <figcaption>Feed on macOS. Select a category chip or open the calendar to browse another day.</figcaption>
+          </figure>
+          <ul class="mt-6 list-disc space-y-2 pl-6 leading-relaxed text-muted-foreground">
+            <li>Click or tap a paper card to read its title, authors, and abstract.</li>
+            <li>Use the thumbs-up and thumbs-down icons to teach personal ranking what interests you; use the star for a favorite.</li>
+            <li>Use the bookmark in the paper detail card to save it to Library. Tapping it again removes it from Library.</li>
+            <li>The toolbar filter can hide papers you have read or saved. Refresh asks READEA to fetch the current feed again.</li>
+          </ul>
+          <figure class="manual-shot mt-7">
+            <a href="/images/readea-manual/paper-details.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size paper detail screenshot"><img src="/images/readea-manual/paper-details.png" alt="READEA paper detail card with abstract, PDF and save controls, and preference buttons" width="1800" height="1504" loading="lazy" /></a>
+            <figcaption>Paper details. Open the PDF, save the paper, or give feedback from the bottom controls.</figcaption>
+          </figure>
+        </section>
+
+        <section id="read" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Read & annotate</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground">Open a paper's PDF from its detail card or Library. Select text to highlight or add a note; the annotation palette appears near your selection. In the PDF reader you can also search the document and change zoom. Press <kbd>Esc</kbd> on Mac to close the reader.</p>
+          <p class="mt-3 leading-relaxed text-muted-foreground">Downloaded PDFs remain available for offline reading. Annotations and reading state are included in iCloud Sync when it is enabled. A journal PDF is used when READEA can find an accessible version; the PDF currently carrying annotations stays in place.</p>
+        </section>
+
+        <section id="library" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Library & collections</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground">Library contains papers you have saved or imported. Search the Library from its search field. Use the tag button in the top toolbar to filter by one or more tags. The round collection button in the lower-right corner opens your collections; choose one collection to see its papers, or use <strong class="text-foreground">Clear</strong> to return to the full Library.</p>
+          <figure class="manual-shot mt-6">
+            <a href="/images/readea-manual/library.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size READEA Library screenshot"><img src="/images/readea-manual/library.png" alt="READEA Library showing saved paper cards, toolbar, and collection button" width="1800" height="1504" loading="lazy" /></a>
+            <figcaption>Library on macOS. Tags are in the top toolbar; collections open from the round lower-right button.</figcaption>
+          </figure>
+          <ul class="mt-6 list-disc space-y-2 pl-6 leading-relaxed text-muted-foreground">
+            <li>Open a saved paper to edit its metadata, manage tags or collections, and check for an accessible journal PDF.</li>
+            <li>Long-press a card on touch devices, or right-click it on Mac, to select papers for batch actions.</li>
+            <li>Removing a paper from a collection only changes that collection. Deleting a paper removes its Library record.</li>
+          </ul>
+        </section>
+
+        <section id="search" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Search</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground">Open the Search tab for Smart Search. Enter your full query, then press <kbd>Return</kbd> or <kbd>Search</kbd> to run it. You can refine the query before submitting again. arXiv is the default external source; choose other sources when you need them. The search field on other tabs searches that tab's content.</p>
+          <p class="mt-3 leading-relaxed text-muted-foreground">If a search returns no results, try a shorter phrase or check <strong class="text-foreground">Settings → Literature Sources</strong> and your internet connection.</p>
+        </section>
+
+        <section id="sync" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Sync & settings</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground">In Settings, turn on <strong class="text-foreground">iCloud Sync</strong> on every device and check <strong class="text-foreground">Last Sync</strong> for recent activity. <strong class="text-foreground">Sync Now</strong> requests an immediate transfer. READEA uses your device's iCloud account; there is no separate READEA password for sync.</p>
+          <p class="mt-3 leading-relaxed text-muted-foreground">Saved papers, tags, collections, feedback, annotations, reading state, and retained feed cache can sync across your Apple devices. PDF files may need to be downloaded again on a new device. Theme & Colors and Fonts & Size are separate Settings pages.</p>
+          <div class="mt-5 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
+            <strong class="text-foreground">If something has not appeared on another device:</strong> check that both devices use the same iCloud account, that iCloud Sync is enabled in READEA on both, and that neither device shows a sync error. Then try Sync Now on both devices.
+          </div>
+        </section>
+
+        <section id="connections" class="scroll-mt-24">
+          <h2 class="text-2xl font-semibold tracking-tight">Connections & sharing</h2>
+          <p class="mt-4 leading-relaxed text-muted-foreground"><strong class="text-foreground">Settings → Connections</strong> lets you connect ORCID and LinkedIn. With ORCID connected, <strong class="text-foreground">Find my papers</strong> searches your publication history and adds matches to the <strong class="text-foreground">My Papers</strong> collection. You can run it again manually; READEA also checks for newly listed work periodically where background activity is available.</p>
+          <p class="mt-3 leading-relaxed text-muted-foreground">Use Share on a paper card or in Library selection mode to send a paper by email or post it to LinkedIn. A READEA sharing link lets another READEA user import the paper. LinkedIn posting requires a connected LinkedIn account.</p>
+          <p class="mt-3 leading-relaxed text-muted-foreground">On Mac, the Safari extension is bundled with READEA and can be enabled in Safari's extension settings. The Chrome extension can save supported paper pages into your Library once installed and connected to the Mac app.</p>
+        </section>
+
+        <div class="border-t border-border pt-8 text-sm text-muted-foreground">
+          Need help or found a bug? <a class="font-medium text-primary hover:underline" href="/arxiv-app/feedback">Send feedback</a>.
+        </div>
+      </div>
+    </div>
+  </div>
+</WideLayout>
+
+<style>
+  .manual-shot { overflow: hidden; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
+  .manual-shot a { display: block; }
+  .manual-shot img { display: block; width: 100%; height: auto; }
+  .manual-shot figcaption { padding: .75rem 1rem; border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: .875rem; line-height: 1.5; }
+  kbd { border: 1px solid var(--border); border-radius: .25rem; padding: .05rem .35rem; background: var(--card); color: var(--foreground); font-size: .85em; }
+</style>

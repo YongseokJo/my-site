@@ -1,21 +1,23 @@
 ---
-title: "Managing Your Feeds"
-description: "Customize your arXiv paper feeds and AI recommendations"
+title: "Managing Your Feed"
+description: "Choose categories, browse dates, and personalize paper ranking"
 order: 2
 ---
 
-## Step 1: Access Feed Settings
+## Choose categories
 
-Navigate to Settings and then Feeds to view your current subscriptions and recommendation preferences.
+Go to **Settings → arXiv Categories** to follow or unfollow fields. In Feed, use the category chips to focus on one field without changing your settings.
 
-## Step 2: Add Subject Categories
+## Browse another day
 
-Select specific arXiv categories (e.g., astro-ph.GA, cs.LG) to receive papers from those areas in your feed.
+Select the calendar button in the lower-right corner of Feed, choose a date, then load its papers. Use **Today** to return to the current announcement day.
 
-## Step 3: Fine-tune AI Recommendations
+## Personalize the order
 
-The AI recommendation engine learns from your reading patterns. Mark papers as relevant or not relevant to improve future suggestions.
+Use thumbs up or thumbs down on paper cards or their detail view. READEA can use this feedback to rank future papers. Personalization needs enough feedback before it becomes useful.
 
-## Step 4: Set Notification Preferences
+## Control what you see
 
-Choose whether to receive daily or weekly digest notifications for new papers matching your interests.
+Use the Feed toolbar filter to hide papers you have read or saved. Refresh fetches the current feed again.
+
+For annotated screenshots, read the [READEA Manual](/arxiv-app/manual#feed).

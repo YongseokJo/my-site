@@ -1,21 +1,23 @@
 ---
-title: "Getting Started with Readea"
-description: "Learn how to set up Readea and start reading arXiv papers"
+title: "Getting Started with READEA"
+description: "Install the beta, choose arXiv categories, and begin reading"
 order: 1
 ---
 
-## Step 1: Install Readea
+## 1. Install the beta
 
-Download Readea from TestFlight (iOS) or directly (macOS). Contact us for beta access if you have not received an invitation yet.
+Open your READEA TestFlight invitation on each Apple device you want to use. On Mac, iPhone, and iPad, use the same Apple Account if you plan to sync.
 
-## Step 2: Create Your Profile
+## 2. Choose your fields
 
-Open the app and set up your research interests. Select topics like astrophysics, machine learning, condensed matter, or any combination that matches your work.
+Open **Settings → arXiv Categories** and follow the subjects you want in your Feed. You can change them later.
 
-## Step 3: Browse Your Feed
+## 3. Browse and save
 
-Your personalized feed appears on the home screen. Papers are ranked by relevance to your selected interests using AI recommendations.
+Open **Feed**. Select a category chip, then click or tap any paper card for its abstract. The bookmark button saves the paper to **Library**. The calendar button lets you browse an earlier arXiv date.
 
-## Step 4: Save and Organize
+## 4. Enable sync
 
-Tap the bookmark icon to save papers to your reading list. Create custom collections to organize papers by project or topic.
+Turn on **iCloud Sync** in READEA Settings on each device. Check **Last Sync** or use **Sync Now** if a saved paper has not appeared elsewhere.
+
+For screenshots and the complete workflow, read the [READEA Manual](/arxiv-app/manual).
