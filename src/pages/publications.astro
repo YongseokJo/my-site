@@ -7,7 +7,7 @@ import SchemaOrgPublication from "../components/SchemaOrgPublication.astro";
 const publications = await getCollection("publications");
 const pubData = publications
   .map((p) => p.data)
-  .sort((a, b) => b.year - a.year);
+  .sort((a, b) => b.date.localeCompare(a.date));
 ---
 
 <BaseLayout title="Publications" description="Research publications by Yongseok Jo in computational astrophysics and machine learning">
