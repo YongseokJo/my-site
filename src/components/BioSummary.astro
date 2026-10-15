@@ -1,14 +1,11 @@
----
-// BioSummary: Brief bio with "Learn more" link to the About page.
----
-<section class="mt-12 text-center">
-  <p class="text-base text-muted-foreground leading-relaxed">
-    Yongseok Jo is a computational astrophysicist and ML researcher at the SkAI Institute in Chicago, studying the formation of first star clusters and black holes in the early universe through cosmological simulations.
-  </p>
-  <a
-    href="/about"
-    class="inline-block mt-4 text-primary hover:underline text-base font-medium"
-  >
-    Learn more
-  </a>
+<section class="mt-16 grid items-center gap-7 border-y border-border py-10 sm:grid-cols-[108px_1fr] md:gap-10 md:py-12" aria-labelledby="bio-heading">
+  <img src="/images/YongseokJo.jpg" alt="Portrait of Yongseok Jo" width="108" height="108" loading="lazy" class="h-[108px] w-[108px] rounded-full object-cover ring-4 ring-primary/10" />
+  <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">About me</p>
+    <h2 id="bio-heading" class="mt-2 text-xl font-semibold tracking-tight md:text-2xl">Hello, I’m Yongseok Jo.</h2>
+    <p class="mt-2 max-w-3xl text-sm leading-7 text-muted-foreground md:text-base">
+      I’m a computational astrophysicist and ML researcher at the SkAI Institute in Chicago. My work follows the formation of the first star clusters and black holes through cosmological simulations.
+    </p>
+    <a href="/about" class="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-primary underline-offset-4 hover:underline">More about me <span aria-hidden="true">→</span></a>
+  </div>
 </section>

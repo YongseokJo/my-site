@@ -20,35 +20,36 @@ function isActive(href: string): boolean {
 }
 ---
 
-<nav class="bg-card border-b border-border sticky top-0 z-50">
-  <div class="max-w-5xl mx-auto px-4 md:px-6 flex items-center justify-between h-16">
+<nav class="bg-background/95 border-b border-border sticky top-0 z-50 backdrop-blur-md">
+  <div class="max-w-6xl mx-auto px-5 md:px-8 flex items-center justify-between h-[72px]">
     <!-- Brand -->
-    <a href="/" class="text-xl font-bold text-foreground hover:text-foreground no-underline">
-      Yongseok Jo
+    <a href="/" class="flex items-center gap-3 text-foreground no-underline hover:text-primary">
+      <span class="flex h-9 w-9 items-center justify-center rounded-full border border-primary/50 text-sm font-bold tracking-tight text-primary" aria-hidden="true">YJ</span>
+      <span class="text-base font-semibold tracking-tight">Yongseok Jo</span>
     </a>
 
     <!-- Desktop nav links -->
-    <div class="hidden md:flex items-center gap-1">
+    <div class="hidden lg:flex items-center gap-0.5">
       {navLinks.filter(l => !l.highlight).map((link) => (
         <a
           href={link.href}
           class:list={[
-            "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
+            "px-2.5 py-2 text-sm font-medium transition-colors duration-150 min-h-[48px] flex items-center border-b-2",
             isActive(link.href)
-              ? "bg-muted text-foreground border-transparent"
-              : "border-transparent text-muted-foreground hover:text-foreground hover:bg-muted",
+              ? "text-foreground border-primary"
+              : "border-transparent text-muted-foreground hover:text-foreground hover:border-primary/40",
           ]}
         >
           {link.name}
         </a>
       ))}
-      <div class="w-px h-6 bg-border mx-2"></div>
-      <div class="flex items-center gap-2">
+      <div class="w-px h-6 bg-border mx-3"></div>
+      <div class="flex items-center gap-1">
         {navLinks.filter(l => l.highlight).map((link) => (
           <a
             href={link.href}
             class:list={[
-              "px-3 py-2 text-sm font-medium transition-all duration-150 rounded-md min-h-[48px] flex items-center border",
+              "px-2.5 py-2 text-sm font-semibold transition-colors duration-150 rounded-md min-h-[48px] flex items-center border",
               isActive(link.href)
                 ? "bg-primary text-primary-foreground border-primary"
                 : "border-primary text-primary hover:bg-primary hover:text-primary-foreground",
@@ -59,10 +60,10 @@ function isActive(href: string): boolean {
         ))}
       </div>
       <div class="w-px h-6 bg-border mx-2"></div>
-      <div class="ml-2">
+      <div>
         <SearchToggle client:load />
       </div>
-      <div class="ml-2">
+      <div>
         <DarkModeToggle client:load />
       </div>
     </div>
@@ -70,7 +71,7 @@ function isActive(href: string): boolean {
     <!-- Mobile hamburger -->
     <button
       id="mobile-menu-btn"
-      class="md:hidden flex items-center justify-center h-12 w-12 text-foreground"
+      class="lg:hidden flex items-center justify-center h-12 w-12 text-foreground"
       aria-label="Toggle menu"
       aria-expanded="false"
     >
@@ -82,7 +83,7 @@ function isActive(href: string): boolean {
   </div>
 
   <!-- Mobile menu -->
-  <div id="mobile-menu" class="hidden md:hidden border-t border-border">
+  <div id="mobile-menu" class="hidden lg:hidden border-t border-border bg-background">
     <div class="px-4 py-4 space-y-1">
       {navLinks.map((link) => (
         <a

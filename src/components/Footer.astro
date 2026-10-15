@@ -23,21 +23,25 @@ const socialLinks = [
 ];
 ---
 
-<footer class="border-t border-border py-8 text-center text-sm text-muted-foreground">
-  <div class="max-w-5xl mx-auto px-4 md:px-6">
-    <div class="flex items-center justify-center gap-6 mb-4">
+<footer class="border-t border-border bg-card/50 py-10 text-sm text-muted-foreground">
+  <div class="max-w-6xl mx-auto px-5 md:px-8 flex flex-col gap-7 sm:flex-row sm:items-center sm:justify-between">
+    <div>
+      <p class="font-semibold text-foreground">Yongseok Jo</p>
+      <p class="mt-1">Computational astrophysics · Chicago, IL</p>
+    </div>
+    <div class="flex items-center gap-5">
       {socialLinks.map((link) => (
         <a
           href={link.url}
           target="_blank"
           rel="noopener noreferrer"
           aria-label={link.name}
-          class="opacity-60 hover:opacity-100 transition-opacity duration-150 text-foreground"
+          class="opacity-65 hover:opacity-100 transition-opacity duration-150 text-foreground focus-visible:opacity-100"
         >
           <Fragment set:html={link.svg} />
         </a>
       ))}
     </div>
-    <p>&copy; 2026 Yongseok Jo. All rights reserved.</p>
+    <p class="text-xs">&copy; 2026 Yongseok Jo</p>
   </div>
 </footer>

@@ -1,49 +1,37 @@
----
-// CTACardPair: Two side-by-side CTA cards for Simulation Package and ArXiv App.
-// Uses shadcn Card components rendered statically (no client directive needed).
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "../components/ui/card";
-import { Button } from "../components/ui/button";
----
-<section class="grid grid-cols-1 md:grid-cols-2 gap-8">
-  <!-- Simulation Package Card -->
-  <Card className="border border-border">
-    <CardHeader>
-      <div class="mb-2">
-        <!-- Lucide Telescope icon (inline SVG) -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/></svg>
+<section aria-labelledby="work-heading">
+  <div class="mb-7 flex flex-wrap items-end justify-between gap-4">
+    <div>
+      <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Selected work</p>
+      <h2 id="work-heading" class="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">From discovery to tools</h2>
+    </div>
+    <p class="max-w-xs text-sm leading-6 text-muted-foreground">Research software built to explore, share, and understand the universe.</p>
+  </div>
+  <div class="grid gap-5 md:grid-cols-2">
+    <a href="/software" class="group relative flex min-h-[310px] flex-col overflow-hidden rounded-xl border border-border bg-card p-7 text-card-foreground shadow-sm transition duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary md:p-8">
+      <span class="pointer-events-none absolute -right-10 -top-16 h-56 w-56 rounded-full border border-primary/15"></span>
+      <span class="pointer-events-none absolute -right-2 -top-8 h-40 w-40 rounded-full border border-primary/15"></span>
+      <div class="relative flex items-center justify-between">
+        <span class="text-xs font-semibold uppercase tracking-[0.17em] text-primary">01 / Simulation</span>
+        <span class="text-2xl text-primary" aria-hidden="true">✳</span>
       </div>
-      <CardTitle className="text-base font-bold">Enzo-Abyss</CardTitle>
-      <CardDescription className="text-base text-muted-foreground">
-        Explore cosmological simulation tools for galaxy formation and star cluster evolution.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <a href="/software">
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-          Explore Simulations
-        </Button>
-      </a>
-    </CardContent>
-  </Card>
-
-  <!-- ArXiv App Card -->
-  <Card className="border border-border">
-    <CardHeader>
-      <div class="mb-2">
-        <!-- Lucide Newspaper icon (inline SVG) -->
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary"><path d="M4 22h16a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v16a2 2 0 0 1-2 2Zm0 0a2 2 0 0 1-2-2v-9c0-1.1.9-2 2-2h2"/><path d="M18 14h-8"/><path d="M15 18h-5"/><path d="M10 6h8v4h-8V6Z"/></svg>
+      <div class="relative mt-auto pt-12">
+        <h3 class="text-2xl font-semibold tracking-tight">Enzo-Abyss</h3>
+        <p class="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">Cosmological simulation tools for studying galaxy formation and star cluster evolution.</p>
+        <span class="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary">Explore simulations <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span></span>
       </div>
-      <CardTitle className="text-base font-bold">Readea</CardTitle>
-      <CardDescription className="text-base text-muted-foreground">
-        Browse and organize arXiv papers with an intuitive reading experience.
-      </CardDescription>
-    </CardHeader>
-    <CardContent>
-      <a href="/arxiv-app">
-        <Button className="bg-primary text-primary-foreground hover:bg-primary/90">
-          Explore Readea
-        </Button>
-      </a>
-    </CardContent>
-  </Card>
+    </a>
+    <a href="/arxiv-app" class="group relative flex min-h-[310px] flex-col overflow-hidden rounded-xl border border-border bg-card p-7 text-card-foreground shadow-sm transition duration-200 hover:-translate-y-1 hover:border-primary/50 hover:shadow-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-primary md:p-8">
+      <span class="pointer-events-none absolute right-8 top-5 h-36 w-28 rotate-12 rounded-md border border-primary/15"></span>
+      <span class="pointer-events-none absolute right-14 top-8 h-36 w-28 rotate-[-8deg] rounded-md border border-primary/20"></span>
+      <div class="relative flex items-center justify-between">
+        <span class="text-xs font-semibold uppercase tracking-[0.17em] text-primary">02 / Reading</span>
+        <span class="text-2xl text-primary" aria-hidden="true">✦</span>
+      </div>
+      <div class="relative mt-auto pt-12">
+        <h3 class="text-2xl font-semibold tracking-tight">Readea</h3>
+        <p class="mt-3 max-w-sm text-sm leading-7 text-muted-foreground">A calmer way to discover, organize, and read research papers from arXiv.</p>
+        <span class="mt-7 inline-flex items-center gap-2 text-sm font-semibold text-primary">Explore Readea <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span></span>
+      </div>
+    </a>
+  </div>
 </section>

@@ -55,18 +55,18 @@
     --card-foreground: #0f172a;
     --popover: #ffffff;
     --popover-foreground: #0f172a;
-    --primary: #b8860b;
+    --primary: #785506;
     --primary-foreground: #ffffff;
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #b8860b;
+    --accent: #785506;
     --accent-foreground: #ffffff;
     --destructive: #dc2626;
     --border: #e2e8f0;
     --input: #e2e8f0;
-    --ring: #b8860b;
+    --ring: #785506;
     --chart-1: #b8860b;
     --chart-2: #64748b;
     --chart-3: #0f172a;
@@ -75,12 +75,12 @@
     --radius: 0.75rem;
     --sidebar: #f8fafc;
     --sidebar-foreground: #0f172a;
-    --sidebar-primary: #b8860b;
+    --sidebar-primary: #785506;
     --sidebar-primary-foreground: #ffffff;
     --sidebar-accent: #f1f5f9;
     --sidebar-accent-foreground: #0f172a;
     --sidebar-border: #e2e8f0;
-    --sidebar-ring: #b8860b;
+    --sidebar-ring: #785506;
 }
 
 /* Light mode alias (for explicit .light class toggling) */
@@ -91,18 +91,18 @@
     --card-foreground: #0f172a;
     --popover: #ffffff;
     --popover-foreground: #0f172a;
-    --primary: #b8860b;
+    --primary: #785506;
     --primary-foreground: #ffffff;
     --secondary: #f1f5f9;
     --secondary-foreground: #0f172a;
     --muted: #f1f5f9;
     --muted-foreground: #64748b;
-    --accent: #b8860b;
+    --accent: #785506;
     --accent-foreground: #ffffff;
     --destructive: #dc2626;
     --border: #e2e8f0;
     --input: #e2e8f0;
-    --ring: #b8860b;
+    --ring: #785506;
 }
 
 /* Dark mode (deep space cosmic theme) */

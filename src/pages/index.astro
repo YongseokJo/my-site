@@ -8,15 +8,17 @@ import BioSummary from "../components/BioSummary.astro";
   <CosmicHero slot="hero" />
   <CTACardPair />
   <BioSummary />
-  <section class="mt-14 border-t border-border pt-10" aria-labelledby="research-heading">
-    <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Research</p>
-    <h2 id="research-heading" class="mt-2 text-2xl font-bold">Explore the science behind the work</h2>
-    <p class="mt-3 text-muted-foreground leading-relaxed">
+  <section class="mt-16 grid gap-5 md:grid-cols-[1fr_auto] md:items-end" aria-labelledby="research-heading">
+    <div>
+    <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Research</p>
+    <h2 id="research-heading" class="mt-2 text-2xl font-semibold tracking-tight md:text-3xl">Explore the science behind the work</h2>
+    <p class="mt-3 max-w-2xl text-muted-foreground leading-relaxed">
       Read about current projects in early galaxy formation and machine learning, or browse the publication record.
     </p>
-    <div class="mt-5 flex flex-wrap gap-3">
-      <a href="/research" class="inline-flex items-center rounded-lg bg-primary px-4 py-2.5 font-medium text-primary-foreground hover:opacity-90">Research projects <span class="ml-2" aria-hidden="true">→</span></a>
-      <a href="/publications" class="inline-flex items-center rounded-lg border border-border px-4 py-2.5 font-medium text-foreground hover:bg-muted">Publications <span class="ml-2" aria-hidden="true">→</span></a>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <a href="/research" class="inline-flex min-h-11 items-center rounded-md bg-primary px-4 py-2.5 text-sm font-semibold text-primary-foreground hover:opacity-90">Research projects <span class="ml-2" aria-hidden="true">↗</span></a>
+      <a href="/publications" class="inline-flex min-h-11 items-center rounded-md border border-border px-4 py-2.5 text-sm font-semibold text-foreground hover:bg-muted">Publications <span class="ml-2" aria-hidden="true">→</span></a>
     </div>
   </section>
 </HomeLayout>
