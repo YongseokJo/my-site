@@ -10,9 +10,9 @@ export const onRequest = defineMiddleware(async (context, next) => {
 
   // Path-based filtering: only create Supabase client for routes that need auth.
   // Static pages (/, /about, /publications, etc.) skip Supabase entirely for performance.
-  const authPaths = ["/dashboard", "/software", "/login", "/signup", "/pending-approval", "/api/"];
+  const authPaths = ["/dashboard", "/login", "/signup", "/pending-approval", "/api/"];
   const pathname = context.url.pathname;
-  const needsAuth = authPaths.some(
+  const needsAuth = pathname.startsWith("/software/") || authPaths.some(
     (p) => pathname === p || pathname.startsWith(p + "/")
   );
 
