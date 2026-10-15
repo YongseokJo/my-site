@@ -16,7 +16,8 @@ const {
   canonicalUrl = Astro.url.href,
 } = Astro.props;
 
-const fullTitle = `${title} | Yongseok Jo`;
+const fullTitle = title === "Yongseok Jo" ? title : `${title} | Yongseok Jo`;
+const fullOgImage = new URL(ogImage, Astro.url.origin).href;
 ---
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -28,11 +29,11 @@ const fullTitle = `${title} | Yongseok Jo`;
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 <link rel="canonical" href={canonicalUrl} />
 <!-- OpenGraph -->
-<meta property="og:title" content={title} />
+<meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />
 <meta property="og:type" content={ogType} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={ogImage} />
+<meta property="og:image" content={fullOgImage} />
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:title" content={title} />

@@ -1,9 +1,6 @@
-import { useState, type KeyboardEvent } from "react";
+import { useState } from "react";
 import { ExternalLink } from "lucide-react";
 import { Card, CardContent } from "../components/ui/card";
-import { Badge } from "../components/ui/badge";
-import { Button } from "../components/ui/button";
-import { cn } from "../lib/utils";
 
 interface Publication {
   id: string;
@@ -40,6 +37,7 @@ function highlightAuthor(authors: string) {
 export default function PublicationList({ publications }: PublicationListProps) {
   const [activeRoles, setActiveRoles] = useState<Set<string>>(new Set());
   const [activeYears, setActiveYears] = useState<Set<number>>(new Set());
+  const [expandedAuthors, setExpandedAuthors] = useState<Set<string>>(new Set());
 
   const uniqueRoles = Array.from(new Set(publications.map((p) => p.role)));
   const uniqueYears = Array.from(new Set(publications.map((p) => p.year))).sort(
@@ -70,14 +68,13 @@ export default function PublicationList({ publications }: PublicationListProps) 
     });
   }
 
-  function handleChipKeyDown(
-    e: KeyboardEvent,
-    action: () => void
-  ) {
-    if (e.key === "Enter" || e.key === " ") {
-      e.preventDefault();
-      action();
-    }
+  function toggleAuthors(id: string) {
+    setExpandedAuthors((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
   }
 
   const filtered = publications.filter((pub) => {
@@ -90,62 +87,45 @@ export default function PublicationList({ publications }: PublicationListProps) 
 
   return (
     <div>
-      {/* Filter chips */}
-      <div className="flex gap-2 overflow-x-auto pb-2 [-webkit-overflow-scrolling:touch]">
-        {uniqueRoles.map((role) => {
-          const isActive = activeRoles.has(role);
-          return (
-            <Badge
-              key={role}
-              variant={isActive ? "default" : "outline"}
-              className={cn(
-                "cursor-pointer select-none whitespace-nowrap",
-                isActive
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90 border-primary"
-                  : "hover:bg-muted"
-              )}
-              role="button"
-              tabIndex={0}
-              onClick={() => toggleRole(role)}
-              onKeyDown={(e: KeyboardEvent<HTMLSpanElement>) =>
-                handleChipKeyDown(e, () => toggleRole(role))
-              }
-            >
-              {ROLE_LABELS[role] || role}
-            </Badge>
-          );
-        })}
-
-        {/* Visual separator */}
-        <div className="w-px bg-border shrink-0 self-stretch" />
-
-        {uniqueYears.map((year) => {
-          const isActive = activeYears.has(year);
-          return (
-            <Badge
-              key={year}
-              variant={isActive ? "default" : "outline"}
-              className={cn(
-                "cursor-pointer select-none whitespace-nowrap",
-                isActive
-                  ? "bg-primary text-primary-foreground hover:bg-primary/90 border-primary"
-                  : "hover:bg-muted"
-              )}
-              role="button"
-              tabIndex={0}
-              onClick={() => toggleYear(year)}
-              onKeyDown={(e: KeyboardEvent<HTMLSpanElement>) =>
-                handleChipKeyDown(e, () => toggleYear(year))
-              }
-            >
-              {year}
-            </Badge>
-          );
-        })}
+      <div className="space-y-3" role="group" aria-label="Filter publications">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-sm font-medium text-muted-foreground">Author role</span>
+          {uniqueRoles.map((role) => {
+            const isActive = activeRoles.has(role);
+            return (
+              <button
+                key={role}
+                type="button"
+                className={`min-h-8 rounded-full border px-3 py-1 text-sm font-medium transition-colors ${isActive ? "border-primary bg-primary text-primary-foreground" : "border-border text-foreground hover:bg-muted"}`}
+                aria-pressed={isActive}
+                onClick={() => toggleRole(role)}
+              >
+                {ROLE_LABELS[role] || role}
+              </button>
+            );
+          })}
+        </div>
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="mr-1 text-sm font-medium text-muted-foreground">Year</span>
+          {uniqueYears.map((year) => {
+            const isActive = activeYears.has(year);
+            return (
+              <button
+                key={year}
+                type="button"
+                className={`min-h-8 rounded-full border px-3 py-1 text-sm font-medium transition-colors ${isActive ? "border-primary bg-primary text-primary-foreground" : "border-border text-foreground hover:bg-muted"}`}
+                aria-pressed={isActive}
+                onClick={() => toggleYear(year)}
+              >
+                {year}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Publication cards */}
-      <div className="space-y-3 mt-2">
+      <div className="space-y-3 mt-5">
         {filtered.length === 0 ? (
           <p className="text-muted-foreground text-center py-8">
             No publications match the selected filters.
@@ -153,14 +133,25 @@ export default function PublicationList({ publications }: PublicationListProps) 
         ) : (
           filtered.map((pub) => (
             <Card key={pub.id} className="bg-card border border-border">
-              <CardContent className="px-3 py-0.5">
-                <h3 className="text-base font-bold text-foreground mb-1">
+              <CardContent className="px-4 py-3">
+                <h3 className="text-base font-bold text-foreground mb-2">
                   {pub.title}
                 </h3>
-                <p className="text-xs text-foreground/70 leading-tight">
+                <p id={`authors-${pub.id}`} className={`text-sm text-muted-foreground leading-relaxed ${expandedAuthors.has(pub.id) ? "" : "line-clamp-2"}`}>
                   {highlightAuthor(pub.authors)}
                 </p>
-                <p className="text-xs text-muted-foreground mt-0.5">
+                {pub.authors.length > 140 && (
+                  <button
+                    type="button"
+                    className="mt-1 text-sm font-medium text-primary hover:underline"
+                    aria-controls={`authors-${pub.id}`}
+                    aria-expanded={expandedAuthors.has(pub.id)}
+                    onClick={() => toggleAuthors(pub.id)}
+                  >
+                    {expandedAuthors.has(pub.id) ? "Show fewer authors" : "Show all authors"}
+                  </button>
+                )}
+                <p className="text-sm text-muted-foreground mt-1">
                   {pub.venue}, {pub.year}
                 </p>
                 <div className="flex gap-2 mt-2 flex-wrap">
@@ -169,16 +160,10 @@ export default function PublicationList({ publications }: PublicationListProps) 
                       href={pub.links.arxiv}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="View on arXiv"
+                      aria-label={`View ${pub.title} on arXiv`}
+                      className="inline-flex min-h-9 items-center gap-1 rounded-md border border-border px-3 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
                     >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="transition-colors duration-150 hover:border-accent hover:text-accent"
-                      >
-                        arXiv
-                        <ExternalLink size={14} />
-                      </Button>
+                      arXiv <ExternalLink size={14} aria-hidden="true" />
                     </a>
                   )}
                   {pub.links.doi && (
@@ -186,16 +171,10 @@ export default function PublicationList({ publications }: PublicationListProps) 
                       href={pub.links.doi}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="View DOI"
+                      aria-label={`View DOI for ${pub.title}`}
+                      className="inline-flex min-h-9 items-center gap-1 rounded-md border border-border px-3 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
                     >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="transition-colors duration-150 hover:border-accent hover:text-accent"
-                      >
-                        DOI
-                        <ExternalLink size={14} />
-                      </Button>
+                      DOI <ExternalLink size={14} aria-hidden="true" />
                     </a>
                   )}
                   {pub.links.ads && (
@@ -203,16 +182,10 @@ export default function PublicationList({ publications }: PublicationListProps) 
                       href={pub.links.ads}
                       target="_blank"
                       rel="noopener noreferrer"
-                      aria-label="View on ADS"
+                      aria-label={`View ${pub.title} on ADS`}
+                      className="inline-flex min-h-9 items-center gap-1 rounded-md border border-border px-3 text-sm font-medium text-foreground hover:border-primary hover:text-primary"
                     >
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="transition-colors duration-150 hover:border-accent hover:text-accent"
-                      >
-                        ADS
-                        <ExternalLink size={14} />
-                      </Button>
+                      ADS <ExternalLink size={14} aria-hidden="true" />
                     </a>
                   )}
                 </div>
