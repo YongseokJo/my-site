@@ -1,0 +1,36 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+---
+<BaseLayout title="READEA Privacy Policy" description="How READEA handles research, reading, and connected-account data.">
+  <Breadcrumb items={[{ label: "READEA", href: "/arxiv-app" }, { label: "Privacy Policy" }]} />
+  <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-foreground">
+    <header class="space-y-2"><h1 class="text-3xl font-bold">READEA Privacy Policy</h1><p class="text-sm text-muted-foreground">Effective October 17, 2026</p></header>
+    <p>READEA is a research-paper reader for Mac, iPhone, and iPad. This policy covers the app and the READEA sharing service on yongseokjo.com. READEA does not require a separate READEA account.</p>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Research and reading data</h2>
+      <p>The app stores the papers you save or import, paper metadata, collections, tags, reading state, PDF annotations, preferences, feedback, and data used by its personal ranking model on your device. It retrieves paper metadata and PDFs from the sources you request, such as arXiv and publishers. If you enable iCloud Sync, supported library, preference, feed, and ranking data is transferred through your private Apple iCloud account to your other devices. Downloaded PDFs may remain on individual devices.</p>
+      <p>Search queries are sent to the literature sources you select to retrieve results. We do not use your reading or ranking data for advertising or sell it.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Connected accounts</h2>
+      <p>Connecting an account is optional. ORCID sign-in verifies your ORCID iD and name; READEA saves those details on your device to identify your research record. A short-lived ORCID token is used to verify sign-in and is not retained as an ongoing connection.</p>
+      <p>For a supported social connection, READEA uses the account identifier and name needed to display the connection. Our website service may retain an authorization token and a revocable session so it can publish content only after you choose to post it in READEA. The native app stores its session credential in the device Keychain. We currently use this service for LinkedIn; future Meta connections will follow the same purpose-limited approach. We do not use a social connection to read your private messages.</p>
+      <p>You can disconnect a supported account in <strong>READEA Settings → Connections</strong>. Disconnecting removes READEA's active connection; it does not delete a post already published on a social network. Delete published posts on that network.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Sharing papers</h2>
+      <p>When you request an importable sharing link, our website stores the paper titles, authors, source links, and available PDF links needed for the recipient to import the papers. These links do not contain your private annotations, votes, tags, or ranking model. Anyone with the link can view the shared paper information. If you publish a post through a connected network, that network processes the post under its own privacy terms.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Browser extensions</h2>
+      <p>READEA Save reads the URL and available citation information from the browser tab where you invoke it, such as a title, authors, abstract, DOI, and PDF link. It does not monitor unrelated tabs or collect your full browsing history. When you choose <strong>Save to Library</strong>, it passes the item to the installed READEA app. The extension does not send the page content to our sharing server.</p>
+      <p>Information received from Google APIs through the Chrome extension is used only for the import feature you request. READEA Save follows the Chrome Web Store User Data Policy, including its Limited Use requirements.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Your choices and deletion</h2>
+      <p>You can remove saved papers and other editable data in the app, turn off iCloud Sync, and disconnect supported accounts. For website-held connection or sharing data, see the <a class="text-primary underline" href="/arxiv-app/data-deletion">data deletion instructions</a>. Turning off sync does not itself erase copies already stored in iCloud or on your other devices.</p>
+    </section>
+    <section class="space-y-2"><h2 class="text-xl font-semibold">Contact</h2><p>For privacy questions or a deletion request, email <a class="text-primary underline" href="mailto:g.kerex@gmail.com">g.kerex@gmail.com</a>.</p></section>
+  </article>
+</BaseLayout>

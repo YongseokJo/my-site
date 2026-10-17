@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import Breadcrumb from "../../components/Breadcrumb.astro";
+---
+<BaseLayout title="READEA Data Deletion" description="How to remove READEA data and request deletion of connected-account data.">
+  <Breadcrumb items={[{ label: "READEA", href: "/arxiv-app" }, { label: "Data Deletion" }]} />
+  <article class="mx-auto max-w-3xl space-y-6 text-base leading-7 text-foreground">
+    <header class="space-y-2"><h1 class="text-3xl font-bold">READEA Data Deletion</h1><p class="text-sm text-muted-foreground">Updated October 17, 2026</p></header>
+    <p>READEA does not require a separate READEA account. You can disconnect a social account or request deletion of information held by the READEA website service at any time.</p>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Disconnect a connected account</h2>
+      <ol class="list-decimal space-y-2 pl-6"><li>Open READEA on your Mac, iPhone, or iPad.</li><li>Go to <strong>Settings → Connections</strong>.</li><li>Choose <strong>Disconnect</strong> for the connected service.</li></ol>
+      <p>For LinkedIn, this removes the active authorization from READEA's website service and the session credential from the device. Disconnecting does not remove posts already published to a social network; delete those posts on that network.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Request deletion of website-held data</h2>
+      <p>Email <a class="text-primary underline" href="mailto:g.kerex@gmail.com?subject=READEA%20data%20deletion%20request">g.kerex@gmail.com</a> with the subject <strong>READEA data deletion request</strong>. Tell us which connection or sharing link you want removed. Include the relevant account name or READEA sharing URL so we can locate the data. We may ask for limited information to verify that the request is yours. Never send a password, access token, or one-time sign-in code.</p>
+      <p>This request covers data held by the READEA website service, including an identifiable connected-account session or paper-sharing link. We will respond with the outcome or explain what additional information is needed to identify the data.</p>
+    </section>
+    <section class="space-y-2">
+      <h2 class="text-xl font-semibold">Data on your devices and in iCloud</h2>
+      <p>Remove saved papers and annotations in READEA. If iCloud Sync is enabled, edits and deletions may sync to your other devices. Turning sync off or uninstalling READEA does not by itself delete copies already stored in iCloud or on another device. Manage remaining iCloud app data through your Apple account's iCloud storage settings.</p>
+    </section>
+    <p>For more detail, read the <a class="text-primary underline" href="/arxiv-app/privacy-policy">READEA Privacy Policy</a>.</p>
+  </article>
+</BaseLayout>
