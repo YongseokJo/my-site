@@ -89,13 +89,35 @@ export async function start(provider: MetaProvider, request: Request): Promise<R
   return new Response(null, { status: 302, headers: { ...NO_STORE, Location: url.href } });
 }
 
-export async function callback(provider: MetaProvider, request: Request): Promise<Response> {
+// Instagram may inspect its l.instagram.com destination before the browser
+// follows it. Keep the one-use OAuth state intact until a browser submits
+// this same-origin form.
+export function callbackLanding(provider: MetaProvider, request: Request): Response {
   const query = new URL(request.url).searchParams;
+  const state = query.get("state") ?? "";
+  const code = query.get("code") ?? "";
+  const denied = query.has("error");
+  if (!TOKEN.test(state)) return done(provider, "", "invalid_state");
+  if (!denied && (!code || code.length > 4096)) return done(provider, "", "invalid_code");
+  const escape = (value: string) => value.replace(/[&<>"']/g, (character) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
+  const action = escape(redirectURI(provider));
+  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>Connecting READEA</title></head><body><p>Returning to READEA…</p><form method="post" action="${action}"><input type="hidden" name="state" value="${escape(state)}"><input type="hidden" name="code" value="${escape(code)}"><input type="hidden" name="denied" value="${denied ? "1" : "0"}"><button type="submit">Continue to READEA</button></form><script>document.forms[0].submit()</script></body></html>`, {
+    headers: { ...NO_STORE, "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff" },
+  });
+}
+
+export async function callback(provider: MetaProvider, request: Request): Promise<Response> {
+  if (!request.headers.get("Content-Type")?.startsWith("application/x-www-form-urlencoded"))
+    return done(provider, "", "invalid_request");
+  const payload = await request.text();
+  if (payload.length > 8192) return done(provider, "", "invalid_request");
+  const query = new URLSearchParams(payload);
   const state = query.get("state") ?? "";
   if (!TOKEN.test(state)) return done(provider, "", "invalid_state");
   const appState = await store().consumeState(await hash(state), provider, Date.now());
   if (!appState) return done(provider, "", "invalid_state");
-  if (query.has("error")) return done(provider, appState, "authorization_denied");
+  if (query.get("denied") === "1") return done(provider, appState, "authorization_denied");
   const code = query.get("code") ?? "";
   if (!code || code.length > 4096) return done(provider, appState, "invalid_code");
   const clientSecret = secret(provider);
