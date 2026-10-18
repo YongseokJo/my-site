@@ -2,6 +2,23 @@ interface SharePaper {
     title: string;
     url: string;
     authors: string[];
+    arxivId?: string;
+    pdfURL?: string;
+}
+
+export function arxivLabel(paper: SharePaper): string | undefined {
+    const candidates = [paper.arxivId];
+    for (const link of [paper.url, paper.pdfURL]) {
+        try {
+            const url = new URL(link ?? "");
+            if (url.hostname === "arxiv.org" || url.hostname.endsWith(".arxiv.org"))
+                candidates.push(url.pathname.replace(/^\/(abs|pdf)\//, ""));
+        } catch { /* No source identifier. */ }
+    }
+    for (const candidate of candidates) {
+        const value = candidate?.trim().replace(/^arXiv:/i, "").replace(/\.pdf$/, "");
+        if (value && /^(?:[0-9]{4}\.[0-9]{4,5}|[A-Za-z-]+(?:\.[A-Za-z-]+)?\/[0-9]{7})(?:v[0-9]+)?$/.test(value)) return `arXiv:${value}`;
+    }
 }
 
 // Keep complete paper entries and reserve room for the import link.
@@ -12,7 +29,7 @@ export function paperPostTemplate(papers: SharePaper[], importURL: string): stri
     for (const paper of papers) {
         const title = paper.title.replace(/\s+/g, " ").trim();
         const authors = paper.authors.slice(0, 3).join(", ") + (paper.authors.length > 3 ? " et al." : "");
-        const entry = [papers.length > 1 ? `${included + 1}. ${title}` : title, authors, paper.url]
+        const entry = [papers.length > 1 ? `${included + 1}. ${title}` : title, authors, arxivLabel(paper), paper.url]
             .filter(Boolean).join("\n");
         if (body.length + entry.length + footer.length + 100 > 2800) break;
         body += `${body ? "\n\n" : ""}${entry}`;

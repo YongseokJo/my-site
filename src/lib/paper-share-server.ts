@@ -20,6 +20,7 @@ function validPaper(value: unknown): boolean {
     const paper = value as Record<string, unknown>;
     if (typeof paper.title !== "string" || !paper.title.trim() || paper.title.length > 500 ||
         typeof paper.url !== "string" || paper.url.length > 2048 ||
+        (paper.arxivId != null && (typeof paper.arxivId !== "string" || paper.arxivId.length > 100)) ||
         !Array.isArray(paper.authors) || paper.authors.length > 20 ||
         !paper.authors.every(author => typeof author === "string" && author.length <= 200)) return false;
     try {

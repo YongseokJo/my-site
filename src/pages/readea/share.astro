@@ -108,6 +108,17 @@ Astro.response.headers.set("Cache-Control", "no-store");
             const badge = document.createElement('span'); badge.className = 'source';
             badge.textContent = source.hostname === 'arxiv.org' ? 'arXiv' : source.hostname.replace(/^www\./, '');
             const number = document.createElement('span'); number.textContent = bundle.papers.length > 1 ? `${String(index + 1).padStart(2, '0')} / ${String(bundle.papers.length).padStart(2, '0')}` : 'PAPER';
+            const candidates = [paper.arxivId];
+            for (const raw of [paper.url, paper.pdfURL]) {
+              try {
+                const u = new URL(raw);
+                if (u.hostname === 'arxiv.org' || u.hostname.endsWith('.arxiv.org')) candidates.push(u.pathname.replace(/^\/(abs|pdf)\//, ''));
+              } catch {}
+            }
+            const identifier = candidates.filter(v => typeof v === 'string')
+              .map(v => v.trim().replace(/^arXiv:/i, '').replace(/\.pdf$/, ''))
+              .find(v => /^(?:[0-9]{4}\.[0-9]{4,5}|[A-Za-z-]+(?:\.[A-Za-z-]+)?\/[0-9]{7})(?:v[0-9]+)?$/.test(v));
+            if (identifier) badge.textContent = `arXiv:${identifier}`;
             metadata.append(badge, number);
             const title = document.createElement('h2'); const link = document.createElement('a');
             link.href = source.href; link.textContent = paper.title; link.rel = 'noopener noreferrer'; title.append(link);
