@@ -8,8 +8,8 @@ const APP_IDS: Record<MetaProvider, string> = {
   threads: "1602724647751193",
 };
 const NO_STORE = { "Cache-Control": "private, no-store", "Referrer-Policy": "no-referrer" };
-const UUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const TOKEN = /^[A-Za-z0-9_-]{32,128}$/;
+const APP_STATE = /^(?:dev\.)?[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 
 type Bindings = {
   META_STORE?: DurableObjectNamespace<MetaStore>;
@@ -69,7 +69,7 @@ export async function safeRoute(handler: (request: Request) => Promise<Response>
 
 export async function start(provider: MetaProvider, request: Request): Promise<Response> {
   const appState = new URL(request.url).searchParams.get("app_state") ?? "";
-  if (!UUID.test(appState)) return json({ error: "Invalid app state" }, 400);
+  if (!APP_STATE.test(appState)) return json({ error: "Invalid app state" }, 400);
   if (!secret(provider)) return json({ error: `${provider} is not configured` }, 503);
   const ipHash = await hash(request.headers.get("CF-Connecting-IP") ?? "unknown");
   if (!await store().rateLimit(`start:${provider}:${ipHash}`, 20, 600_000, Date.now()))
@@ -228,11 +228,11 @@ export function complete(provider: MetaProvider, request: Request): Response {
   const ticket = params.get("ticket") ?? "";
   const error = params.get("error") ?? "";
   const success = TOKEN.test(ticket);
-  const canReturn = UUID.test(appState) && (success || /^[a-z_]{1,64}$/.test(error));
+  const canReturn = APP_STATE.test(appState) && (success || /^[a-z_]{1,64}$/.test(error));
   const message = success
     ? `Return to READEA to finish connecting ${provider}.`
     : `${provider} connection did not complete. Return to READEA and try again.`;
-  const deepLink = new URL("readea://meta-auth");
+  const deepLink = new URL(appState.startsWith("dev.") ? "readea-dev://meta-auth" : "readea://meta-auth");
   if (canReturn) {
     deepLink.searchParams.set("provider", provider);
     deepLink.searchParams.set("app_state", appState);
