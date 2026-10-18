@@ -57,7 +57,9 @@ export async function createPaperShare(request: Request): Promise<Response> {
         const token = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(24))))
             .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
         await db.putPaperShare(token, payload, Date.now());
-        return json({ url: `https://yongseokjo.com/readea/share?id=${token}` }, 201);
+        const imageUploadToken = crypto.randomUUID() + crypto.randomUUID();
+        await db.prepareShareImage(token, await hashToken(imageUploadToken), Date.now() + 600_000);
+        return json({ url: `https://yongseokjo.com/readea/share?id=${token}`, imageUploadToken }, 201);
     } catch {
         return json({ error: "Could not create share" }, 503);
     }
@@ -72,4 +74,61 @@ export async function getPaperShare(request: Request): Promise<Response> {
     } catch {
         return json({ error: "Could not load share" }, 503);
     }
+}
+
+async function hashToken(token: string): Promise<string> {
+    const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(token));
+    return Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
+}
+
+export async function sharePreviewMetadata(token: string | null) {
+    if (!token || !TOKEN.test(token)) return null;
+    try {
+        const db = database();
+        const payload = await db.getPaperShare(token);
+        if (!payload) return null;
+        const bundle = JSON.parse(payload);
+        return {
+            title: bundle.papers.length === 1 ? bundle.papers[0].title : `${bundle.papers.length} papers from READEA`,
+            image: await db.hasShareImage(token) ? `https://yongseokjo.com/readea/share/image?id=${token}` : null,
+            url: `https://yongseokjo.com/readea/share?id=${token}`,
+        };
+    } catch { return null; }
+}
+
+export async function paperShareImage(request: Request): Promise<Response> {
+    const token = new URL(request.url).searchParams.get("id") ?? "";
+    if (!TOKEN.test(token)) return new Response("Invalid link", { status: 400 });
+    try {
+        const db = database();
+        if (request.method === "GET") {
+            const image = await db.getShareImage(token);
+            return image ? new Response(image, { headers: {
+                "Content-Type": "image/jpeg", "Cache-Control": "public, max-age=31536000, immutable",
+                "X-Content-Type-Options": "nosniff",
+            } }) : new Response("Not found", { status: 404 });
+        }
+        const bearer = request.headers.get("Authorization")?.match(/^Bearer ([a-f0-9-]{72})$/)?.[1];
+        if (!bearer) return new Response("Unauthorized", { status: 401 });
+        if (request.headers.get("Content-Type") !== "image/jpeg") return new Response("Expected JPEG", { status: 415 });
+        // Bound the stream before buffering untrusted uploads.
+        const reader = request.body?.getReader();
+        if (!reader) return new Response("Missing image", { status: 400 });
+        const chunks: Uint8Array[] = [];
+        let length = 0;
+        while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            length += value.length;
+            if (length > 900_000) { await reader.cancel(); return new Response("Image too large", { status: 413 }); }
+            chunks.push(value);
+        }
+        const image = new Uint8Array(length);
+        let offset = 0;
+        for (const chunk of chunks) { image.set(chunk, offset); offset += chunk.length; }
+        if (length < 4 || image[0] !== 255 || image[1] !== 216 || image[length - 2] !== 255 || image[length - 1] !== 217)
+            return new Response("Invalid JPEG", { status: 400 });
+        const saved = await db.putShareImage(token, await hashToken(bearer), image.buffer);
+        return new Response(null, { status: saved ? 201 : 403 });
+    } catch { return new Response("Preview unavailable", { status: 503 }); }
 }

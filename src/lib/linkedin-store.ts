@@ -39,6 +39,9 @@ export class LinkedInStore extends DurableObject {
       CREATE TABLE IF NOT EXISTS paper_shares (
         token TEXT PRIMARY KEY, payload TEXT NOT NULL, created_at INTEGER NOT NULL
       );
+      CREATE TABLE IF NOT EXISTS paper_share_images (
+        token TEXT PRIMARY KEY, upload_hash TEXT, expires_at INTEGER NOT NULL, image BLOB
+      );
       CREATE TABLE IF NOT EXISTS rate_limits (
         key TEXT PRIMARY KEY, window_start INTEGER NOT NULL, count INTEGER NOT NULL
       );
@@ -84,6 +87,27 @@ export class LinkedInStore extends DurableObject {
             "SELECT payload FROM paper_shares WHERE token = ?", token,
         ).toArray()[0] as { payload: string } | undefined;
         return row?.payload ?? null;
+    }
+
+    prepareShareImage(token: string, hash: string, expires: number): void {
+        this.ctx.storage.sql.exec("DELETE FROM paper_share_images WHERE image IS NULL AND expires_at < ?", Date.now());
+        this.ctx.storage.sql.exec("INSERT INTO paper_share_images (token, upload_hash, expires_at) VALUES (?, ?, ?)", token, hash, expires);
+    }
+
+    putShareImage(token: string, hash: string, image: ArrayBuffer): boolean {
+        return this.ctx.storage.sql.exec(
+            "UPDATE paper_share_images SET image = ?, upload_hash = NULL WHERE token = ? AND upload_hash = ? AND expires_at > ? AND image IS NULL RETURNING token",
+            image, token, hash, Date.now(),
+        ).toArray().length === 1;
+    }
+
+    getShareImage(token: string): ArrayBuffer | null {
+        const row = this.ctx.storage.sql.exec("SELECT image FROM paper_share_images WHERE token = ?", token).toArray()[0] as { image: ArrayBuffer | null } | undefined;
+        return row?.image ?? null;
+    }
+
+    hasShareImage(token: string): boolean {
+        return this.ctx.storage.sql.exec("SELECT token FROM paper_share_images WHERE token = ? AND image IS NOT NULL", token).toArray().length > 0;
     }
 
 	putState(hash: string, appState: string, expiresAt: number): void {

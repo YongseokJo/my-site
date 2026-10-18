@@ -1,5 +1,8 @@
 ---
-export const prerender = true;
+export const prerender = false;
+import { sharePreviewMetadata } from "../../lib/paper-share-server";
+const preview = await sharePreviewMetadata(Astro.url.searchParams.get("id"));
+Astro.response.headers.set("Cache-Control", "no-store");
 ---
 <!doctype html>
 <html lang="en">
@@ -7,7 +10,21 @@ export const prerender = true;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#f7f5f2" />
-    <title>Shared papers · READEA</title>
+    <title>{preview ? `${preview.title} · READEA` : "Shared papers · READEA"}</title>
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="READEA" />
+    <meta property="og:title" content={preview?.title ?? "Shared papers · READEA"} />
+    <meta property="og:description" content="Read the paper and save it to your READEA library. Shared with READEA." />
+    {preview && <meta property="og:url" content={preview.url} />}
+    {preview?.image && <>
+      <meta property="og:image" content={preview.image} />
+      <meta property="og:image:type" content="image/jpeg" />
+      <meta property="og:image:width" content="1080" />
+      <meta property="og:image:height" content="1080" />
+      <meta property="og:image:alt" content={preview.title} />
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:image" content={preview.image} />
+    </>}
     <meta name="description" content="Explore shared papers and add them to your READEA library." />
     <style is:global>
       :root { color-scheme: light; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #27252a; background: #f7f5f2; }
