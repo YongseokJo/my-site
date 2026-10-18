@@ -1,6 +1,7 @@
 import { handle } from "@astrojs/cloudflare/handler";
 
 export { LinkedInStore } from "./lib/linkedin-store";
+export { MetaStore } from "./lib/meta-store";
 
 export default {
 	fetch(request: Request, env: unknown, ctx: ExecutionContext) {
@@ -9,7 +10,7 @@ export default {
 		// guard does not reject it before the route can validate the bearer token.
 		if (
 			request.method === "POST" &&
-			new URL(request.url).pathname === "/readea/linkedin/disconnect" &&
+			(/\/readea\/(linkedin|instagram|threads)\/disconnect$/.test(new URL(request.url).pathname)) &&
 			!request.headers.has("Content-Type")
 		) {
 			const headers = new Headers(request.headers);

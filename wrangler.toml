@@ -21,6 +21,14 @@ compatibility_flags = ["nodejs_compat"]
 name = "LINKEDIN_STORE"
 class_name = "LinkedInStore"
 
+[[durable_objects.bindings]]
+name = "META_STORE"
+class_name = "MetaStore"
+
 [[migrations]]
 tag = "linkedin-store-v1"
 new_sqlite_classes = ["LinkedInStore"]
+
+[[migrations]]
+tag = "meta-store-v1"
+new_sqlite_classes = ["MetaStore"]
