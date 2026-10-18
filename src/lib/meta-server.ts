@@ -201,11 +201,25 @@ export async function postThread(request: Request): Promise<Response> {
 }
 
 export function complete(provider: MetaProvider, request: Request): Response {
-  const success = new URL(request.url).searchParams.has("ticket");
+  const params = new URL(request.url).searchParams;
+  const appState = params.get("app_state") ?? "";
+  const ticket = params.get("ticket") ?? "";
+  const error = params.get("error") ?? "";
+  const success = TOKEN.test(ticket);
+  const canReturn = UUID.test(appState) && (success || /^[a-z_]{1,64}$/.test(error));
   const message = success
     ? `Return to READEA to finish connecting ${provider}.`
     : `${provider} connection did not complete. Return to READEA and try again.`;
-  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>READEA connection</title></head><body><p>${message}</p></body></html>`, {
+  const deepLink = new URL("readea://meta-auth");
+  if (canReturn) {
+    deepLink.searchParams.set("provider", provider);
+    deepLink.searchParams.set("app_state", appState);
+    deepLink.searchParams.set(success ? "ticket" : "error", success ? ticket : error);
+  }
+  const href = deepLink.href.replaceAll("&", "&amp;");
+  const button = canReturn ? `<p><a href="${href}">Open READEA</a></p>` : "";
+  const launch = canReturn ? `<script>window.location.assign(${JSON.stringify(deepLink.href)})</script>` : "";
+  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>READEA connection</title></head><body><p>${message}</p>${button}${launch}</body></html>`, {
     headers: { ...NO_STORE, "Content-Type": "text/html; charset=utf-8" },
   });
 }
