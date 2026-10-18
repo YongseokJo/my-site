@@ -101,9 +101,10 @@ export function callbackLanding(provider: MetaProvider, request: Request): Respo
   if (!denied && (!code || code.length > 4096)) return done(provider, "", "invalid_code");
   const escape = (value: string) => value.replace(/[&<>"']/g, (character) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
-  const action = escape(redirectURI(provider));
-  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><title>Connecting READEA</title></head><body><p>Returning to READEA…</p><form method="post" action="${action}"><input type="hidden" name="state" value="${escape(state)}"><input type="hidden" name="code" value="${escape(code)}"><input type="hidden" name="denied" value="${denied ? "1" : "0"}"><button type="submit">Continue to READEA</button></form><script>document.forms[0].submit()</script></body></html>`, {
-    headers: { ...NO_STORE, "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff" },
+  const action = `/readea/${provider}/callback`;
+  return new Response(`<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="strict-origin"><title>Connecting READEA</title></head><body><p>Returning to READEA…</p><form method="post" action="${action}"><input type="hidden" name="state" value="${escape(state)}"><input type="hidden" name="code" value="${escape(code)}"><input type="hidden" name="denied" value="${denied ? "1" : "0"}"><button type="submit">Continue to READEA</button></form><script>document.forms[0].submit()</script></body></html>`, {
+    // no-referrer makes form POSTs send Origin: null, which Astro rejects.
+    headers: { ...NO_STORE, "Referrer-Policy": "strict-origin", "Content-Type": "text/html; charset=utf-8", "X-Content-Type-Options": "nosniff" },
   });
 }
 
