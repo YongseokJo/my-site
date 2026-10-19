@@ -1,3 +1,4 @@
+import { paperTitleText, normalizeSharedPaper } from "./paper-title-text";
 import { env } from "cloudflare:workers";
 import type { LinkedInStore } from "./linkedin-store";
 
@@ -52,12 +53,13 @@ export async function createPaperShare(request: Request): Promise<Response> {
         const bundle: unknown = JSON.parse(payload);
         if (!bundle || typeof bundle !== "object") return json({ error: "Invalid share" }, 400);
         const data = bundle as Record<string, unknown>;
+        if (Array.isArray(data.papers)) data.papers = data.papers.map(normalizeSharedPaper);
         if (data.version !== 1 || !Array.isArray(data.papers) || data.papers.length < 1 ||
             data.papers.length > 40 || !data.papers.every(validPaper))
             return json({ error: "Invalid papers" }, 400);
         const token = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(24))))
             .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
-        await db.putPaperShare(token, payload, Date.now());
+        await db.putPaperShare(token, JSON.stringify(data), Date.now());
         const imageUploadToken = crypto.randomUUID() + crypto.randomUUID();
         await db.prepareShareImage(token, await hashToken(imageUploadToken), Date.now() + 600_000);
         return json({ url: `https://yongseokjo.com/readea/share?id=${token}`, imageUploadToken }, 201);
@@ -71,7 +73,10 @@ export async function getPaperShare(request: Request): Promise<Response> {
         const token = new URL(request.url).searchParams.get("id") ?? "";
         if (!TOKEN.test(token)) return json({ error: "Invalid share link" }, 400);
         const payload = await database().getPaperShare(token);
-        return payload ? new Response(payload, { headers: HEADERS }) : json({ error: "Share not found" }, 404);
+        if (!payload) return json({ error: "Share not found" }, 404);
+        const bundle = JSON.parse(payload);
+        bundle.papers = bundle.papers.map((paper: { title: string }) => ({ ...paper, title: paperTitleText(paper.title) }));
+        return json(bundle);
     } catch {
         return json({ error: "Could not load share" }, 503);
     }
@@ -90,7 +95,7 @@ export async function sharePreviewMetadata(token: string | null) {
         if (!payload) return null;
         const bundle = JSON.parse(payload);
         return {
-            title: bundle.papers.length === 1 ? bundle.papers[0].title : `${bundle.papers.length} papers from READEA`,
+            title: bundle.papers.length === 1 ? paperTitleText(bundle.papers[0].title) : `${bundle.papers.length} papers from READEA`,
             image: await db.hasShareImage(token) ? `https://yongseokjo.com/readea/share/image?id=${token}` : null,
             url: `https://yongseokjo.com/readea/share?id=${token}`,
         };

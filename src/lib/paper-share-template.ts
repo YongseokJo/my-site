@@ -1,3 +1,4 @@
+import { paperTitleText } from "./paper-title-text";
 interface SharePaper {
     title: string;
     url: string;
@@ -27,7 +28,7 @@ export function paperPostTemplate(papers: SharePaper[], importURL: string): stri
     let body = "";
     let included = 0;
     for (const paper of papers) {
-        const title = paper.title.replace(/\s+/g, " ").trim();
+        const title = paperTitleText(paper.title);
         const authors = paper.authors.slice(0, 3).join(", ") + (paper.authors.length > 3 ? " et al." : "");
         const entry = [papers.length > 1 ? `${included + 1}. ${title}` : title, authors, arxivLabel(paper), paper.url]
             .filter(Boolean).join("\n");
