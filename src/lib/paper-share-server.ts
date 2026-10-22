@@ -60,6 +60,9 @@ export async function createPaperShare(request: Request): Promise<Response> {
             data.collectionName = paperTitleText(data.collectionName).trim();
             if (!data.collectionName) return json({ error: "Invalid collection name" }, 400);
         }
+        if (data.collectionDescription != null &&
+            (typeof data.collectionDescription !== "string" || data.collectionDescription.length > 2000 || data.collectionName == null))
+            return json({ error: "Invalid collection description" }, 400);
         if (data.version !== 1 || !Array.isArray(data.papers) || data.papers.length < 1 ||
             data.papers.length > (data.collectionName == null ? 40 : 500) || !data.papers.every(validPaper))
             return json({ error: "Invalid papers" }, 400);
@@ -102,6 +105,7 @@ export async function sharePreviewMetadata(token: string | null) {
         const bundle = JSON.parse(payload);
         return {
             title: bundle.collectionName ?? (bundle.papers.length === 1 ? paperTitleText(bundle.papers[0].title) : `${bundle.papers.length} papers from READEA`),
+            description: typeof bundle.collectionDescription === "string" ? bundle.collectionDescription : null,
             image: await db.hasShareImage(token) ? `https://yongseokjo.com/readea/share/image?id=${token}` : null,
             url: `https://yongseokjo.com/readea/share?id=${token}`,
         };

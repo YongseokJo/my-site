@@ -14,7 +14,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="READEA" />
     <meta property="og:title" content={preview?.title ?? "Shared papers · READEA"} />
-    <meta property="og:description" content="Read the paper and save it to your READEA library. Shared with READEA." />
+    <meta property="og:description" content={preview?.description || "Read the paper and save it to your READEA library. Shared with READEA."} />
     {preview && <meta property="og:url" content={preview.url} />}
     {preview?.image && <>
       <meta property="og:image" content={preview.image} />
@@ -41,7 +41,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
       main { padding: 44px 0 0; }
       .eyebrow { font-size: 11px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; color: #8a6571; }
       h1 { font-size: 28px; font-weight: 500; letter-spacing: -.035em; margin: 10px 0 10px; }
-      #intro { font-size: 14px; line-height: 1.6; color: #79727a; margin: 0 0 28px; }
+      #intro { white-space: pre-line; font-size: 14px; line-height: 1.6; color: #79727a; margin: 0 0 28px; }
       #papers { display: grid; gap: 16px; list-style: none; padding: 0; margin: 0; }
       .paper { padding: 30px 32px; background: #fffefd; border: 1px solid #e9e4df; border-radius: 18px; box-shadow: 0 3px 16px #33212a04; }
       .paper-meta { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 17px; font-size: 11px; color: #888088; letter-spacing: .04em; }
@@ -150,7 +150,8 @@ Astro.response.headers.set("Cache-Control", "no-store");
           intro.textContent = 'Read the original, or bring it into your own library.';
           if (!singular || bundle.collectionName) intro.textContent = `${bundle.papers.length} papers. Explore the originals, or import this collection into your library.`;
           document.title = bundle.collectionName ? `${bundle.collectionName} · READEA` : (singular ? `${bundle.papers[0].title} · READEA` : `${bundle.papers.length} shared papers · READEA`);
-          list.hidden = false;
+          if (bundle.collectionName) intro.textContent = bundle.collectionDescription || '';
+          list.hidden = Boolean(bundle.collectionName);
           document.getElementById('open').href = `readea://share?id=${encodeURIComponent(id)}`;
           document.getElementById('import-note').textContent = `Requires READEA on your Mac, iPhone, or iPad.`;
           document.getElementById('import').hidden = false;
