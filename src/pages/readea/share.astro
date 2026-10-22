@@ -110,7 +110,7 @@ Astro.response.headers.set("Cache-Control", "no-store");
           const response = await fetch(`/readea/share/bundle?id=${encodeURIComponent(id)}`);
           if (!response.ok) throw new Error('missing');
           const bundle = await response.json();
-          if (bundle.version !== 1 || !Array.isArray(bundle.papers) || bundle.papers.length < 1 || bundle.papers.length > 40) throw new Error('invalid');
+          if (bundle.version !== 1 || !Array.isArray(bundle.papers) || bundle.papers.length < 1 || bundle.papers.length > (bundle.collectionName ? 500 : 40)) throw new Error('invalid');
           const fragment = document.createDocumentFragment();
           for (const [index, paper] of bundle.papers.entries()) {
             if (typeof paper.title !== 'string' || !paper.title.trim() || typeof paper.url !== 'string') throw new Error('invalid');
@@ -146,10 +146,10 @@ Astro.response.headers.set("Cache-Control", "no-store");
           }
           list.replaceChildren(fragment);
           const singular = bundle.papers.length === 1;
-          document.getElementById('heading').textContent = singular ? 'A paper, shared with you.' : `${bundle.papers.length} papers, one collection.`;
+          document.getElementById('heading').textContent = bundle.collectionName || (singular ? 'A paper, shared with you.' : `${bundle.papers.length} papers, one collection.`);
           intro.textContent = 'Read the original, or bring it into your own library.';
-          if (!singular) intro.textContent = 'Explore the papers, or save the collection to your library.';
-          document.title = singular ? `${bundle.papers[0].title} · READEA` : `${bundle.papers.length} shared papers · READEA`;
+          if (!singular || bundle.collectionName) intro.textContent = `${bundle.papers.length} papers. Explore the originals, or import this collection into your library.`;
+          document.title = bundle.collectionName ? `${bundle.collectionName} · READEA` : (singular ? `${bundle.papers[0].title} · READEA` : `${bundle.papers.length} shared papers · READEA`);
           list.hidden = false;
           document.getElementById('open').href = `readea://share?id=${encodeURIComponent(id)}`;
           document.getElementById('import-note').textContent = `Requires READEA on your Mac, iPhone, or iPad.`;

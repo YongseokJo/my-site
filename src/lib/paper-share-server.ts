@@ -46,16 +46,22 @@ export async function createPaperShare(request: Request): Promise<Response> {
             return json({ error: "Too many shares; try again later" }, 429);
         if (!request.headers.get("Content-Type")?.toLowerCase().startsWith("application/json"))
             return json({ error: "Expected JSON" }, 415);
-        if (Number(request.headers.get("Content-Length")) > 32_000)
+        if (Number(request.headers.get("Content-Length")) > 512_000)
             return json({ error: "Share is too large" }, 413);
         const payload = await request.text();
-        if (payload.length > 32_000) return json({ error: "Share is too large" }, 413);
+        if (payload.length > 512_000) return json({ error: "Share is too large" }, 413);
         const bundle: unknown = JSON.parse(payload);
         if (!bundle || typeof bundle !== "object") return json({ error: "Invalid share" }, 400);
         const data = bundle as Record<string, unknown>;
         if (Array.isArray(data.papers)) data.papers = data.papers.map(normalizeSharedPaper);
+        if (data.collectionName != null) {
+            if (typeof data.collectionName !== "string" || !data.collectionName.trim() || data.collectionName.length > 200)
+                return json({ error: "Invalid collection name" }, 400);
+            data.collectionName = paperTitleText(data.collectionName).trim();
+            if (!data.collectionName) return json({ error: "Invalid collection name" }, 400);
+        }
         if (data.version !== 1 || !Array.isArray(data.papers) || data.papers.length < 1 ||
-            data.papers.length > 40 || !data.papers.every(validPaper))
+            data.papers.length > (data.collectionName == null ? 40 : 500) || !data.papers.every(validPaper))
             return json({ error: "Invalid papers" }, 400);
         const token = btoa(String.fromCharCode(...crypto.getRandomValues(new Uint8Array(24))))
             .replaceAll("+", "-").replaceAll("/", "_").replaceAll("=", "");
@@ -95,7 +101,7 @@ export async function sharePreviewMetadata(token: string | null) {
         if (!payload) return null;
         const bundle = JSON.parse(payload);
         return {
-            title: bundle.papers.length === 1 ? paperTitleText(bundle.papers[0].title) : `${bundle.papers.length} papers from READEA`,
+            title: bundle.collectionName ?? (bundle.papers.length === 1 ? paperTitleText(bundle.papers[0].title) : `${bundle.papers.length} papers from READEA`),
             image: await db.hasShareImage(token) ? `https://yongseokjo.com/readea/share/image?id=${token}` : null,
             url: `https://yongseokjo.com/readea/share?id=${token}`,
         };
