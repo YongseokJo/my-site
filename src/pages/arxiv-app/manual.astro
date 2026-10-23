@@ -16,6 +16,7 @@ const sections = [
   ["ranking", "Personal ranking"],
   ["connections", "Accounts & your publications"],
   ["sync", "Sync & offline use"],
+  ["extensions", "Chrome & Safari extensions"],
   ["settings", "Make it yours"],
   ["help", "Troubleshooting"],
 ];
@@ -28,7 +29,7 @@ const sections = [
       <p class="eyebrow">Read · Organize · Share</p>
       <h1>READEA Manual</h1>
       <p class="lede">Discover, read, organize and share your research. Start with one paper, or bring the library you already have.</p>
-      <p class="edition">Mac · iPhone · iPad <span aria-hidden="true">/</span> Updated October 22, 2026</p>
+      <p class="edition">Mac · iPhone · iPad <span aria-hidden="true">/</span> Updated October 23, 2026</p>
       <p class="build-note">This guide covers the current READEA 2.0 beta features. Your installed TestFlight build may have fewer features; check the version and patch notes in Settings. Illustrations use example content. No personal likes, dislikes, favorites or relevance scores are shown.</p>
     </header>
 
@@ -237,8 +238,45 @@ const sections = [
           <p>On iPhone and iPad, the operating system decides when background work can run. A refresh or ranking task cannot be promised at an exact time while the app is closed. Open READEA and use Refresh when you need an immediate update. Library imports, collection links and new source searches need internet access unless their required data is already local.</p>
         </section>
 
+        <section id="extensions">
+          <p class="section-number">11 / Browser → Library</p>
+          <h2>Chrome & Safari extensions</h2>
+          <p><b>READEA Save</b> brings the paper you are viewing in your browser into Library. Use it on an arXiv abstract, journal article, online PDF or ordinary webpage. Install and open the READEA app on the same device first; the extension sends the item to that app.</p>
+          <ManualJourney label="Save from your browser" steps={[{icon:"paper",title:"Open a page",text:"arXiv, journal article or online PDF"},{icon:"review",title:"Preview",text:"Open Save to READEA"},{icon:"save",title:"Save to Library",text:"Allow the browser to open READEA"},{icon:"library",title:"Find it",text:"The app opens Library"}]} />
+          <h3>Chrome on Mac</h3>
+          <ol class="steps">
+            <li>Install <a href="https://chromewebstore.google.com/detail/readea-save/lfjfajkameacadmgaanakgiggmlaelhp" target="_blank" rel="noopener noreferrer">READEA Save from the Chrome Web Store ↗</a>.</li>
+            <li>Open Chrome’s Extensions menu and pin READEA Save to keep its button in the toolbar.</li>
+            <li>Visit a paper page, click the READEA button, review the detected title, then choose <b>Save to Library</b>. If Chrome asks to open READEA, allow it.</li>
+          </ol>
+          <p>The Chrome extension is installed separately from the app. It requires a device that can run READEA; installing the browser extension alone does not provide a Windows or Linux READEA app. Chrome on iPhone and iPad does not use this desktop extension—use Safari there.</p>
+          <h3>Safari on Mac</h3>
+          <ol class="steps">
+            <li>Install and open the READEA TestFlight app that includes the Safari extension.</li>
+            <li>Open <b>Safari → Settings → Extensions</b> and enable <b>Save to READEA</b>. Allow access to the paper website when Safari asks.</li>
+            <li>On the article page, open Save to READEA from Safari’s toolbar, review the preview and choose <b>Save to Library</b>. Accept the prompt to open READEA if shown.</li>
+          </ol>
+          <h3>Safari on iPhone & iPad</h3>
+          <ol class="steps">
+            <li>Install and open READEA from TestFlight, then open <b>Settings → Apps → Safari → Extensions</b> and enable <b>Save to READEA</b>.</li>
+            <li>Open a paper in Safari. Use the page menu or Extensions control beside the address bar to open Save to READEA. The control’s position varies with your Safari layout.</li>
+            <li>Allow website access if requested, check the preview, then choose <b>Save to Library</b> and return to READEA.</li>
+          </ol>
+          <p>Safari’s extension comes inside READEA; it is not a separate Chrome Web Store download. Enable it on each device where you want to use it. See Apple’s <a href="https://support.apple.com/en-us/102343" target="_blank" rel="noopener noreferrer">Mac extension guide ↗</a> or <a href="https://support.apple.com/guide/iphone/iphab0432bf6/ios" target="_blank" rel="noopener noreferrer">iPhone extension guide ↗</a> for browser controls.</p>
+          <h3>What gets saved—and what may need another step</h3>
+          <ul>
+            <li><b>Available metadata:</b> the page URL and title, plus citation authors, DOI, abstract and PDF link when the website supplies them. Some sites expose less information than others.</li>
+            <li><b>Duplicate checking:</b> READEA checks for an existing item before saving, so recognized papers can merge with the reference already in Library.</li>
+            <li><b>PDF access:</b> a saved reference is not a promise that the PDF downloaded. Publisher sign-in and subscription access in your browser may not transfer to the app. If needed, download a PDF you can access and add it through Import Library.</li>
+            <li><b>Local files:</b> use Import Library for PDFs on disk or whole folders. The extension is for web pages and online PDFs.</li>
+            <li><b>Privacy:</b> the extension reads the tab you invoke it on and hands the reference to the installed app. It does not monitor unrelated tabs or send page content to the READEA sharing server. Your normal in-app sync settings apply after saving.</li>
+          </ul>
+          <div class="callout"><strong>If saving does not open the app:</strong> launch READEA once, confirm the extension is enabled, allow access to the current website and approve the browser’s Open READEA prompt. Try the article’s abstract or landing page if the browser PDF viewer cannot expose metadata. If you have both Xcode and TestFlight copies on Mac, check which app the browser opened.</div>
+          <p>If Safari does not list Save to READEA, check that your installed READEA build includes the extension. A temporary Safari development extension can preview a page but cannot complete the app handoff. Report your device, browser, app build and source URL if the problem continues.</p>
+        </section>
+
         <section id="settings">
-          <p class="section-number">11 / Your reading space</p>
+          <p class="section-number">12 / Your reading space</p>
           <h2>Make it yours</h2>
           <ul>
             <li><b>Theme & Colors:</b> choose light or dark appearance and your palette.</li>
@@ -248,11 +286,10 @@ const sections = [
             <li><b>Keep Feed Cache:</b> choose how long unsaved feed papers remain locally available. This does not delete saved Library papers.</li>
           </ul>
           <p>On Mac, Spotlight can find indexed saved papers by title, author or identifier. Select a result to open it in READEA. If you have both TestFlight and Xcode copies installed, confirm which copy opened when checking a change.</p>
-          <p>The Safari extension is bundled with the Mac app; enable it in Safari’s extension settings. Install the Chrome extension separately. Use the browser extension on a supported paper page to save it into READEA.</p>
         </section>
 
         <section id="help">
-          <p class="section-number">12 / When something gets in the way</p>
+          <p class="section-number">13 / When something gets in the way</p>
           <h2>Troubleshooting</h2>
           <div class="faq">
             <details><summary>My Feed looks empty or shows an older day.</summary><p>Check the selected date, category and read/saved filters. The local Feed day rolls over at 8 AM, not midnight. The weekend view is intentional. Check your connection and use Refresh; a source delay or rate limit may require trying later.</p></details>
