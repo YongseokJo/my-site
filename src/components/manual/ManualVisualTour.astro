@@ -1,0 +1,157 @@
+---
+import { Search, FileText, Bookmark, FolderOpen, ListChecks, Library, Layers, PencilLine, Share2, Download, Cloud, Monitor, Tablet, Smartphone, MessageSquare, Sparkles, ArrowRight, ArrowLeft, Link, Mail } from 'lucide-react';
+const tours = [
+  {id:'read',label:'Find & read',icon:Search,anchor:'read',steps:[
+    {icon:Search,title:'Find a paper',where:'Feed or Search',text:'Choose a field or search for a topic. Open a paper card to see the abstract.'},
+    {icon:Bookmark,title:'Save it',where:'Abstract card → Bookmark',text:'Save the paper to Library. Add tags or a collection when you want to organize it.'},
+    {icon:FileText,title:'Read the PDF',where:'Abstract card → PDF',text:'Open the full text. Select passages to highlight or add a note.'}]},
+  {id:'import',label:'Import a library',icon:FolderOpen,anchor:'import',steps:[
+    {icon:FolderOpen,title:'Gather your files',where:'Your current reading app',text:'Export references and include downloaded PDFs. Keep them in one unzipped folder.'},
+    {icon:ListChecks,title:'Choose & review',where:'Settings → Import → Import Library',text:'Choose the folder or files. Review detected papers and attachment notices.'},
+    {icon:Library,title:'Import',where:'Import Library → Import',text:'Selected papers enter Library. Recognized duplicates merge; supported PDFs are copied into managed storage.'}]},
+  {id:'organize',label:'Make a collection',icon:Layers,anchor:'library',steps:[
+    {icon:Layers,title:'Create a collection',where:'Library → Collections → +',text:'Give the collection a useful topic name, such as Early black holes.'},
+    {icon:ListChecks,title:'Choose papers',where:'Library → Selection mode',text:'Select the papers you want, then choose the collection action.'},
+    {icon:Library,title:'Add & browse',where:'Choose collection → Done',text:'Open the collection panel and select your collection to see its papers.'}]},
+  {id:'share',label:'Share a collection',icon:Share2,anchor:'share',steps:[
+    {icon:Share2,title:'Open collection sharing',where:'Library → Collections → Share icon',text:'Choose the share icon beside the collection you want to send.'},
+    {icon:PencilLine,title:'Add your description',where:'Share Collection',text:'Explain why you chose these papers or where the recipient should start. The message uses your collection title and description.'},
+    {icon:Link,title:'Share a link or file',where:'Share or Export file',text:'Copy a link or choose a destination. Recipients import the named collection from the link or an exported JSON file.'}]},
+  {id:'ranking',label:'Personal ranking',icon:Sparkles,anchor:'ranking',steps:[
+    {icon:MessageSquare,title:'Give feedback',where:'Paper controls',text:'Your ratings guide future recommendations. This manual shows no personal ratings or scores.'},
+    {icon:Sparkles,title:'Learn your preferences',where:'Training on an eligible device',text:'Mac can train; iPad requires opt-in. Training is off on iPhone. Automatic training waits for enough feedback and an inactive app.'},
+    {icon:Library,title:'Read a ranked feed',where:'Feed or Weekly Summary',text:'Completed rankings are saved for reuse. Open an explanation for related examples; refresh when you want to request an update.'}]},
+  {id:'sync',label:'Use another device',icon:Cloud,anchor:'sync',steps:[
+    {icon:Monitor,title:'Use one iCloud account',where:'System settings on each device',text:'Sign in to the same Apple Account on your Mac, iPad and iPhone.'},
+    {icon:Cloud,title:'Enable READEA sync',where:'Settings → iCloud Sync',text:'Turn it on in READEA on each device. For social accounts, enable iCloud Passwords & Keychain too.'},
+    {icon:Smartphone,title:'Check the transfer',where:'Sync Now → Check status',text:'Keep both apps open for the first transfer. Open needed PDFs on the destination device before going offline.'}]},
+];
+---
+<section class="visual-tour" id="visual-guide" aria-labelledby="visual-guide-title">
+  <header><div><p class="kicker">Learn by following the path</p><h2 id="visual-guide-title">A visual quick guide</h2></div><span class="example-label">Illustrated examples · no personal feedback</span></header>
+  <div class="tour-tabs" role="tablist" aria-label="Choose a walkthrough">
+    {tours.map(({id,label,icon:Icon},index)=><button type="button" role="tab" id={`tour-tab-${id}`} aria-controls={`tour-${id}`}  aria-selected={index===0?'true':'false'} tabindex={index===0?0:-1} data-tour-target={id}><Icon size={18} strokeWidth={1.7} aria-hidden="true" />{label}</button>)}
+  </div>
+  {tours.map((tour,index)=><div class="tour-panel" id={`tour-${tour.id}`} role="tabpanel" aria-labelledby={`tour-tab-${tour.id}`} hidden={index!==0} data-tour-panel>
+    <div class="tour-path">
+      {tour.steps.map(({icon:Icon,title},stepIndex)=><button type="button" class="path-step" data-step={stepIndex} aria-pressed={stepIndex===0?'true':'false'} aria-label={`Step ${stepIndex+1}: ${title}`} >
+        <span class="step-count">{String(stepIndex+1).padStart(2,'0')}</span><span class="path-icon"><Icon size={34} strokeWidth={1.5} aria-hidden="true" /></span><strong>{title}</strong>
+        {stepIndex < tour.steps.length - 1 && <span class="path-arrow" aria-hidden="true"><ArrowRight size={22}/></span>}
+      </button>)}
+    </div>
+    <div class="tour-instruction" aria-live="polite" aria-atomic="true">
+      {tour.steps.map((step,stepIndex)=><div data-instruction={stepIndex} hidden={stepIndex!==0}><p class="where">{step.where}</p><h3>{step.title}</h3><p>{step.text}</p></div>)}
+    </div>
+    {tour.id==='share'&&<div class="message-example"><span class="mini-label">What your recipient sees</span><strong>Early black holes</strong><p>A starting point for our reading group. Begin with the overview, then explore seed formation.</p><span class="message-link"><Link size={14} aria-hidden="true"/>Open in READEA → collection link</span></div>}
+    {tour.id==='import'&&<div class="files-example" aria-label="Example export folder containing a references file and PDFs"><FolderOpen size={24} aria-hidden="true"/><div><strong>My export folder</strong><div class="file-branches"><span><FileText size={16} aria-hidden="true"/>references.ris</span><span><FileText size={16} aria-hidden="true"/>paper-one.pdf</span><span><FileText size={16} aria-hidden="true"/>paper-two.pdf</span></div></div><span class="mini-label">Keep references + PDFs together</span></div>}
+    {tour.id==='read'&&<div class="paper-example"><span class="mini-label">Example paper · controls to look for</span><strong>Seed formation in the early universe</strong><p>Open the abstract first. Save a reference for later, or open its PDF to read.</p><div class="example-controls"><span><Bookmark size={18} aria-hidden="true"/>Save</span><span><FileText size={18} aria-hidden="true"/>PDF</span><span><Share2 size={18} aria-hidden="true"/>Share</span></div></div>}
+    {tour.id==='organize'&&<div class="collection-example"><Layers size={25} aria-hidden="true"/><div><span class="mini-label">Example collection</span><strong>Early black holes</strong><span class="paper-slips" aria-label="Three example paper references"><FileText size={25}/><FileText size={25}/><FileText size={25}/></span></div><span class="mini-label">One topic, several references</span></div>}
+    {tour.id==='ranking'&&<p class="tour-note"><MessageSquare size={20} aria-hidden="true"/><span>Feedback → future training → recommendations. Your personal likes, dislikes, favorites and scores are never used as examples here.</span></p>}
+    {tour.id==='sync'&&<div class="device-example" aria-label="Mac, iPad and iPhone connected through private iCloud"><span><Monitor size={31} aria-hidden="true"/>Mac</span><span class="device-connector" aria-hidden="true">↔</span><span class="cloud-node"><Cloud size={34} aria-hidden="true"/>Private iCloud</span><span class="device-connector" aria-hidden="true">↔</span><span><Tablet size={27} aria-hidden="true"/>iPad</span><span><Smartphone size={25} aria-hidden="true"/>iPhone</span></div>}
+    <footer><div class="step-navigation"><button type="button" data-previous disabled aria-label="Previous step"><ArrowLeft size={16} aria-hidden="true"/>Back</button><span data-progress>1 / {tour.steps.length}</span><button type="button" data-next aria-label="Next step">Next<ArrowRight size={16} aria-hidden="true"/></button></div><a href={`#${tour.anchor}`}>Full instructions <span aria-hidden="true">↓</span></a></footer>
+  </div>)}
+</section>
+<script>
+  const guide=document.querySelector<HTMLElement>('.visual-tour');
+  if(guide){
+    const tabs=[...guide.querySelectorAll<HTMLButtonElement>('[data-tour-target]')];
+    const panels=[...guide.querySelectorAll<HTMLElement>('[data-tour-panel]')];
+    function selectStep(panel:HTMLElement,index:number){
+      const steps=[...panel.querySelectorAll<HTMLButtonElement>('[data-step]')];
+      const selected=Math.max(0,Math.min(steps.length-1,index));
+      steps.forEach((step,i)=>step.setAttribute('aria-pressed',String(i===selected)));
+      panel.querySelectorAll<HTMLElement>('[data-instruction]').forEach((el,i)=>el.hidden=i!==selected);
+      panel.dataset.currentStep=String(selected);
+      const progress=panel.querySelector('[data-progress]');if(progress)progress.textContent=`${selected+1} / ${steps.length}`;
+      const prev=panel.querySelector<HTMLButtonElement>('[data-previous]');if(prev)prev.disabled=selected===0;
+      const next=panel.querySelector<HTMLButtonElement>('[data-next]');if(next)next.disabled=selected===steps.length-1;
+    }
+    function selectTab(tab:HTMLButtonElement){
+      tabs.forEach(t=>{const selected=t===tab;t.setAttribute('aria-selected',String(selected));t.tabIndex=selected?0:-1;});
+      panels.forEach(panel=>panel.hidden=panel.id!==tab.getAttribute('aria-controls'));
+    }
+    tabs.forEach((tab,i)=>{
+      tab.addEventListener('click',()=>selectTab(tab));
+      tab.addEventListener('keydown',event=>{
+        let index=i;
+        if(event.key==='ArrowRight')index=(i+1)%tabs.length;else if(event.key==='ArrowLeft')index=(i+tabs.length-1)%tabs.length;else if(event.key==='Home')index=0;else if(event.key==='End')index=tabs.length-1;else return;
+        event.preventDefault();selectTab(tabs[index]);tabs[index].focus();
+      });
+    });
+    panels.forEach(panel=>{
+      panel.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((step,i)=>step.addEventListener('click',()=>selectStep(panel,i)));
+      panel.querySelector('[data-previous]')?.addEventListener('click',()=>selectStep(panel,Number(panel.dataset.currentStep||0)-1));
+      panel.querySelector('[data-next]')?.addEventListener('click',()=>selectStep(panel,Number(panel.dataset.currentStep||0)+1));
+    });
+  }
+</script>
+<style>
+  .visual-tour { margin:2rem 0 3.2rem; border:1px solid var(--border); border-radius:1rem; overflow:hidden; background:var(--card); }
+  header { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding:1.6rem 1.7rem 1.2rem; }
+  .kicker { text-transform:uppercase; font-size:.65rem; font-weight:600; letter-spacing:.13em; color:var(--primary); margin-bottom:.5rem; }
+  h2 { font-size:1.5rem; letter-spacing:-.025em; font-weight:550; line-height:1.2; }
+  .example-label { font-size:.72rem; color:var(--muted-foreground); }
+  .tour-tabs { display:flex; flex-wrap:wrap; gap:.45rem; padding:0 1.7rem 1.3rem; border-bottom:1px solid var(--border); }
+  .tour-tabs button { display:flex; align-items:center; gap:.45rem; padding:.6rem .8rem; font-size:.79rem; border-radius:.5rem; color:var(--muted-foreground); cursor:pointer; }
+  .tour-tabs button:hover { background:var(--muted); }
+  .tour-tabs button[aria-selected="true"] { background:var(--primary); color:var(--primary-foreground); }
+  .tour-panel { padding:1.7rem; background:var(--background); }
+  [hidden] { display:none !important; }
+  .tour-path { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:2rem; margin-bottom:1.7rem; }
+  .path-step { display:flex; flex-direction:column; align-items:flex-start; gap:.8rem; padding:1rem 1.15rem; border:1px solid var(--border); border-radius:.75rem; position:relative; text-align:left; cursor:pointer; color:var(--muted-foreground); background:var(--background); }
+  .path-step[aria-pressed="true"] { border-color:var(--primary); box-shadow:inset 0 0 0 1px var(--primary); color:var(--foreground); background:var(--card); }
+  .step-count { font-size:.65rem; letter-spacing:.1em; }
+  .path-icon { color:var(--primary); }
+  .path-step strong { font-size:.9rem; line-height:1.45; font-weight:550; }
+  .path-arrow { position:absolute; right:-1.7rem; top:45%; color:var(--muted-foreground); opacity:.55; }
+  .tour-instruction { padding-left:1rem; border-left:3px solid var(--primary); min-height:7.7rem; }
+  .where { font-size:.72rem; color:var(--primary); margin-bottom:.4rem; line-height:1.6; }
+  h3 { font-size:1.15rem; font-weight:550; letter-spacing:-.015em; }
+  .tour-instruction p:last-child { max-width:47rem; margin-top:.5rem; color:var(--muted-foreground); line-height:1.75; font-size:.9rem; }
+  footer { display:flex; align-items:center; justify-content:space-between; gap:1rem; padding-top:1.5rem; margin-top:1.5rem; border-top:1px solid var(--border); }
+  .step-navigation { display:flex; align-items:center; gap:1rem; }
+  .step-navigation button { display:flex; align-items:center; gap:.45rem; font-size:.8rem; padding:.55rem .75rem; border-radius:.45rem; background:var(--muted); color:var(--foreground); cursor:pointer; }
+  .step-navigation button:disabled { opacity:.35; cursor:default; }
+  [data-progress] { font-size:.75rem; color:var(--muted-foreground); font-variant-numeric:tabular-nums; }
+  footer a { font-size:.8rem; color:var(--primary); text-decoration:none; }
+  .mini-label { display:block; color:var(--muted-foreground); font-size:.68rem; line-height:1.6; }
+  .message-example,.paper-example { max-width:36rem; padding:1.25rem 1.5rem; border:1px solid var(--border); border-radius:.7rem; margin:1.4rem 0 0; background:var(--card); }
+  .message-example strong,.paper-example strong { display:block; font-size:1rem; font-weight:550; margin-top:.45rem; }
+  .message-example p,.paper-example p { font-size:.84rem; line-height:1.75; color:var(--muted-foreground); margin-top:.6rem; }
+  .message-link { display:flex; align-items:center; gap:.5rem; margin-top:.85rem; font-size:.74rem; color:var(--primary); }
+  .example-controls { display:flex; flex-wrap:wrap; gap:1.5rem; margin-top:1.1rem; padding-top:1rem; border-top:1px solid var(--border); }
+  .example-controls span { display:flex; align-items:center; gap:.45rem; font-size:.76rem; color:var(--primary); }
+  .files-example,.collection-example { display:flex; align-items:flex-start; gap:1rem; margin-top:1.4rem; padding:1.2rem 1.4rem; border-left:1px solid var(--border); background:var(--card); color:var(--primary); }
+  .files-example strong,.collection-example strong { display:block; font-size:.88rem; font-weight:550; color:var(--foreground); }
+  .file-branches { display:flex; gap:.5rem 1.2rem; flex-wrap:wrap; margin-top:.7rem; }
+  .file-branches span { display:flex; align-items:center; gap:.4rem; font-size:.73rem; color:var(--muted-foreground); }
+  .files-example>.mini-label,.collection-example>.mini-label { margin-left:auto; }
+  .paper-slips { display:flex; gap:.6rem; margin-top:.8rem; }
+  .tour-note { display:flex; gap:.8rem; align-items:flex-start; margin-top:1.4rem; background:var(--card); padding:1rem 1.2rem; font-size:.83rem; color:var(--muted-foreground); line-height:1.75; }
+  .tour-note :global(svg) { flex-shrink:0; margin-top:.2rem; }
+  .device-example { display:flex; align-items:center; justify-content:center; flex-wrap:wrap; gap:1.2rem; padding:1.8rem 0 .5rem; }
+  .device-example>span { display:flex; flex-direction:column; align-items:center; gap:.5rem; font-size:.74rem; color:var(--muted-foreground); }
+  .device-example .cloud-node { color:var(--primary); }
+  button:focus-visible,a:focus-visible { outline:2px solid var(--primary); outline-offset:4px; }
+  @media(max-width:640px) {
+    header { flex-direction:column; align-items:flex-start; padding:1.2rem; }
+    .tour-tabs { padding:0 1.2rem 1rem; gap:.35rem; }
+    .tour-tabs button { min-height:44px; font-size:.75rem; padding:.45rem .6rem; }
+    .tour-panel { padding:1.2rem; }
+    .tour-path { gap:.5rem; }
+    .path-step { padding:.65rem .5rem; gap:.65rem; }
+    .path-step strong { font-size:.72rem; overflow-wrap:anywhere; }
+    .path-arrow { display:none; }
+    .path-icon :global(svg) { width:27px; height:27px; }
+    .tour-instruction { min-height:12rem; }
+    .files-example,.collection-example { flex-wrap:wrap; padding:1rem; }
+    .files-example>.mini-label,.collection-example>.mini-label { margin-left:0; flex-basis:100%; }
+    .message-example,.paper-example { padding:1rem; }
+    footer { flex-wrap:wrap; }
+    .step-navigation { flex:1 1 100%; justify-content:space-between; }
+    .step-navigation button { min-height:44px; }
+    .device-example { gap:1rem; }
+    .device-example .device-connector { display:none; }
+  }
+  @media(prefers-reduced-motion:reduce) { * { scroll-behavior:auto; } }
+</style>

@@ -1,0 +1,31 @@
+---
+import {Search, FileText, Bookmark, FolderOpen, ListChecks, Library, Layers, PencilLine, Share2, Download, Cloud, Monitor, Tablet, Smartphone, MessageSquare, Sparkles, ArrowRight, CalendarDays} from 'lucide-react';
+const icons = {search:Search, paper:FileText, save:Bookmark, folder:FolderOpen, review:ListChecks, library:Library, collection:Layers, write:PencilLine, share:Share2, download:Download, cloud:Cloud, mac:Monitor, ipad:Tablet, iphone:Smartphone, feedback:MessageSquare, rank:Sparkles, calendar:CalendarDays};
+interface Props { label: string; steps: {icon: keyof typeof icons; title: string; text: string}[]; }
+const {label,steps} = Astro.props;
+const displaySteps=steps.map(step=>({...step,Icon:icons[step.icon]}));
+---
+<div class="journey" role="group" aria-label={label}>
+  <p class="journey-label">{label}</p>
+  <ol>
+    {displaySteps.map(({Icon,title,text},index) => <li>
+      <span class="journey-icon"><Icon size={25} strokeWidth={1.6} aria-hidden="true" /></span>
+      <span class="journey-number">{String(index+1).padStart(2,'0')}</span>
+      <strong>{title}</strong><span class="journey-text">{text}</span>
+      {index < steps.length-1 && <span class="journey-arrow" aria-hidden="true"><ArrowRight size={18} /></span>}
+    </li>)}
+  </ol>
+</div>
+<style>
+  .journey { margin:1.5rem 0 2rem; }
+  .journey-label { font-size:.68rem; letter-spacing:.12em; text-transform:uppercase; color:var(--muted-foreground); margin-bottom:1rem; font-weight:600; }
+  ol { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:1.2rem; list-style:none; padding:0; margin:0; }
+  li { position:relative; padding:.2rem 1.1rem .5rem 0; display:flex; align-items:flex-start; flex-direction:column; }
+  .journey-icon { color:var(--primary); display:flex; align-items:center; justify-content:center; width:46px; height:46px; background:var(--card); border-radius:13px; margin-bottom:.8rem; }
+  .journey-number { font-size:.65rem; color:var(--muted-foreground); letter-spacing:.08em; margin-bottom:.25rem; }
+  strong { font-size:.86rem; font-weight:600; line-height:1.5; }
+  .journey-text { font-size:.78rem; line-height:1.6; color:var(--muted-foreground); margin-top:.3rem; }
+  .journey-arrow { position:absolute; right:-.1rem; top:.95rem; color:var(--muted-foreground); opacity:.5; }
+  @media(max-width:600px) { ol { grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.3rem 1rem; } li:nth-child(2) .journey-arrow { display:none; } }
+  @media print { .journey { break-inside:avoid; } }
+</style>
