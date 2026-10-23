@@ -3,124 +3,316 @@ import WideLayout from "../../layouts/WideLayout.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 
 const sections = [
-  { id: "start", label: "Get started" },
-  { id: "feed", label: "Feed & paper cards" },
-  { id: "read", label: "Read & annotate" },
-  { id: "library", label: "Library & collections" },
-  { id: "search", label: "Search" },
-  { id: "sync", label: "Sync & settings" },
-  { id: "connections", label: "Connections & sharing" },
+  ["start", "Your first five minutes"],
+  ["feed", "Feed & Weekly Summary"],
+  ["read", "Paper details & PDFs"],
+  ["library", "Library & collections"],
+  ["import", "Bring your library"],
+  ["share", "Share a paper or collection"],
+  ["search", "Search & refine"],
+  ["ranking", "Personal ranking"],
+  ["connections", "Accounts & your publications"],
+  ["sync", "Sync & offline use"],
+  ["settings", "Make it yours"],
+  ["help", "Troubleshooting"],
+];
+const tasks = [
+  ["import", "Move from Zotero, Mendeley or Paperpile", "Bring references and PDFs together."],
+  ["share", "Share a reading collection", "One title, your description, one importable link."],
+  ["ranking", "Improve your recommendations", "Give feedback and understand your scores."],
+  ["sync", "Continue on another device", "Set up iCloud and check what travels with you."],
 ];
 ---
-<WideLayout title="READEA Manual" description="Learn to find, read, annotate, organize, and sync research papers with READEA on Mac, iPhone, and iPad.">
-  <div class="mx-auto max-w-6xl">
+<WideLayout title="READEA Manual" description="A practical READEA guide: discover papers, import your library, read and annotate PDFs, share collections, improve recommendations, and sync your Apple devices.">
+  <div class="manual mx-auto max-w-6xl">
     <Breadcrumb items={[{ label: "READEA", href: "/arxiv-app" }, { label: "Manual" }]} />
-
-    <header class="mt-8 border-b border-border pb-9">
-      <p class="text-xs font-semibold uppercase tracking-[0.18em] text-primary">Beta user guide</p>
-      <h1 class="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">READEA Manual</h1>
-      <p class="mt-4 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-        A practical guide to your daily feed, paper library, PDF reader, and cross-device sync.
-      </p>
-      <p class="mt-3 text-sm text-muted-foreground">Screenshots show the macOS app. The same features may have a different layout on iPhone and iPad.</p>
+    <header class="manual-header">
+      <p class="eyebrow">Read · Organize · Share</p>
+      <h1>READEA Manual</h1>
+      <p class="lede">Discover, read, organize and share your research. Start with one paper, or bring the library you already have.</p>
+      <p class="edition">Mac · iPhone · iPad <span aria-hidden="true">/</span> Updated October 22, 2026</p>
+      <p class="build-note">This guide covers the current READEA 2.0 beta features. Your installed TestFlight build may have fewer features; check the version and patch notes in Settings. Screenshots illustrate the Mac layout from an earlier beta; follow the current button names in the instructions.</p>
     </header>
 
-    <div class="mt-10 grid gap-12 lg:grid-cols-[180px_minmax(0,1fr)]">
+    <nav class="task-grid" aria-label="Popular tasks">
+      {tasks.map(([id, title, subtitle]) => <a href={`#${id}`}><strong>{title}<span aria-hidden="true">↗</span></strong><span>{subtitle}</span></a>)}
+    </nav>
+
+    <details class="mobile-contents lg:hidden">
+      <summary>In this guide</summary>
+      <nav aria-label="Guide sections on mobile">{sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}</nav>
+    </details>
+    <div class="manual-grid">
       <aside class="hidden lg:block">
-        <nav aria-label="On this page" class="sticky top-24 space-y-1">
-          <p class="mb-3 text-xs font-semibold uppercase tracking-widest text-muted-foreground">On this page</p>
-          {sections.map((section) => (
-            <a href={`#${section.id}`} class="block rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-muted hover:text-foreground">{section.label}</a>
-          ))}
+        <nav class="contents" aria-label="In this guide">
+          <p class="eyebrow">In this guide</p>
+          {sections.map(([id, label]) => <a href={`#${id}`}>{label}</a>)}
+          <a class="help-link" href="/arxiv-app/feedback">Send feedback ↗</a>
         </nav>
       </aside>
-
-      <div class="min-w-0 space-y-14">
-        <section id="start" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Get started</h2>
-          <ol class="mt-5 space-y-3 text-base leading-relaxed text-muted-foreground">
-            <li><strong class="text-foreground">1. Install the beta.</strong> Open your READEA TestFlight invitation on each Apple device you want to use.</li>
-            <li><strong class="text-foreground">2. Choose your arXiv categories.</strong> In Settings, open <strong class="text-foreground">arXiv Categories</strong> and follow the fields you want in your Feed.</li>
-            <li><strong class="text-foreground">3. Turn on iCloud Sync.</strong> Use the same Apple Account in system settings on each device, then enable <strong class="text-foreground">iCloud Sync</strong> in READEA Settings.</li>
+      <article>
+        <section id="start">
+          <p class="section-number">01 / Start here</p>
+          <h2>Your first five minutes</h2>
+          <ol class="steps">
+            <li><strong>Install READEA.</strong> Open your TestFlight invitation on each device. For beta access, email <a href="mailto:g.kerex@gmail.com?subject=READEA%20beta%20access">g.kerex@gmail.com</a> with your name, devices and, optionally, affiliation.</li>
+            <li><strong>Choose your fields.</strong> Open <b>Settings → arXiv Categories</b> and select the subjects you follow.</li>
+            <li><strong>Save one paper.</strong> Open Feed, select a paper to read its abstract, then use the bookmark to save it to Library. Open the PDF to start reading.</li>
+            <li><strong>Set up your other devices.</strong> Use the same Apple Account for iCloud and turn on <b>Settings → iCloud Sync</b> in READEA on each device.</li>
           </ol>
-          <div class="mt-6 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
-            <strong class="text-foreground">Find your way around:</strong> Home shows recent reading and Weekly Summary; Library holds saved papers; Feed shows arXiv papers; Search opens Smart Search; Lab contains experimental tools. On Mac, use the gear button for Settings. On iPhone and iPad, Settings has its own tab.
-          </div>
+          <div class="callout"><strong>No separate READEA account is needed.</strong> iCloud uses the account in your device’s system settings. ORCID and social accounts are optional connections.</div>
+          <h3>Find your way around</h3>
+          <dl class="definitions">
+            <div><dt>Home</dt><dd>Return to Recently Read or open Weekly Summary.</dd></div>
+            <div><dt>Library</dt><dd>Your saved and imported papers, tags and collections.</dd></div>
+            <div><dt>Feed</dt><dd>Browse arXiv announcements in your chosen fields.</dd></div>
+            <div><dt>Search</dt><dd>Find papers across selected literature sources and your Library.</dd></div>
+            <div><dt>Lab</dt><dd>Explore experimental tools. Availability can vary by build.</dd></div>
+          </dl>
+          <p>On Mac, open Settings with the gear button. On iPhone and iPad, use the Settings tab or a visible gear shortcut.</p>
         </section>
 
-        <section id="feed" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Feed & paper cards</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">The Feed shows papers for the current arXiv announcement day. Use the category chips to focus on one field, and the calendar button in the lower-right corner to browse an earlier date. When you are viewing an earlier date, use <strong class="text-foreground">Today</strong> to return.</p>
-          <figure class="manual-shot mt-6">
-            <a href="/images/readea-manual/feed.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size READEA Feed screenshot"><img src="/images/readea-manual/feed.png" alt="READEA Feed with arXiv category chips, paper cards, and calendar button" width="1800" height="1504" loading="lazy" /></a>
-            <figcaption>Feed on macOS. Select a category chip or open the calendar to browse another day.</figcaption>
-          </figure>
-          <ul class="mt-6 list-disc space-y-2 pl-6 leading-relaxed text-muted-foreground">
-            <li>Click or tap a paper card to read its title, authors, and abstract.</li>
-            <li>Use the thumbs-up and thumbs-down icons to teach personal ranking what interests you; use the star for a favorite.</li>
-            <li>Use the bookmark in the paper detail card to save it to Library. Tapping it again removes it from Library.</li>
-            <li>The toolbar filter can hide papers you have read or saved. Refresh asks READEA to fetch the current feed again.</li>
+        <section id="feed">
+          <p class="section-number">02 / Discover</p>
+          <h2>Feed & Weekly Summary</h2>
+          <p>Choose a category chip to focus on one field, or <b>All</b> to browse the combined feed. Open a paper card for its abstract. Use the toolbar’s <b>Filter</b> control to hide read or saved papers; clear the filters when you want the complete list again.</p>
+          <h3>Browse another date</h3>
+          <p>Open the calendar, choose a date, and use <b>Today</b> to return. READEA uses retained feed data when available and requests missing papers from arXiv. An older date can require an internet connection, and availability depends on your cache-retention setting and the source.</p>
+          <div class="callout"><strong>The Feed day changes at 8 AM in your device’s local time.</strong> Friday stays Friday until Saturday at 8 AM. The weekend screen stays in place until Monday at 8 AM. READEA uses your device’s time zone; it does not need your precise location.</div>
+          <h3>Catch up with Weekly Summary</h3>
+          <p>Open Weekly Summary from Home to review the week. It uses the same paper-detail card and feedback controls as Feed. <b>Settings → Rank Weekly Summary</b> controls its personal ranking.</p>
+          <p><b>Refresh</b> requests an update. Completed daily ranking is retained so the list does not continually shuffle while you read; an explicit refresh can update it.</p>
+          <details class="screenshot"><summary>See the Feed layout</summary><figure><a href="/images/readea-manual/feed.png" target="_blank" rel="noopener noreferrer"><img src="/images/readea-manual/feed.png" alt="Mac Feed showing category chips, paper cards and a calendar button" width="1800" height="1504" loading="lazy" /></a><figcaption>Category chips filter the list; the calendar changes the date. Earlier beta shown: the current Feed toolbox uses Refresh, Filter and Settings.</figcaption></figure></details>
+        </section>
+
+        <section id="read">
+          <p class="section-number">03 / Read</p>
+          <h2>Paper details & PDFs</h2>
+          <p>Select a paper in Feed, Weekly Summary or Smart Search to open its title, authors, identifiers and abstract. These views share the same detail card.</p>
+          <ul>
+            <li><b>PDF:</b> open an available full-text version.</li>
+            <li><b>Bookmark:</b> save the paper to Library; use the save/tag controls to organize it.</li>
+            <li><b>Share:</b> copy an importable link or choose a destination.</li>
+            <li><b>Thumbs down, thumbs up, star:</b> record your interest; the star marks a favorite.</li>
+            <li><b>Source link:</b> visit arXiv or the original publication website.</li>
           </ul>
-          <figure class="manual-shot mt-7">
-            <a href="/images/readea-manual/paper-details.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size paper detail screenshot"><img src="/images/readea-manual/paper-details.png" alt="READEA paper detail card with abstract, PDF and save controls, and preference buttons" width="1800" height="1504" loading="lazy" /></a>
-            <figcaption>Paper details. Open the PDF, save the paper, or give feedback from the bottom controls.</figcaption>
-          </figure>
+          <p>Drag across text in the abstract or identifier to select and copy it. Mathematical expressions are rendered for reading; copying may use their underlying text or LaTeX. Click outside a desktop detail card or press <kbd>Esc</kbd> to dismiss it. On touch devices, use the sheet’s dismissal gesture or close control.</p>
+          <h3>Annotate and read offline</h3>
+          <p>In the PDF reader, select text to open annotation controls, highlight passages or add notes. Use the reader’s search and zoom controls to navigate. A downloaded PDF can be read offline; open it once while online before relying on it during travel.</p>
+          <p>READEA can discover arXiv and journal versions of the same paper. A publisher page may still require access through your institution. Metadata updates do not provide access to a paywalled PDF, and an annotated local PDF is retained when other versions are found.</p>
         </section>
 
-        <section id="read" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Read & annotate</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">Open a paper's PDF from its detail card or Library. Select text to highlight or add a note; the annotation palette appears near your selection. In the PDF reader you can also search the document and change zoom. Press <kbd>Esc</kbd> on Mac to close the reader.</p>
-          <p class="mt-3 leading-relaxed text-muted-foreground">Downloaded PDFs remain available for offline reading. Annotations and reading state are included in iCloud Sync when it is enabled. A journal PDF is used when READEA can find an accessible version; the PDF currently carrying annotations stays in place.</p>
+        <section id="library">
+          <p class="section-number">04 / Organize</p>
+          <h2>Library & collections</h2>
+          <p>Use the Library search field to find saved papers. The tag control filters by tags; the sort control changes the order. The round stacked-layers button opens <b>Collections</b>.</p>
+          <h3>Create a reading collection</h3>
+          <ol class="steps">
+            <li>Open <b>Collections → +</b> and enter a name—for example, <em>SMBH formation in the early universe</em>.</li>
+            <li>Select papers in Library, choose the collection action, select your collection, then choose <b>Done</b>.</li>
+            <li>Choose the collection in the collection panel to browse its papers. Use <b>Clear</b> to return to the full Library.</li>
+          </ol>
+          <p>A paper can belong to more than one collection. Deleting a collection keeps its papers in Library.</p>
+          <h3>Use selection mode</h3>
+          <p>Long-press a paper on iPhone or iPad, or use its context menu on Mac, to enter selection mode. Select one or more papers, then use the available actions for metadata, tags, collections, sharing or deletion. <b>Sources</b> opens arXiv and journal websites when available. Use <b>Done</b> or <kbd>Esc</kbd> to leave selection mode; completed actions can close it automatically.</p>
+          <details class="screenshot"><summary>See the Library layout</summary><figure><a href="/images/readea-manual/library.png" target="_blank" rel="noopener noreferrer"><img src="/images/readea-manual/library.png" alt="Mac Library with search, tag and sort controls, saved papers, and the collections button at lower right" width="1800" height="1504" loading="lazy" /></a><figcaption>Search and filtering live above the papers. The stacked-layers button opens collections. Click the image to enlarge it.</figcaption></figure></details>
         </section>
 
-        <section id="library" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Library & collections</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">Library contains papers you have saved or imported. Search the Library from its search field. Use the tag button in the top toolbar to filter by one or more tags. The round collection button in the lower-right corner opens your collections; choose one collection to see its papers, or use <strong class="text-foreground">Clear</strong> to return to the full Library.</p>
-          <figure class="manual-shot mt-6">
-            <a href="/images/readea-manual/library.png" target="_blank" rel="noopener noreferrer" aria-label="Open full-size READEA Library screenshot"><img src="/images/readea-manual/library.png" alt="READEA Library showing saved paper cards, toolbar, and collection button" width="1800" height="1504" loading="lazy" /></a>
-            <figcaption>Library on macOS. Tags are in the top toolbar; collections open from the round lower-right button.</figcaption>
-          </figure>
-          <ul class="mt-6 list-disc space-y-2 pl-6 leading-relaxed text-muted-foreground">
-            <li>Open a saved paper to edit its metadata, manage tags or collections, and check for an accessible journal PDF.</li>
-            <li>Long-press a card on touch devices, or right-click it on Mac, to select papers for batch actions.</li>
-            <li>Removing a paper from a collection only changes that collection. Deleting a paper removes its Library record.</li>
+        <section id="import">
+          <p class="section-number">05 / Bring your research</p>
+          <h2>Bring your library</h2>
+          <p>Open <b>Settings → Import → Import Library</b>, or <b>+ → Import Library</b> where the Add menu is available.</p>
+          <ol class="steps">
+            <li>Use <b>Choose files</b> for PDFs or bibliography files. Use <b>Choose folder</b> for an unzipped export folder or a folder of PDFs, including subfolders.</li>
+            <li>Review the detected references and attachment notices. Select the papers you want.</li>
+            <li>Choose <b>Import</b>. READEA copies supported PDFs into its managed storage and merges recognized duplicates.</li>
+          </ol>
+          <p>The <b>Export from other apps</b> button opens source-specific instructions. For the most complete transfer, keep the bibliography export and its downloaded PDFs together.</p>
+          <div class="table-wrap"><table><caption>Prepare your export</caption><thead><tr><th scope="col">From</th><th scope="col">What to bring</th></tr></thead><tbody>
+            <tr><th scope="row">Zotero</th><td>Export Library as <b>Zotero RDF</b>, including notes and files. Enable <b>Include Annotations</b> under Export Files to include highlights in the PDFs. Choose the exported folder.</td></tr>
+            <tr><th scope="row">Mendeley</th><td>Export <b>RIS, BibTeX or supported bibliography XML</b>. Put downloaded PDFs beside the export. Use annotated PDF exports when you want to retain embedded highlights.</td></tr>
+            <tr><th scope="row">Paperpile</th><td>Export <b>RIS or BibTeX</b>, download the PDFs, and unzip them into the same folder. Native Paperpile JSON and separate annotation exports are not supported.</td></tr>
+            <tr><th scope="row">PDFs / other tools</th><td>Choose PDFs, a PDF folder, or supported RIS, BibTeX, EndNote XML, Word bibliography XML or CSL JSON files. A references-only export does not contain the PDF files.</td></tr>
+          </tbody></table></div>
+          <p>Embedded PDF annotations stay with the imported file. Notes or annotations stored only inside another app’s database do not automatically become READEA annotations. Zotero collection paths and tags are retained when present in the export; unsupported or ambiguous attachments are left for review.</p>
+          <h3>Improve imported metadata</h3>
+          <p>Use <b>Settings → Library → Update Library Metadata</b> to check the entire library against journal and arXiv records. READEA fills missing fields and improves unchanged imported metadata while preserving your edits and local PDFs. Mac also makes small automatic checks; iPhone and iPad use this manual action.</p>
+        </section>
+
+        <section id="share">
+          <p class="section-number">06 / Share</p>
+          <h2>Share a paper or collection</h2>
+          <h3>One paper, or a selected group</h3>
+          <p>Use <b>Share</b> at the bottom of an abstract card, or in Library selection mode. Choose <b>Copy link</b>, Email, Slack or an available social destination. Paste a copied link into any message or website. Account-based destinations may ask you to connect first.</p>
+          <h3>A named reading collection</h3>
+          <ol class="steps">
+            <li>Open Library’s <b>Collections</b> panel and choose the share icon beside the collection.</li>
+            <li>Write an optional description: who it is for, why you chose the papers, or where to start.</li>
+            <li>Choose <b>Share</b> for a link or social destination, or <b>Export file</b> to save a portable collection JSON file.</li>
+          </ol>
+          <div class="example"><p class="eyebrow">Example collection message</p><strong>SMBH formation in the early universe</strong><p>A starting point for our reading group: seed formation, rapid growth and observational constraints. Start with the overview, then choose a formation channel.</p><span>Open in READEA → collection link</span></div>
+          <p>Collection messages use the title, your description and the import link instead of listing individual papers. The references remain inside the link or file so the recipient can import the full collection. Shared collection webpages use the same title-and-description presentation.</p>
+          <h3>Import a collection someone sent you</h3>
+          <p>For a link, open it and choose <b>Open in READEA</b>, or paste it through <b>+ → Paste URL</b>. For a JSON file, open <b>Library → Collections → Import collection</b> and choose the file. Existing papers and same-name collections are merged. Your votes and reading history are preserved.</p>
+          <p><b>What is included:</b> the collection name, description and references; exported files also include publication metadata and abstracts. PDFs, annotations, account details, votes and reading history are excluded. A link supports up to 500 papers, subject to size limits. Use file export for larger collections or papers without web sources.</p>
+          <p>Recipients without READEA can use the shared webpage’s beta-access instructions. LinkedIn and Threads offer editable post text; Instagram provides an editable caption, hashtags and a share image. Facebook opens its own sharing dialog. Slack uses the system share menu or a pasted link.</p>
+        </section>
+
+        <section id="search">
+          <p class="section-number">07 / Find something specific</p>
+          <h2>Search & refine</h2>
+          <ol class="steps">
+            <li>Open <b>Search</b>, enter a topic, identifier or phrase, then submit with <kbd>Return</kbd> or the Search action.</li>
+            <li>Use the source chips to choose Library, arXiv, NASA ADS, Semantic Scholar, INSPIRE-HEP, CrossRef or PubMed. Available sources depend on your configuration.</li>
+            <li>Open a result for the same abstract, PDF, save and share controls used in Feed.</li>
+          </ol>
+          <h3>Refine a search</h3>
+          <p>Use the bottom <b>Refine search</b> field to add a requirement—for example, “focus on runaway mergers in dense star clusters,” “exclude review articles,” or “published since 2020.” Submit it to run the refinement.</p>
+          <p>Refinement can search for additional papers as well as reuse earlier candidates; it is not just a filter over the visible list. It aims to retain the original topic and apply your added instruction. Use result history to return to <b>Original</b> or a completed refinement without rerunning that search.</p>
+          <p>Some sources require credentials in <b>Settings → Literature Sources</b>. AI-assisted query refinement also depends on your Smart Search configuration. For a straightforward search, use a short query and the sources you need.</p>
+        </section>
+
+        <section id="ranking">
+          <p class="section-number">08 / Make it personal</p>
+          <h2>Personal ranking</h2>
+          <p>Give thumbs-up, thumbs-down or favorite feedback as you browse. In Settings, enable <b>Personalized Ranking</b> for Feed and <b>Rank Weekly Summary</b> for the weekly view. Training learns from your feedback; personalization uses the available model or saved ranking to order papers. Automatic training starts when enough feedback has accumulated for your configured thresholds.</p>
+          <h3>Understand a score</h3>
+          <p>Turn on <b>Show Relevance Scores</b> and <b>Show Ranking Explanations</b>. Open the explanation control beside a score to see related papers you have rated and change those votes if needed.</p>
+          <p>A relevance score estimates your interest; it is not a paper-quality score or a guaranteed probability. Related papers are comparisons, not a list of exact contributions to the score. A high score with no trustworthy rated comparison can show <b>Try something new</b>.</p>
+          <h3>Guide future training</h3>
+          <p>In the explanation card, add a <b>Note for future training</b> and choose whether to prefer or avoid similar content. For example: “I’m particularly interested in massive black hole simulations.” A note is a separate training example, not a hard filter. It affects eligible future training, not the displayed score immediately. These notes currently stay on the device where you write them.</p>
+          <div class="table-wrap"><table><caption>Training by device</caption><thead><tr><th scope="col">Device</th><th scope="col">What to expect</th></tr></thead><tbody>
+            <tr><th scope="row">Mac</th><td>Automatic training is on by default. Use <b>Train Model Now</b> for an explicit run; turning off automatic training still permits a manual run.</td></tr>
+            <tr><th scope="row">iPad</th><td>Training requires your opt-in. Change <b>Training on This iPad</b> in Settings to allow automatic and manual training.</td></tr>
+            <tr><th scope="row">iPhone</th><td>Model training is off. The phone can use recommendations from synced model or ranking data.</td></tr>
+          </tbody></table></div>
+          <p>Automatic training waits while you are actively using the app. Completed rankings are saved for reuse. New feedback guides later training; use Refresh when you want to request updated ranking rather than expecting the current list to reorder after every vote.</p>
+        </section>
+
+        <section id="connections">
+          <p class="section-number">09 / Connect</p>
+          <h2>Accounts & your publications</h2>
+          <p>Open <b>Settings → Connections</b> to connect ORCID, LinkedIn, Instagram or Threads. Complete authorization in the browser and return to READEA. Facebook sharing uses Facebook’s own dialog and does not require a separate READEA connection.</p>
+          <h3>Find your own papers</h3>
+          <p>Connecting ORCID starts the initial publication-discovery workflow. Imported matches go into <b>My Papers</b> and can provide initial favorite feedback for personalization; you can change those ratings. To check again, use <b>Settings → Import → Find My Papers</b>.</p>
+          <p>Review discovered records and their source links. A publication record does not guarantee an accessible PDF. iPhone and iPad do not schedule automatic background publication-discovery or library-metadata jobs; run those checks manually.</p>
+          <h3>Social connections</h3>
+          <p>Instagram’s connection requires a Creator or Business account. During beta, Meta access can also depend on the app’s review status and your account’s tester role. Connecting an account does not post anything by itself; choose a share action and review the content before posting.</p>
+          <p>Social account connections use iCloud Passwords & Keychain across devices on the same Apple Account. Enable it in system settings. ORCID uses READEA’s iCloud Sync. Use Disconnect in Connections when you want to remove an authorization.</p>
+        </section>
+
+        <section id="sync">
+          <p class="section-number">10 / Across your devices</p>
+          <h2>Sync & offline use</h2>
+          <ol class="steps">
+            <li>Confirm that each device uses the same Apple Account for iCloud.</li>
+            <li>Turn on <b>iCloud Sync</b> in READEA Settings on each device.</li>
+            <li>Use <b>Sync Now</b> and check the status. Keep both apps open with a connection for the first transfer.</li>
+          </ol>
+          <p>Sync includes library records, tags, collections, feedback, annotations, reading progress, Recently Read and retained feed data. Model backups and completed ranking results can also travel between supported builds. Downloads and the local feed cache are not a promise that every PDF is available offline on every device; open the papers you need on the destination device first.</p>
+          <h3>Background refresh is opportunistic</h3>
+          <p>On Mac, <b>Refresh Feed After Quit</b> can register a background helper. It checks periodically while you are logged in and the Mac is awake, and may require approval in macOS Background Items settings. It does not run through sleep or shutdown.</p>
+          <p>On iPhone and iPad, the operating system decides when background work can run. A refresh or ranking task cannot be promised at an exact time while the app is closed. Open READEA and use Refresh when you need an immediate update. Library imports, collection links and new source searches need internet access unless their required data is already local.</p>
+        </section>
+
+        <section id="settings">
+          <p class="section-number">11 / Your reading space</p>
+          <h2>Make it yours</h2>
+          <ul>
+            <li><b>Theme & Colors:</b> choose light or dark appearance and your palette.</li>
+            <li><b>Fonts & Size:</b> adjust type and overall interface sizing. Check it on each device, especially iPad.</li>
+            <li><b>PDF Reader / PDF Storage:</b> adjust reading preferences and manage downloaded files.</li>
+            <li><b>Keyboard Shortcuts:</b> check the current shortcut list for your build. <kbd>Esc</kbd> dismisses supported popups and leaves Library or Home selection mode.</li>
+            <li><b>Keep Feed Cache:</b> choose how long unsaved feed papers remain locally available. This does not delete saved Library papers.</li>
           </ul>
+          <p>On Mac, Spotlight can find indexed saved papers by title, author or identifier. Select a result to open it in READEA. If you have both TestFlight and Xcode copies installed, confirm which copy opened when checking a change.</p>
+          <p>The Safari extension is bundled with the Mac app; enable it in Safari’s extension settings. Install the Chrome extension separately. Use the browser extension on a supported paper page to save it into READEA.</p>
         </section>
 
-        <section id="search" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Search</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">Open the Search tab for Smart Search. Enter your full query, then press <kbd>Return</kbd> or <kbd>Search</kbd> to run it. You can refine the query before submitting again. arXiv is the default external source; choose other sources when you need them. The search field on other tabs searches that tab's content.</p>
-          <p class="mt-3 leading-relaxed text-muted-foreground">If a search returns no results, try a shorter phrase or check <strong class="text-foreground">Settings → Literature Sources</strong> and your internet connection.</p>
-        </section>
-
-        <section id="sync" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Sync & settings</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground">In Settings, turn on <strong class="text-foreground">iCloud Sync</strong> on every device and check <strong class="text-foreground">Last Sync</strong> for recent activity. <strong class="text-foreground">Sync Now</strong> requests an immediate transfer. READEA uses your device's iCloud account; there is no separate READEA password for sync.</p>
-          <p class="mt-3 leading-relaxed text-muted-foreground">Saved papers, tags, collections, feedback, annotations, reading state, and retained feed cache can sync across your Apple devices. PDF files may need to be downloaded again on a new device. Theme & Colors and Fonts & Size are separate Settings pages.</p>
-          <div class="mt-5 rounded-xl border border-border bg-card p-5 text-sm leading-relaxed text-muted-foreground">
-            <strong class="text-foreground">If something has not appeared on another device:</strong> check that both devices use the same iCloud account, that iCloud Sync is enabled in READEA on both, and that neither device shows a sync error. Then try Sync Now on both devices.
+        <section id="help">
+          <p class="section-number">12 / When something gets in the way</p>
+          <h2>Troubleshooting</h2>
+          <div class="faq">
+            <details><summary>My Feed looks empty or shows an older day.</summary><p>Check the selected date, category and read/saved filters. The local Feed day rolls over at 8 AM, not midnight. The weekend view is intentional. Check your connection and use Refresh; a source delay or rate limit may require trying later.</p></details>
+            <details><summary>A paper or collection has not reached another device.</summary><p>Confirm the same iCloud Apple Account, enable READEA’s iCloud Sync on both devices, and check the displayed sync status. Use Sync Now on both. For an offline error, restore the connection and retry. Social connections additionally need iCloud Passwords & Keychain.</p></details>
+            <details><summary>I imported references, but there is no PDF.</summary><p>Bibliography exports often contain citations without attachments. Put the downloaded PDFs beside the reference export and choose the folder again. Check import notices. A publisher URL may be a landing page or require a subscription.</p></details>
+            <details><summary>How do I retry an interrupted import?</summary><p>Choose the same source files or folder again. Recognized papers merge instead of creating new copies. Review attachment notices and confirm the files remain accessible.</p></details>
+            <details><summary>Refine Search seems less useful than my original search.</summary><p>Switch back to Original in result history. Try one specific instruction and fewer selected sources. Some sources need API credentials, and external providers may apply rate limits.</p></details>
+            <details><summary>A ranking explanation has no similar papers.</summary><p>Your rated library may not contain a close enough comparison. That is different from a broken import or missing paper. Give more feedback, add a training note if useful, and request updated ranking after an eligible training run.</p></details>
+            <details><summary>A social login opens but does not connect.</summary><p>Finish authorization in the browser and return to the same app build you started from. During beta, Instagram or Threads may require an accepted tester invitation or an eligible account. Send the exact error and your app version with your report.</p></details>
+            <details><summary>I don’t see a feature described here.</summary><p>Check the installed version and patch notes. Development and TestFlight builds can differ. If several Mac copies are installed, check the app that actually opened. You do not need to delete your library to test an update.</p></details>
           </div>
+          <div class="callout"><strong>Send a useful bug report.</strong> Include your device, OS and READEA version; what you tried; what happened; and a screenshot or paper link when relevant. Don’t include passwords or account tokens. <a href="/arxiv-app/feedback">Send feedback →</a></div>
         </section>
-
-        <section id="connections" class="scroll-mt-24">
-          <h2 class="text-2xl font-semibold tracking-tight">Connections & sharing</h2>
-          <p class="mt-4 leading-relaxed text-muted-foreground"><strong class="text-foreground">Settings → Connections</strong> lets you connect ORCID and LinkedIn. With ORCID connected, <strong class="text-foreground">Find my papers</strong> searches your publication history and adds matches to the <strong class="text-foreground">My Papers</strong> collection. You can run it again manually; READEA also checks for newly listed work periodically where background activity is available.</p>
-          <p class="mt-3 leading-relaxed text-muted-foreground">Use Share on a paper card or in Library selection mode to send a paper by email or post it to LinkedIn. A READEA sharing link lets another READEA user import the paper. LinkedIn posting requires a connected LinkedIn account.</p>
-          <p class="mt-3 leading-relaxed text-muted-foreground">On Mac, the Safari extension is bundled with READEA and can be enabled in Safari's extension settings. The Chrome extension can save supported paper pages into your Library once installed and connected to the Mac app.</p>
-        </section>
-
-        <div class="border-t border-border pt-8 text-sm text-muted-foreground">
-          Need help or found a bug? <a class="font-medium text-primary hover:underline" href="/arxiv-app/feedback">Send feedback</a>.
-        </div>
-      </div>
+        <footer class="manual-end"><a href="#start">Back to the start ↑</a><a href="/arxiv-app">About READEA ↗</a></footer>
+      </article>
     </div>
   </div>
 </WideLayout>
 
 <style>
-  .manual-shot { overflow: hidden; border: 1px solid var(--border); border-radius: 1rem; background: var(--card); }
-  .manual-shot a { display: block; }
-  .manual-shot img { display: block; width: 100%; height: auto; }
-  .manual-shot figcaption { padding: .75rem 1rem; border-top: 1px solid var(--border); color: var(--muted-foreground); font-size: .875rem; line-height: 1.5; }
-  kbd { border: 1px solid var(--border); border-radius: .25rem; padding: .05rem .35rem; background: var(--card); color: var(--foreground); font-size: .85em; }
+  .manual { --manual-line: var(--border); }
+  .manual-header { padding: 2.6rem 0 2.2rem; border-bottom: 1px solid var(--manual-line); }
+  .eyebrow, .section-number { color: var(--primary); font-size: .7rem; font-weight: 650; text-transform: uppercase; letter-spacing: .14em; }
+  h1 { margin: .8rem 0 1.2rem; font-size: clamp(2.35rem, 5vw, 4rem); line-height: 1.09; font-weight: 550; letter-spacing: -.045em; }
+  .lede { max-width: 42rem; color: var(--muted-foreground); font-size: 1.15rem; line-height: 1.7; }
+  .edition { margin-top: 1.4rem; font-size: .78rem; color: var(--muted-foreground); }
+  .edition span { padding: 0 .6rem; opacity: .5; }
+  .build-note { max-width: 48rem; margin-top: .7rem; color: var(--muted-foreground); font-size: .78rem; line-height: 1.65; }
+  .task-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; margin: 1.8rem 0 3rem; }
+  .task-grid a { border: 1px solid var(--manual-line); border-radius: .8rem; padding: 1.1rem 1.2rem; background: var(--card); transition: border-color .15s, background .15s; }
+  .task-grid a:hover { border-color: var(--primary); background: var(--muted); }
+  .task-grid strong { display: flex; justify-content: space-between; gap: 1rem; font-size: .91rem; font-weight: 550; }
+  .task-grid strong span { color: var(--primary); }
+  .task-grid a > span { display: block; margin-top: .45rem; font-size: .8rem; color: var(--muted-foreground); }
+  .manual-grid { display: grid; grid-template-columns: 205px minmax(0,1fr); gap: 3.8rem; }
+  .contents { position: sticky; top: 6rem; max-height: calc(100vh - 8rem); overflow-y: auto; }
+  .contents .eyebrow { margin-bottom: 1rem; }
+  .contents a { display: block; padding: .47rem .6rem; margin-left: -.6rem; border-radius: .4rem; font-size: .78rem; line-height: 1.45; color: var(--muted-foreground); }
+  .contents a:hover { color: var(--foreground); background: var(--muted); }
+  .contents .help-link { margin-top: 1.3rem; color: var(--primary); }
+  article { min-width: 0; }
+  article section { scroll-margin-top: 6rem; padding-bottom: 3.2rem; margin-bottom: 3.2rem; border-bottom: 1px solid var(--manual-line); }
+  h2 { margin: .65rem 0 1.25rem; font-size: clamp(1.55rem, 3vw, 1.9rem); font-weight: 550; letter-spacing: -.025em; line-height: 1.25; }
+  h3 { margin: 1.9rem 0 .7rem; font-size: 1.04rem; font-weight: 600; letter-spacing: -.01em; }
+  article p, article li, article dd { font-size: .94rem; line-height: 1.85; color: var(--muted-foreground); }
+  article p + p { margin-top: .9rem; }
+  article b, article strong { font-weight: 550; color: var(--foreground); }
+  article a { color: var(--primary); text-decoration: underline; text-underline-offset: .2em; }
+  article ul { list-style: disc; padding-left: 1.3rem; margin: 1rem 0; }
+  article li + li { margin-top: .55rem; }
+  .steps { list-style: decimal; padding-left: 1.4rem; margin: 1rem 0 1.4rem; }
+  .steps li { padding-left: .3rem; }
+  .steps li::marker { color: var(--primary); font-weight: 600; }
+  .callout { border-left: 3px solid var(--primary); background: var(--card); padding: 1rem 1.2rem; margin: 1.5rem 0; border-radius: 0 .6rem .6rem 0; font-size: .87rem; color: var(--muted-foreground); line-height: 1.8; }
+  .definitions { margin: 1rem 0; }
+  .definitions div { display: grid; grid-template-columns: 5rem 1fr; gap: 1rem; padding: .65rem 0; border-bottom: 1px solid var(--manual-line); }
+  .definitions dt { font-weight: 550; font-size: .88rem; padding-top: .15rem; }
+  .table-wrap { overflow-x: auto; margin: 1.3rem 0; border: 1px solid var(--manual-line); border-radius: .7rem; }
+  table { width: 100%; border-collapse: collapse; font-size: .86rem; line-height: 1.75; }
+  caption { text-align: left; padding: .8rem 1rem; background: var(--card); font-size: .8rem; font-weight: 550; }
+  th, td { text-align: left; vertical-align: top; padding: .85rem 1rem; border-top: 1px solid var(--manual-line); }
+  th { font-weight: 550; }
+  th[scope="row"] { min-width: 7rem; }
+  td { color: var(--muted-foreground); }
+  .example { margin: 1.6rem 0; padding: 1.5rem; border: 1px solid var(--manual-line); border-radius: .8rem; background: var(--card); }
+  .example .eyebrow { font-size: .65rem; margin-bottom: .9rem; color: var(--primary); }
+  .example > strong { display: block; font-size: 1.1rem; }
+  .example > p:not(.eyebrow) { margin: .7rem 0; font-size: .89rem; }
+  .example > span { font-size: .8rem; color: var(--primary); }
+  .screenshot { margin: 1.7rem 0 0; border: 1px solid var(--manual-line); border-radius: .8rem; overflow: hidden; }
+  summary { cursor: pointer; padding: 1rem 1.2rem; font-size: .9rem; font-weight: 550; }
+  .screenshot img { width: 100%; height: auto; display: block; }
+  .screenshot figcaption { padding: .9rem 1.2rem; font-size: .78rem; color: var(--muted-foreground); line-height: 1.7; border-top: 1px solid var(--manual-line); }
+  .faq details { border-bottom: 1px solid var(--manual-line); }
+  .faq summary { padding: 1.1rem 0; line-height: 1.5; }
+  .faq details p { padding: 0 0 1.2rem; font-size: .89rem; }
+  kbd { border: 1px solid var(--manual-line); border-radius: .25rem; padding: .05rem .3rem; background: var(--card); color: var(--foreground); font-size: .8rem; }
+  a:focus-visible, summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 4px; }
+  .manual-end { display: flex; justify-content: space-between; gap: 1rem; font-size: .83rem; padding-bottom: 1rem; }
+  .mobile-contents { border: 1px solid var(--manual-line); border-radius: .7rem; margin-bottom: 2rem; }
+  .mobile-contents nav { display: grid; gap: .7rem; padding: 0 1.2rem 1.2rem; font-size: .85rem; color: var(--muted-foreground); }
+  @media (max-width: 1023px) { .manual-grid { display: block; } }
+  @media (max-width: 560px) { .task-grid { grid-template-columns: 1fr; margin-bottom: 1.5rem; } .manual-header { padding-top: 1.7rem; } article section { padding-bottom: 2.3rem; margin-bottom: 2.3rem; } th,td { padding: .7rem .8rem; } }
+  @media print { .task-grid, .contents, .mobile-contents, .manual-end { display: none; } .manual-grid { display: block; } article section { break-inside: auto; margin-bottom: 1.5rem; padding-bottom: 1.5rem; } h2,h3 { break-after: avoid; } }
 </style>
