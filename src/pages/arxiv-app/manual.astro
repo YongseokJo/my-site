@@ -17,6 +17,7 @@ const sections = [
   ["ranking", "Personal ranking"],
   ["connections", "Accounts & your publications"],
   ["sync", "Sync & offline use"],
+  ["pdf-storage", "Local or iCloud PDFs"],
   ["extensions", "Chrome & Safari extensions"],
   ["settings", "Make it yours"],
   ["help", "Troubleshooting"],
@@ -252,6 +253,22 @@ const sections = [
             <li>Use <b>Sync Now</b> and check the status. Keep both apps open with a connection for the first transfer.</li>
           </ol>
           <p>Sync includes library records, tags, collections, feedback, annotations, reading progress, Recently Read and retained feed data. Model backups and completed ranking results can also travel between supported builds. Downloads and the local feed cache are not a promise that every PDF is available offline on every device; open the papers you need on the destination device first.</p>
+          <h3 id="pdf-storage">Choose Local or iCloud Drive for PDFs</h3>
+          <p>Open <b>Settings → PDF Storage</b> to choose where READEA keeps your PDF files. The choice is made separately on each device.</p>
+          <div class="callout"><strong>Upcoming app update:</strong> the repaired storage switching and shared-PDF discovery described here are not yet in the current TestFlight build. Use a build that includes these changes; check Patch Notes in Settings.</div>
+          <div class="table-wrap"><table>
+            <caption>PDF storage choices</caption>
+            <thead><tr><th scope="col">Location</th><th scope="col">PDF files</th><th scope="col">Highlights & notes</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Local</th><td>Stay in READEA’s private folder on that device. A PDF saved locally is not automatically uploaded to iCloud Drive.</td><td>Can still sync separately when READEA’s iCloud Sync is on. Open the same PDF edition on both devices for highlights to line up.</td></tr>
+              <tr><th scope="row">iCloud Drive</th><td>Shared through your iCloud Drive. Choose iCloud Drive on each device and use the same Apple Account to open the same file, including imported PDFs.</td><td>Choosing iCloud Drive enables READEA’s iCloud Sync. Keep it on on each device to sync editable highlights and notes.</td></tr>
+            </tbody>
+          </table></div>
+          <ManualJourney label="Set up shared PDFs" steps={[{icon:"cloud",title:"Enable iCloud Drive",text:"In system settings on each device"},{icon:"library",title:"Choose iCloud Drive",text:"READEA Settings → PDF Storage"},{icon:"review",title:"Save the choice",text:"Use Back or Close, then Save when asked"},{icon:"paper",title:"Open the same paper",text:"Allow the PDF and annotations to arrive"}]} />
+          <p>In <b>PDF Storage → Highlights & Notes</b>, keep <b>Sync with iCloud</b> on. This is the same sync switch used by your library. PDF files travel through iCloud Drive; READEA’s highlights and notes travel separately through private iCloud records. Turning off library sync does not stop files already stored in iCloud Drive from syncing.</p>
+          <h3>Switch storage without losing your PDFs</h3>
+          <p>After choosing a location, use Back or Close and confirm <b>Save</b>. READEA copies existing PDFs before making the new location active and keeps the originals. It does not overwrite a different PDF with the same name: if a conflict or copy error occurs, the current storage stays active and an error is shown. Switching from iCloud Drive to Local does not delete the copies in iCloud Drive.</p>
+          <p>iCloud transfer is not instant. Keep the apps online for the first sync, then open the PDF on the destination device. An iCloud PDF may download when opened; open the papers you need before going offline. Imported highlights embedded in a PDF stay with that file; READEA-created highlights and notes remain editable app annotations.</p>
           <h3>Background refresh is opportunistic</h3>
           <p>On Mac, <b>Refresh Feed After Quit</b> can register a background helper. It checks periodically while you are logged in and the Mac is awake, and may require approval in macOS Background Items settings. It does not run through sleep or shutdown.</p>
           <p>On iPhone and iPad, the operating system decides when background work can run. A refresh or ranking task cannot be promised at an exact time while the app is closed. Open READEA and use Refresh when you need an immediate update. Library imports, collection links and new source searches need internet access unless their required data is already local.</p>
@@ -312,6 +329,7 @@ const sections = [
           <h2>Troubleshooting</h2>
           <div class="faq">
             <details><summary>My Feed looks empty or shows an older day.</summary><p>Check the selected date, category and read/saved filters. The local Feed day rolls over at 8 AM, not midnight. The weekend view is intentional. Check your connection and use Refresh; a source delay or rate limit may require trying later.</p></details>
+            <details><summary>The PDF or its highlights are missing on another device.</summary><p>For shared PDF files, choose iCloud Drive in Settings → PDF Storage on both devices, sign in to the same Apple Account and enable iCloud Drive in system settings. For highlights and notes, also enable READEA’s iCloud Sync on both devices. Check the sync status and use Sync Now. Let the destination PDF finish downloading, and confirm both devices are showing the same PDF edition. Local PDF storage alone does not upload the file.</p></details>
             <details><summary>A paper or collection has not reached another device.</summary><p>Confirm the same iCloud Apple Account, enable READEA’s iCloud Sync on both devices, and check the displayed sync status. Use Sync Now on both. For an offline error, restore the connection and retry. Social connections additionally need iCloud Passwords & Keychain.</p></details>
             <details><summary>I imported references, but there is no PDF.</summary><p>Bibliography exports often contain citations without attachments. Put the downloaded PDFs beside the reference export and choose the folder again. Check import notices. A publisher URL may be a landing page or require a subscription.</p></details>
             <details><summary>How do I retry an interrupted import?</summary><p>Choose the same source files or folder again. Recognized papers merge instead of creating new copies. Review attachment notices and confirm the files remain accessible.</p></details>
