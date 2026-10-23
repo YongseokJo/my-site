@@ -115,8 +115,24 @@ const sections = [
             <li>Choose the collection in the collection panel to browse its papers. Use <b>Clear</b> to return to the full Library.</li>
           </ol>
           <p>A paper can belong to more than one collection. Deleting a collection keeps its papers in Library.</p>
-          <h3>Use selection mode</h3>
-          <p>Long-press a paper on iPhone or iPad, or use its context menu on Mac, to enter selection mode. Select one or more papers, then use the available actions for metadata, tags, collections, sharing or deletion. <b>Sources</b> opens arXiv and journal websites when available. Use <b>Done</b> or <kbd>Esc</kbd> to leave selection mode; completed actions can close it automatically.</p>
+          <h3 id="selection-mode">Selection / edit mode</h3>
+          <ManualJourney label="Select → act → return to reading" steps={[{icon:"review",title:"Enter",text:"Right-click on Mac; long-press on touch"},{icon:"paper",title:"Select",text:"Click or tap additional papers"},{icon:"write",title:"Act",text:"Edit, organize, share or open a source"},{icon:"library",title:"Return",text:"Finish the action, Done or Esc"}]} />
+          <p>In <b>Library</b> or <b>Home → Recently Read</b>, long-press a paper to enter selection mode. On Mac, you can also <b>right-click</b> it. The starting paper is selected; click or tap other rows to add or remove them. While this mode is active, clicking a row changes its selection instead of opening its PDF. This also works for papers found through Library search. Weekly Summary does not use selection mode.</p>
+          <table>
+            <caption>What you can do with the selection</caption>
+            <thead><tr><th scope="col">Action</th><th scope="col">When and what it does</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Edit</th><td>Select exactly one paper to open its details and edit metadata.</td></tr>
+              <tr><th scope="row">Sources</th><td>Select exactly one paper with a known source. Open arXiv or the journal website; both appear when available. This opens the source website, whereas opening the PDF is a separate reading action.</td></tr>
+              <tr><th scope="row">Tag / Collection</th><td>Apply organization changes to one or more selected papers, then finish with Done.</td></tr>
+              <tr><th scope="row">Share</th><td>Share the selected references through the same destinations as an abstract card. To share a named collection with its own introduction, use the collection’s Share action instead.</td></tr>
+              <tr><th scope="row">Merge</th><td>Available in Library when exactly two papers are selected. Use it only for two records of the same work; it combines records, rather than creating a reading collection.</td></tr>
+              <tr><th scope="row">Delete</th><td>Deletes the selected papers from Library after confirmation, including when started from Recently Read. It does not merely hide them from the current view. The confirmation warns that deletion cannot be undone.</td></tr>
+            </tbody>
+          </table>
+          <div class="callout"><strong>Selection follows the list you are viewing.</strong> In Library, Select All uses the current search and filters, not every paper hidden elsewhere in your Library. Check the selected count before a batch action. A disabled Edit or Sources button usually means that more than one paper is selected, or that no source is available.</div>
+          <p>Use <b>Done</b> or <kbd>Esc</kbd> to leave selection mode in Library or Recently Read. Deselecting the last paper also leaves it. Completed actions—such as opening a source, finishing a share, or saving tags, collections or edits—return you to ordinary browsing. Opening an action menu alone does not mean the action is complete.</p>
+          <p><b>Collection deletion and paper deletion are different:</b> deleting a collection keeps its papers in Library; Delete in the paper-selection toolbar removes the papers themselves.</p>
         </section>
 
         <section id="import">
@@ -280,6 +296,7 @@ const sections = [
   article { min-width: 0; }
   article section { scroll-margin-top: 6rem; padding-bottom: 3.2rem; margin-bottom: 3.2rem; border-bottom: 1px solid var(--manual-line); }
   h2 { margin: .65rem 0 1.25rem; font-size: clamp(1.55rem, 3vw, 1.9rem); font-weight: 550; letter-spacing: -.025em; line-height: 1.25; }
+  h3[id] { scroll-margin-top: 6rem; }
   h3 { margin: 1.9rem 0 .7rem; font-size: 1.04rem; font-weight: 600; letter-spacing: -.01em; }
   article p, article li, article dd { font-size: .94rem; line-height: 1.85; color: var(--muted-foreground); }
   article p + p { margin-top: .9rem; }
