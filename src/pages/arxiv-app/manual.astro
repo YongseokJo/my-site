@@ -3,6 +3,7 @@ import WideLayout from "../../layouts/WideLayout.astro";
 import Breadcrumb from "../../components/Breadcrumb.astro";
 import ManualVisualTour from "../../components/manual/ManualVisualTour.astro";
 import ManualJourney from "../../components/manual/ManualJourney.astro";
+import { ArrowUpRight, BookmarkPlus, Compass, Globe } from "lucide-react";
 
 const sections = [
   ["visual-guide", "Visual quick guide"],
@@ -28,10 +29,28 @@ const sections = [
     <header class="manual-header">
       <p class="eyebrow">Read · Organize · Share</p>
       <h1>READEA Manual</h1>
-      <p class="lede">Discover, read, organize and share your research. Start with one paper, or bring the library you already have.</p>
+      <p class="lede">Your guide to reading, organizing and sharing research.</p>
       <p class="edition">Mac · iPhone · iPad <span aria-hidden="true">/</span> Updated October 23, 2026</p>
-      <p class="build-note">This guide covers the current READEA 2.0 beta features. Your installed TestFlight build may have fewer features; check the version and patch notes in Settings. Illustrations use example content. No personal likes, dislikes, favorites or relevance scores are shown.</p>
     </header>
+
+    <section class="extension-promo" aria-labelledby="extension-promo-title">
+      <div class="extension-promo-copy">
+        <p class="eyebrow">Meet your browser’s new save button</p>
+        <h2 id="extension-promo-title">Found a paper?<br />Save it to READEA.</h2>
+        <p>Turn arXiv pages, journal articles and online PDFs into your reading library. Preview the paper, choose <b>Save to Library</b>, and READEA takes it from there.</p>
+        <div class="extension-promo-actions">
+          <a href="https://chromewebstore.google.com/detail/readea-save/lfjfajkameacadmgaanakgiggmlaelhp" target="_blank" rel="noopener noreferrer"><Globe size={19} aria-hidden="true" /> Get Chrome extension <ArrowUpRight size={17} aria-hidden="true" /></a>
+          <a href="#extensions"><Compass size={19} aria-hidden="true" /> Enable Safari extension <span aria-hidden="true">↓</span></a>
+        </div>
+        <p class="extension-promo-note">Chrome on Mac · Safari on Mac, iPhone & iPad<br />Requires the READEA app. Safari’s extension is included with the app.</p>
+      </div>
+      <div class="extension-promo-visual" aria-hidden="true">
+        <div class="browser-caption"><span></span><span></span><span></span><b>arXiv · Journals · PDFs</b></div>
+        <div class="save-illustration"><BookmarkPlus size={38} strokeWidth={1.4} /><strong>Save to READEA</strong><span>One paper. Ready for your Library.</span><div>Save to Library <span>↗</span></div></div>
+      </div>
+    </section>
+
+      <p class="build-note">This guide covers the current READEA 2.0 beta features. Your installed TestFlight build may have fewer features; check the version and patch notes in Settings. Illustrations use example content. No personal likes, dislikes, favorites or relevance scores are shown.</p>
 
     <ManualVisualTour />
 
@@ -243,14 +262,14 @@ const sections = [
           <h2>Chrome & Safari extensions</h2>
           <p><b>READEA Save</b> brings the paper you are viewing in your browser into Library. Use it on an arXiv abstract, journal article, online PDF or ordinary webpage. Install and open the READEA app on the same device first; the extension sends the item to that app.</p>
           <ManualJourney label="Save from your browser" steps={[{icon:"paper",title:"Open a page",text:"arXiv, journal article or online PDF"},{icon:"review",title:"Preview",text:"Open Save to READEA"},{icon:"save",title:"Save to Library",text:"Allow the browser to open READEA"},{icon:"library",title:"Find it",text:"The app opens Library"}]} />
-          <h3>Chrome on Mac</h3>
+          <h3 id="chrome-extension">Chrome on Mac</h3>
           <ol class="steps">
             <li>Install <a href="https://chromewebstore.google.com/detail/readea-save/lfjfajkameacadmgaanakgiggmlaelhp" target="_blank" rel="noopener noreferrer">READEA Save from the Chrome Web Store ↗</a>.</li>
             <li>Open Chrome’s Extensions menu and pin READEA Save to keep its button in the toolbar.</li>
             <li>Visit a paper page, click the READEA button, review the detected title, then choose <b>Save to Library</b>. If Chrome asks to open READEA, allow it.</li>
           </ol>
           <p>The Chrome extension is installed separately from the app. It requires a device that can run READEA; installing the browser extension alone does not provide a Windows or Linux READEA app. Chrome on iPhone and iPad does not use this desktop extension—use Safari there.</p>
-          <h3>Safari on Mac</h3>
+          <h3 id="safari-extension">Safari on Mac</h3>
           <ol class="steps">
             <li>Install and open the READEA TestFlight app that includes the Safari extension.</li>
             <li>Open <b>Safari → Settings → Extensions</b> and enable <b>Save to READEA</b>. Allow access to the paper website when Safari asks.</li>
@@ -311,12 +330,31 @@ const sections = [
 
 <style>
   .manual { --manual-line: var(--border); }
-  .manual-header { padding: 2.6rem 0 2.2rem; border-bottom: 1px solid var(--manual-line); }
+  .manual-header { padding: 1.5rem 0 1.2rem; border-bottom: 1px solid var(--manual-line); }
   .eyebrow, .section-number { color: var(--primary); font-size: .7rem; font-weight: 650; text-transform: uppercase; letter-spacing: .14em; }
   h1 { margin: .8rem 0 1.2rem; font-size: clamp(2.35rem, 5vw, 4rem); line-height: 1.09; font-weight: 550; letter-spacing: -.045em; }
   .lede { max-width: 42rem; color: var(--muted-foreground); font-size: 1.15rem; line-height: 1.7; }
-  .edition { margin-top: 1.4rem; font-size: .78rem; color: var(--muted-foreground); }
+  .edition { margin-top: .8rem; font-size: .78rem; color: var(--muted-foreground); }
   .edition span { padding: 0 .6rem; opacity: .5; }
+  .extension-promo { display:grid; grid-template-columns:1.4fr 1fr; gap:3rem; align-items:center; padding:2.3rem; margin:1.8rem 0 2.5rem; border:1px solid var(--primary); border-radius:1rem; background:var(--card); }
+  .extension-promo .eyebrow { color:var(--primary); }
+  .extension-promo h2 { font-size:clamp(1.8rem,3.8vw,2.8rem); line-height:1.12; margin:.7rem 0 1rem; letter-spacing:-.035em; }
+  .extension-promo-copy>p:not(.eyebrow) { color:var(--muted-foreground); font-size:.9rem; line-height:1.75; max-width:35rem; }
+  .extension-promo-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin:1.4rem 0 .9rem; }
+  .extension-promo-actions a { display:inline-flex; align-items:center; justify-content:center; gap:.5rem; padding:.85rem 1rem; background:var(--primary); color:var(--primary-foreground); font-size:.82rem; font-weight:600; border-radius:.5rem; min-height:48px; text-decoration:none; transition:filter .15s; }
+  .extension-promo-actions a:hover { filter:brightness(1.12); }
+  .extension-promo-copy .extension-promo-note { font-size:.73rem; }
+  .extension-promo-visual { border:1px solid var(--manual-line); border-radius:.9rem; overflow:hidden; background:var(--background); transform:rotate(2deg); }
+  .browser-caption { display:flex; align-items:center; gap:.3rem; padding:.85rem 1rem; border-bottom:1px solid var(--manual-line); }
+  .browser-caption>span { width:6px; height:6px; border-radius:50%; background:var(--muted-foreground); opacity:.4; }
+  .browser-caption b { font-size:.65rem; font-weight:500; color:var(--muted-foreground); margin-left:auto; }
+  .save-illustration { display:flex; flex-direction:column; align-items:center; gap:.7rem; padding:2.3rem 1.3rem; color:var(--primary); }
+  .save-illustration strong { color:var(--foreground); font-size:1.12rem; }
+  .save-illustration>span { font-size:.73rem; color:var(--muted-foreground); text-align:center; }
+  .save-illustration>div { background:var(--primary); color:var(--primary-foreground); border-radius:.45rem; padding:.7rem 1rem; margin-top:.6rem; font-size:.78rem; }
+  .save-illustration>div>span { margin-left:1rem; }
+  @media(max-width:760px) { .extension-promo { grid-template-columns:1fr; padding:1.4rem; gap:1.5rem; } .extension-promo-visual { display:none; } .extension-promo-actions { flex-direction:column; align-items:stretch; } }
+  @media print { .extension-promo-visual { display:none; } .extension-promo { display:block; } }
   .build-note { max-width: 48rem; margin-top: .7rem; color: var(--muted-foreground); font-size: .78rem; line-height: 1.65; }
   .task-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: .7rem; margin: 1.8rem 0 3rem; }
   .task-grid a { border: 1px solid var(--manual-line); border-radius: .8rem; padding: 1.1rem 1.2rem; background: var(--card); transition: border-color .15s, background .15s; }
